@@ -1,4 +1,5 @@
 # DAO-Voting-System
+该系统设计给比赛和活动， 又开始和结束时间， 但event结束时相关block将被关闭。
 ### Research Word
 https://1drv.ms/w/s!AuEhr-CAoiVgla5bigbpXVL6bmdCkw?e=Nejjj3
 ### Proposal
