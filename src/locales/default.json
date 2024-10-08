@@ -1,0 +1,15 @@
+{
+  "noResultsFound": "Oops, we can't find any results",
+  "metaInfo": {
+    "home": {
+      "title": "Snapshot - Where decisions get made",
+      "description": "Snapshot is an off-chain voting platform that allows DAOs, DeFi protocols, or NFT communities to participate in the decentralized governance easily and without gas fees."
+    }
+  },
+  "footerView": {
+    "resources": "Resources",
+    "about": "About",
+    "github": "GitHub",
+    "docs": "Docs"
+  }
+}
