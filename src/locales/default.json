@@ -1,4 +1,8 @@
 {
+  "homeLoadmore": "Load more",
+  "teams": "No teams | {count} team | {count} teams",
+  "verifiedSpace": "Verified space",
+  "spaceCount": "{0} space(s)",
   "noResultsFound": "Oops, we can't find any results",
   "metaInfo": {
     "home": {

@@ -13,7 +13,7 @@ export interface Performances {
   description: string;
   start: Date;
   end: Date;
-  created: Date; //the spaces will show new to old
+  create: Date; //the spaces will show new to old
   votes_num: number; //for create how many QR
 }
 

@@ -6,6 +6,7 @@ import TheNavbar from './components/TheNavbar'; // Create this component
 import ExploreSkeletonLoading from './pages/ExploreSkeletonLoading';
 // import { useApp } from './hooks/useApp'; // Replace with your actual hook
 import './utils/i18n';
+import ExploreSpaces from './components/ExploreSpace';
 
 const dummyValues = {
   init: () => console.log('Initialized!'),
@@ -42,6 +43,7 @@ const App: React.FC = () => {
               </Routes>
             </Suspense>
           </div> */}
+          <ExploreSpaces />
 
           {route.pathname === '/' && (
             <footer className="mt-auto">
