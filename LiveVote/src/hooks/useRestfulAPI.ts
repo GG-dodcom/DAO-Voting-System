@@ -5,10 +5,10 @@ import axios from 'axios';
 export function useRestfulAPI() {
   const [loading, setLoading] = useState(false); // Use state to track loading
 
-  async function fetchQuery(path: string): Promise<any[]> {
+  async function fetchQuery(path: string, params: any): Promise<any[]> {
     try {
       setLoading(true);
-      const response = await axios.get(path);
+      const response = await axios.get(path, { params });
       return response.data;
     } catch (error) {
       throw new Error('Error fetching data: ' + error);
@@ -18,12 +18,12 @@ export function useRestfulAPI() {
   }
 
   async function postQuery(
-    url: string,
+    path: string,
     data: any
   ): Promise<{ success: boolean; message: string }> {
     try {
       setLoading(true);
-      const response = await axios.post(url, data); // Send POST request with data
+      const response = await axios.post(path, data); // Send POST request with data
       if (response.status === 200) {
         return { success: true, message: 'Data saved successfully!' }; // Return success message
       }

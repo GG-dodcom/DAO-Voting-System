@@ -1,7 +1,7 @@
 import { TuneLoadingSpinner } from '../index';
 // import { useApp } from './hooks/useApp';
 
-interface ButtonProps {
+interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   type?: 'button' | 'submit' | 'reset';
   variant?: 'danger' | 'white';
   primary?: boolean;

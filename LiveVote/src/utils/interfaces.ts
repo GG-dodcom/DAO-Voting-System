@@ -10,11 +10,17 @@ export interface Performances {
   //Proposal
   id: string; //PK, UUID
   name: string;
+  avatar: string;
   description: string;
   start: Date;
   end: Date;
   create: Date; //the spaces will show new to old
   votes_num: number; //for create how many QR
+  active: boolean;
+
+  teamsCount: number;
+
+  teams: Teams[];
 }
 
 export interface Teams {
@@ -44,54 +50,4 @@ export interface Tokens {
   audience_id: string; //FK: Reference to the user who owns the token.
   performance_id: string; //FK: Reference to the performance the token is linked to.
   token_status: boolean; //Whether the token has been used to vote (default: false).
-}
-
-export interface Proposal {
-  id: string;
-  name: string;
-  token: string;
-  network: string;
-  strategies: SpaceStrategy[];
-  delegationPortal: DelegatesConfig;
-  about: string;
-  avatar: string;
-  skin: string;
-  domain: string | null;
-  website: string | null;
-  terms: string | null;
-  coingecko: string | null;
-  github: string | null;
-  twitter: string | null;
-  followersCount: number;
-  private: boolean;
-  admins: string[];
-  moderators: string[];
-  members: string[];
-  categories: string[];
-  parent: ExtendedSpace | null;
-  children: ExtendedSpace[];
-  filters: { minScore: number; onlyMembers: boolean };
-  plugins: Record<string, any>;
-  validation: SpaceValidation;
-  voteValidation: VoteValidation;
-  treasuries: TreasuryWallet[];
-  template: string;
-  guidelines: string;
-  verified: boolean;
-  flagged: boolean;
-  hibernated: boolean;
-  turbo: boolean;
-  boost: {
-    enabled: boolean;
-    bribeEnabled: boolean;
-  };
-  voting: {
-    delay: number | null;
-    hideAbstain: boolean;
-    period: number | null;
-    quorum: number | null;
-    quorumType: 'default' | 'rejection';
-    type: string | null;
-    privacy: string | null;
-  };
 }

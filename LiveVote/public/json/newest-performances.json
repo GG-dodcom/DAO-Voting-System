@@ -1,0 +1,38 @@
+{
+  "performances": [
+    {
+      "id": "b1f8d1a1-5c2d-4e19-b2a5-8fb17d4eac68",
+      "name": "Dance Performance 1",
+      "avatar": null,
+      "description": "An electrifying contemporary dance performance.",
+      "start": "2024-10-01T19:00:00Z",
+      "end": "2024-10-01T21:00:00Z",
+      "create": "2024-09-20T10:15:00Z",
+      "votes_num": 120,
+      "active": true
+    },
+    {
+      "id": "a2f8d5c2-6d3f-4b11-b1e6-7aa14e3a2f59",
+      "name": "Dance Performance 2",
+      "avatar": null,
+      "description": "A vibrant ballet show featuring the best dancers.",
+      "start": "2024-10-02T19:30:00Z",
+      "end": "2024-10-02T21:30:00Z",
+      "create": "2024-09-22T14:00:00Z",
+      "votes_num": 150,
+      "active": true
+    },
+    {
+      "id": "c3f9d4b3-7f5e-4a12-a1c7-9cb18f3b4d60",
+      "name": "Dance Performance 3",
+      "avatar": null,
+      "description": "A street dance competition with local talent.",
+      "start": "2024-10-03T18:00:00Z",
+      "end": "2024-10-03T20:00:00Z",
+      "create": "2024-09-25T09:45:00Z",
+      "votes_num": 80,
+      "active": false
+    }
+  ],
+  "total": 100
+}

@@ -1,0 +1,37 @@
+[
+  {
+    "id": "f5e06b17-bbbb-4bb2-bb69-9a25e5eac711",
+    "performance_id": "9e88d10f-4ef1-4f4e-a77b-61e547c75eae",
+    "name": "The Star Dancers",
+    "photo": "https://example.com/photos/star_dancers.jpg",
+    "votes": 5
+  },
+  {
+    "id": "22e0a1c2-e8a8-4b2f-a0c0-3d96c0a5e73b",
+    "performance_id": "f3cce93d-2eeb-4f6a-bb16-92f9a07a41fc",
+    "name": "Rhythm Masters",
+    "photo": "https://example.com/photos/rhythm_masters.jpg",
+    "votes": 10
+  },
+  {
+    "id": "e3f556e7-1f6b-4aeb-8c76-69f7f5377c83",
+    "performance_id": "66ebf1ee-e25e-4329-b14f-c0c538fa6f3c",
+    "name": "Storytellers Dance Troupe",
+    "photo": "https://example.com/photos/storytellers.jpg",
+    "votes": 8
+  },
+  {
+    "id": "ee1a39cf-e2e5-4788-9e59-6334778da7f2",
+    "performance_id": "c7d3b4d6-9f12-4b1f-b36a-64c2c8c3e245",
+    "name": "Rain Dancers",
+    "photo": "https://example.com/photos/rain_dancers.jpg",
+    "votes": 15
+  },
+  {
+    "id": "55ae72a5-c5f5-4e14-ae38-e9e76963fc04",
+    "performance_id": "8a21495b-6a67-4f73-8bde-3f845d567d67",
+    "name": "Jazz Fusion Crew",
+    "photo": "https://example.com/photos/jazz_fusion.jpg",
+    "votes": 20
+  }
+]
