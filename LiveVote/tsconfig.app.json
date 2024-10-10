@@ -22,5 +22,5 @@
 
     "types": ["unplugin-icons/types/react"]
   },
-  "include": ["src", ".storybook/**/*", "src/stories/*"]
+  "include": ["src", ".storybook/**/*", "src/stories/*", "src/global.d.ts"]
 }

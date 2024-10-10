@@ -114,13 +114,13 @@ const ExploreSpaces: React.FC = () => {
               </TuneButton>
             </div>
           )}
-        {/* {loadingMorePerformancesHome && (
+        {loadingMorePerformancesHome && (
           <div className="mt-4 flex h-[46px]">
             <div className="mx-auto">
               <LoadingSpinner big />
             </div>
           </div>
-        )} */}
+        )}
       </BaseContainer>
     </div>
   );

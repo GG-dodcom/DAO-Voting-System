@@ -5,7 +5,7 @@ import axios from 'axios';
 export function useRestfulAPI() {
   const [loading, setLoading] = useState(false); // Use state to track loading
 
-  async function fetchQuery(path: string, params: any): Promise<any[]> {
+  async function fetchQuery(path: string, params?: any): Promise<any[]> {
     try {
       setLoading(true);
       const response = await axios.get(path, { params });
@@ -19,20 +19,31 @@ export function useRestfulAPI() {
 
   async function postQuery(
     path: string,
-    data: any
-  ): Promise<{ success: boolean; message: string }> {
+    formData: any
+  ): Promise<{ success: boolean; result: any }> {
     try {
       setLoading(true);
-      const response = await axios.post(path, data); // Send POST request with data
-      if (response.status === 200) {
-        return { success: true, message: 'Data saved successfully!' }; // Return success message
+      const response: any = await axios.post(path, {
+        method: 'POST',
+        body: formData,
+      }); // Send POST request with data
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
       }
-      return { success: false, message: 'Failed to save data.' }; // Handle unexpected status
+
+      const result = await response.json();
+
+      if (response.result.statusCode === 200) {
+        return { success: true, result: result }; // Return success message
+      }
+      return { success: false, result: result }; // Handle unexpected status
     } catch (error: any) {
       // Handle error and return error message
       const errorMessage =
-        error.response?.data?.message || 'An error occurred while saving data.';
-      return { success: false, message: errorMessage };
+        error.response?.message ||
+        `An error occurred while saving data. ${error}`;
+      return { success: false, result: errorMessage };
     } finally {
       setLoading(false);
     }

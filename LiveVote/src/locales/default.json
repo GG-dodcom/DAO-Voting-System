@@ -1,4 +1,7 @@
 {
+  "submit": "Submit",
+  "edit": "Edit",
+  "upload": "Upload",
   "homeLoadmore": "Load more",
   "teams": "No teams | {count} team | {count} teams",
   "verifiedSpace": "Verified space",
@@ -9,6 +12,21 @@
       "title": "Snapshot - Where decisions get made",
       "description": "Snapshot is an off-chain voting platform that allows DAOs, DeFi protocols, or NFT communities to participate in the decentralized governance easily and without gas fees."
     }
+  },
+  "login": {
+    "login": "Login",
+    "header": "Admin Login",
+    "username": "Username",
+    "usernamePlaceholder": "Enter username",
+    "password": "Password",
+    "passwordPlaceholder": "Enter password"
+  },
+  "errors": {
+    "fileTooBig": "File size should be smaller than 1MB",
+    "unsupportedImageType": "File type not supported, Supported formats are jpeg, jpg and png"
+  },
+  "notify": {
+    "somethingWentWrong": "Oops, something went wrong!"
   },
   "footerView": {
     "resources": "Resources",

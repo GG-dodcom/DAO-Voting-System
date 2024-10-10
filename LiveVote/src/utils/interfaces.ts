@@ -51,3 +51,13 @@ export interface Tokens {
   performance_id: string; //FK: Reference to the performance the token is linked to.
   token_status: boolean; //Whether the token has been used to vote (default: false).
 }
+
+export interface FormError {
+  message: string;
+  push?: boolean;
+}
+
+export interface AdminAccount {
+  username: string;
+  password: string;
+}

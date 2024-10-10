@@ -1,0 +1,148 @@
+{
+  "performances": [
+    {
+      "id": "b1f8d1a1-5c2d-4e19-b2a5-8fb17d4eac68",
+      "name": "Dance Performance 1",
+      "avatar": null,
+      "description": "An electrifying contemporary dance performance.",
+      "start": "2024-10-01T19:00:00Z",
+      "end": "2024-10-01T21:00:00Z",
+      "create": "2024-09-20T10:15:00Z",
+      "votes_num": 120,
+      "active": true
+    },
+    {
+      "id": "a2f8d5c2-6d3f-4b11-b1e6-7aa14e3a2f59",
+      "name": "Dance Performance 2",
+      "avatar": null,
+      "description": "A vibrant ballet show featuring the best dancers.",
+      "start": "2024-10-02T19:30:00Z",
+      "end": "2024-10-02T21:30:00Z",
+      "create": "2024-09-22T14:00:00Z",
+      "votes_num": 150,
+      "active": true
+    },
+    {
+      "id": "c3f9d4b3-7f5e-4a12-a1c7-9cb18f3b4d60",
+      "name": "Dance Performance 3",
+      "avatar": null,
+      "description": "A street dance competition with local talent.",
+      "start": "2024-10-03T18:00:00Z",
+      "end": "2024-10-03T20:00:00Z",
+      "create": "2024-09-25T09:45:00Z",
+      "votes_num": 80,
+      "active": false
+    },
+    {
+      "id": "d4g0d5e4-8f5f-4d14-b5e7-6dc29f6b6f60",
+      "name": "Dance Performance 4",
+      "avatar": null,
+      "description": "A classical ballet performance inspired by Swan Lake.",
+      "start": "2024-10-04T19:00:00Z",
+      "end": "2024-10-04T21:00:00Z",
+      "create": "2024-09-26T12:30:00Z",
+      "votes_num": 110,
+      "active": true
+    },
+    {
+      "id": "e5h2g7i5-9h6j-5f16-c7h8-7fe3a2g3h7j0",
+      "name": "Hip Hop Showdown",
+      "avatar": null,
+      "description": "The biggest hip hop dance competition of the year.",
+      "start": "2024-10-05T20:00:00Z",
+      "end": "2024-10-05T22:00:00Z",
+      "create": "2024-09-27T15:00:00Z",
+      "votes_num": 175,
+      "active": true
+    },
+    {
+      "id": "f6i4h9j6-7k8l-6h19-d9k0-8ge4c5h5i8l1",
+      "name": "Dance Fusion 2024",
+      "avatar": null,
+      "description": "A unique blend of different dance styles from around the world.",
+      "start": "2024-10-06T18:30:00Z",
+      "end": "2024-10-06T20:30:00Z",
+      "create": "2024-09-28T16:45:00Z",
+      "votes_num": 90,
+      "active": true
+    },
+    {
+      "id": "g7j6k8l7-9m1n-7i21-f0m1-9hf5d7j6k9m2",
+      "name": "Latin Dance Night",
+      "avatar": null,
+      "description": "A passionate evening of salsa, bachata, and merengue.",
+      "start": "2024-10-07T19:00:00Z",
+      "end": "2024-10-07T21:00:00Z",
+      "create": "2024-09-29T17:30:00Z",
+      "votes_num": 130,
+      "active": true
+    },
+    {
+      "id": "h8k9l0m8-1o2p-8j32-g2o3-0ig6e8k7l0n3",
+      "name": "Breakdance Battle Royale",
+      "avatar": null,
+      "description": "Top breakdancers from around the world compete for the crown.",
+      "start": "2024-10-08T20:00:00Z",
+      "end": "2024-10-08T22:00:00Z",
+      "create": "2024-09-30T18:00:00Z",
+      "votes_num": 200,
+      "active": false
+    },
+    {
+      "id": "i9l0m1n9-2p3q-9k43-h4p5-1jh7f9l8m1o4",
+      "name": "Ballroom Showcase",
+      "avatar": null,
+      "description": "Elegant ballroom dancing with a modern twist.",
+      "start": "2024-10-09T19:30:00Z",
+      "end": "2024-10-09T21:30:00Z",
+      "create": "2024-10-01T19:00:00Z",
+      "votes_num": 140,
+      "active": true
+    },
+    {
+      "id": "j0m2n3o0-3r4s-0l54-i6q6-2ki8g0m9n2p5",
+      "name": "Jazz Dance Extravaganza",
+      "avatar": null,
+      "description": "A high-energy performance of jazz dance classics.",
+      "start": "2024-10-10T18:00:00Z",
+      "end": "2024-10-10T20:00:00Z",
+      "create": "2024-10-02T20:15:00Z",
+      "votes_num": 115,
+      "active": true
+    },
+    {
+      "id": "k1n3o4p1-4t5u-1m65-j7r7-3lj9h1n0o3q6",
+      "name": "Ballet Gala",
+      "avatar": null,
+      "description": "A gala night showcasing the finest ballet performances.",
+      "start": "2024-10-11T19:00:00Z",
+      "end": "2024-10-11T21:00:00Z",
+      "create": "2024-10-03T21:45:00Z",
+      "votes_num": 155,
+      "active": true
+    },
+    {
+      "id": "l2o4p5q2-5v6w-2n76-k8s8-4mk0i2o1p4r7",
+      "name": "Contemporary Dance Ensemble",
+      "avatar": null,
+      "description": "A modern take on contemporary dance from rising stars.",
+      "start": "2024-10-12T20:00:00Z",
+      "end": "2024-10-12T22:00:00Z",
+      "create": "2024-10-04T22:30:00Z",
+      "votes_num": 105,
+      "active": false
+    },
+    {
+      "id": "l2o4p5q2-5v6w-2n76-k8s8-4mk0i2o1fgklf",
+      "name": "YouZhangJing Dance",
+      "avatar": null,
+      "description": "A modern take on contemporary dance from rising stars.",
+      "start": "2024-10-12T20:00:00Z",
+      "end": "2024-10-12T22:00:00Z",
+      "create": "2024-10-04T22:30:00Z",
+      "votes_num": 105,
+      "active": false
+    }
+  ],
+  "total": 15
+}

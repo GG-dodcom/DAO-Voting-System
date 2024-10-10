@@ -7,6 +7,7 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   primary?: boolean;
   loading?: boolean;
   disabled?: boolean;
+  useWhiteText?: boolean;
   children?: React.ReactNode;
 }
 
@@ -16,7 +17,10 @@ const TuneButton: React.FC<ButtonProps> = ({
   primary = false,
   loading = false,
   disabled = false,
+  useWhiteText = false,
+  className,
   children,
+  ...args
 }) => {
   //TODO: add useApp()
   // const { domain } = useApp();
@@ -30,8 +34,11 @@ const TuneButton: React.FC<ButtonProps> = ({
         variant === 'white' ? 'white-border' : '',
         variant === 'danger' ? 'danger' : '',
         disabled || loading ? 'disabled' : '',
+        primary && !useWhiteText ? '!text-skin-bg' : '',
+        className,
       ].join(' ')}
       disabled={disabled || loading}
+      {...args}
     >
       {loading ? (
         <div className="mx-auto">

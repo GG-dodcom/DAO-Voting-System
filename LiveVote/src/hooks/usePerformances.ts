@@ -24,13 +24,17 @@ export function usePerformances() {
   const [performance, setPerformance] = useState<Performances[]>([]);
 
   function _fetchNewestPerformance(variables: any = {}, offset = 0) {
-    return fetchQuery(API_PATHS.fetchNewestPerformance, {
-      offset,
-      orderBy: 'create',
-      orderDirection: 'ASC',
-      limit: variables.limit || 12,
-      search: variables.searcch || undefined,
-    });
+    return fetchQuery(
+      API_PATHS.fetchNewestPerformance
+      //TODO: uncommend
+      //{
+      //   offset,
+      //   orderBy: 'create',
+      //   orderDirection: 'ASC',
+      //   limit: variables.limit || 12,
+      //   search: variables.searcch || undefined,
+      // }
+    );
   }
 
   async function loadPerformancesHome(variables?: any) {

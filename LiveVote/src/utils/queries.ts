@@ -8,7 +8,7 @@ const API_PATHS = {
   //   // array of performance data
   // ],
 
-  fetchNewestPerformance: `${API_BASE_URL}/newest-performances`,
+  fetchNewestPerformance: `${API_BASE_URL}/newest_performances`,
   //TODO: json look like
   // performances: [
   //   // array of performance data
@@ -16,6 +16,13 @@ const API_PATHS = {
   // total: 100, // total number of performances in database
 
   fetchSpecificPost: (postId: string) => `${API_BASE_URL}/posts/${postId}`,
+
+  postImangeUpload: `${API_BASE_URL}/image_upload`,
+  //TODO: return
+  // const receipt = await pin(formData, API_PATHS.postImangeUpload);
+  // const uploadedUrl = `ipfs://${receipt.cid}`;
+
+  adminlogin: `${API_BASE_URL}/auth/login`,
 };
 
 export default API_PATHS;
