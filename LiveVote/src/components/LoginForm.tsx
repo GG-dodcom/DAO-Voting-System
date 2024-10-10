@@ -37,7 +37,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ account, open, onClose }) => {
 
     // Create a FormData object to send with the request
     const formData = new FormData();
-    formData.append('profile', blob, 'admin_login.json');
+    formData.append('account', blob);
 
     try {
       // Send the FormData to the backend

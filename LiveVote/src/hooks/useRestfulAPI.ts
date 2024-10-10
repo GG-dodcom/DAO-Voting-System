@@ -23,25 +23,16 @@ export function useRestfulAPI() {
   ): Promise<{ success: boolean; result: any }> {
     try {
       setLoading(true);
-      const response: any = await axios.post(path, {
-        method: 'POST',
-        body: formData,
-      }); // Send POST request with data
+      const response: any = await axios.post(path, formData); // Send POST request with data
 
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
+      if (response.data.statusCode === '200') {
+        return { success: true, result: response.data }; // Return success message
       }
-
-      const result = await response.json();
-
-      if (response.result.statusCode === 200) {
-        return { success: true, result: result }; // Return success message
-      }
-      return { success: false, result: result }; // Handle unexpected status
+      return { success: false, result: response.data }; // Handle unexpected status
     } catch (error: any) {
       // Handle error and return error message
       const errorMessage =
-        error.response?.message ||
+        error.response?.data.message ||
         `An error occurred while saving data. ${error}`;
       return { success: false, result: errorMessage };
     } finally {
