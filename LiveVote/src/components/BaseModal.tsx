@@ -9,7 +9,7 @@ interface BaseModalProps {
   open: boolean;
   hideClose?: boolean;
   maxHeight?: string;
-  onClose: () => void;
+  onClose?: () => void | undefined;
   children?: React.ReactNode;
   header?: React.ReactNode;
   footer?: React.ReactNode;

@@ -7,6 +7,7 @@ const ExploreView = lazy(() => import('../pages/ExploreView'));
 const SpaceView = lazy(() => import('../pages/SpaceView'));
 const UserManual = lazy(() => import('../pages/UserManual'));
 const AdminHome = lazy(() => import('../pages/AdminHome.tsx'));
+const AdminSignIn = lazy(() => import('../pages/AdminSignIn.tsx'));
 
 const AppRoutes: React.FC = () => {
   return (
@@ -18,6 +19,7 @@ const AppRoutes: React.FC = () => {
         <Route path="/spaceView" element={<SpaceView />} />
         <Route path="/userManual" element={<UserManual />} />
         <Route path="/admin" element={<AdminHome />} />
+        <Route path="/admin_login" element={<AdminSignIn />} />
       </Routes>
     </Suspense>
   );

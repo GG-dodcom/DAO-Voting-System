@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useFlashNotification } from '../hooks/useFlashNotification';
 import { BaseInput, BaseModal, TuneButton } from '.';
 import { AdminAccount } from '../utils/interfaces';
@@ -9,12 +9,11 @@ import API_PATHS from '../utils/queries';
 import { useRestfulAPI } from '../hooks';
 
 interface LoginFormProps {
-  account?: AdminAccount;
   open: boolean;
   onClose: () => void;
 }
 
-const LoginForm: React.FC<LoginFormProps> = ({ account, open, onClose }) => {
+const LoginForm: React.FC<LoginFormProps> = ({ open, onClose }) => {
   const { notify } = useFlashNotification();
   const { t } = useTranslation();
   const { postQuery } = useRestfulAPI();
@@ -29,19 +28,9 @@ const LoginForm: React.FC<LoginFormProps> = ({ account, open, onClose }) => {
   const submit = async () => {
     setLoading(true); // Set loading to true when the login starts
 
-    // Convert the object to a JSON string
-    const json = JSON.stringify(form);
-
-    // Create a Blob from the JSON string
-    const blob = new Blob([json], { type: 'application/json' });
-
-    // Create a FormData object to send with the request
-    const formData = new FormData();
-    formData.append('account', blob);
-
     try {
       // Send the FormData to the backend
-      const response = await postQuery(API_PATHS.adminlogin, formData);
+      const response = await postQuery(API_PATHS.adminlogin, form);
 
       if (response.success) {
         // Handle successful login
@@ -65,19 +54,10 @@ const LoginForm: React.FC<LoginFormProps> = ({ account, open, onClose }) => {
     }
   };
 
-  // Update form when modal opens
-  useEffect(() => {
-    if (open) {
-      setForm({
-        username: account?.username || '',
-        password: account?.password || '',
-      });
-    }
-  }, [open, account]);
-
   return (
     <BaseModal
       open={open}
+      hideClose={true}
       onClose={onClose}
       header={
         <div className="flex flex-row items-center justify-center">

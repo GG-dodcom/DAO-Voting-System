@@ -1,11 +1,10 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
 import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
 import { shorten } from '../utils/utils';
 import { usePerformances } from '../hooks/usePerformances'; // Assume you have this hook
 import { useTranslation } from 'react-i18next';
-import InfiniteScroll from 'react-infinite-scroll-component';
+import { useIntersection } from 'react-use';
 
 import {
   BaseContainer,

@@ -19,11 +19,17 @@ export function useRestfulAPI() {
 
   async function postQuery(
     path: string,
-    formData: any
+    data: any
   ): Promise<{ success: boolean; result: any }> {
     try {
       setLoading(true);
-      const response: any = await axios.post(path, formData); // Send POST request with data
+      const response: any = await axios.post(path, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ data }),
+      }); // Send POST request with data
 
       if (response.data.statusCode === '200') {
         return { success: true, result: response.data }; // Return success message

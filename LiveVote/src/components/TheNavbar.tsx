@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
+import { NavbarAccount } from '.';
 
-//TODO:
 const TheNavbar = () => {
   return (
     <div>
@@ -15,9 +15,10 @@ const TheNavbar = () => {
               LiveVote
             </Link>
           </div>
-          {/* <div key={web3Account} className="flex space-x-2">
+
+          <div className="flex space-x-2">
             <NavbarAccount />
-          </div> */}
+          </div>
         </div>
       </div>
     </div>

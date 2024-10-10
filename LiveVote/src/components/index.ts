@@ -34,3 +34,4 @@ export { default as LoginForm } from './LoginForm';
 export { default as TextareaAutosize } from './TextareaAutosize';
 export { default as TheFooter } from './TheFooter';
 export { default as TheNavbar } from './TheNavbar';
+export { default as NavbarAccount } from './NavbarAccount';

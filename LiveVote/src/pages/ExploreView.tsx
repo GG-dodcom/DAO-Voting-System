@@ -1,7 +1,12 @@
 import React from 'react';
+import ExploreSpaces from '../components/ExploreSpace';
 
 const ExploreView: React.FC = () => {
-  return <h1>ExploreView Page</h1>;
+  return (
+    <div>
+      <ExploreSpaces />
+    </div>
+  );
 };
 
 export default ExploreView;
