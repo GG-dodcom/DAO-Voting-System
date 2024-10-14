@@ -3,7 +3,7 @@ import { useFlashNotification, useImageUpload } from '../hooks';
 
 interface InputUploadAvatarProps {
   isViewOnly?: boolean;
-  onImageUploaded: (url: string) => void;
+  onImageUploaded: (file: File) => void;
   onImageRemove?: () => void;
   children: (props: {
     uploading: boolean;
@@ -36,7 +36,7 @@ const InputUploadAvatar: React.FC<InputUploadAvatarProps> = ({
       setPreviewFile(file);
       upload(file, (image: { url: string }) => {
         setUploadSuccess(true);
-        onImageUploaded(image.url);
+        onImageUploaded(file);
       });
     }
   };

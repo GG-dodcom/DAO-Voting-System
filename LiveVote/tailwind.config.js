@@ -1,10 +1,15 @@
-/** @type {import('tailwindcss').Config} */
-export default {
-  content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
+import formsPlugin from '@tailwindcss/forms';
+
+module.exports = {
+  content: [
+    './index.html',
+    './src/**/*.{js,ts,jsx,tsx}',
+    './src/stories/**/*.{js,ts,jsx,tsx}', // Include your stories directory
+  ],
   theme: {
     extend: {
       colors: {
-        livevote: '#F2994A',
+        snapshot: '#F2994A',
         boost: '#F2994A',
         'skin-primary': 'var(--primary-color)',
         'skin-border': 'var(--border-color)',
@@ -67,5 +72,10 @@ export default {
       xl: '7px 10.5px 28px 0px var(--shadow-color)',
     },
   },
-  plugins: ['prettier-plugin-tailwindcss', require('@tailwindcss/forms')],
+  plugins: [
+    'prettier-plugin-tailwindcss',
+    formsPlugin({
+      strategy: 'class',
+    }),
+  ],
 };

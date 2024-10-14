@@ -1,20 +1,23 @@
 import React from 'react';
 import classNames from 'classnames';
-import { BaseLoading } from './index';
+import { BaseLoading } from '.';
+import '../assets/css/LoadingSpinner.scss';
 
 interface LoadingSpinnerProps {
   fillWhite?: boolean;
   small?: boolean;
   big?: boolean;
+  className?: string;
 }
 
 const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
   fillWhite = false,
   small = false,
   big = false,
+  className,
 }) => {
   return (
-    <div className={classNames('loading', { small, big })}>
+    <div className={classNames('loading', { small, big }, `${className}`)}>
       <BaseLoading>
         <svg
           xmlns="http://www.w3.org/2000/svg"

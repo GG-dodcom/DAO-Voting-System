@@ -25,6 +25,7 @@ interface BaseBlockProps {
   onShowMore?: () => void;
   button?: React.ReactNode;
   children: React.ReactNode;
+  className?: string;
 }
 
 const BaseBlock: React.FC<BaseBlockProps> = ({
@@ -43,6 +44,7 @@ const BaseBlock: React.FC<BaseBlockProps> = ({
   onShowMore,
   button,
   children,
+  className,
 }) => {
   const [isCollapsed, setIsCollapsed] = useState(true);
 
@@ -54,7 +56,7 @@ const BaseBlock: React.FC<BaseBlockProps> = ({
 
   return (
     <div
-      className={`border-y border-skin-border bg-skin-block-bg text-base md:rounded-xl md:border`}
+      className={`border-y border-skin-border bg-skin-block-bg text-base md:rounded-xl md:border ${className}`}
     >
       {title && (
         <div

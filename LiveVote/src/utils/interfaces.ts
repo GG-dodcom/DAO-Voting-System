@@ -1,35 +1,101 @@
+//Audience Table
+// id: string; //PK, UUID
+// qr_code: string;
+// wallet_address: string;
+// token_claimed: boolean; //default: false
+// proposal_id: string; //FK Performance table
+
+//Proposal Table
+// id: string;
+// title: string;
+// body: string;
+// avatar: string;
+// symbol: string;
+// state: string; //'pending', 'closed', 'active'
+// voting: {
+//   start: number; //tooltip date
+//   end: number; //tooltip date
+//   type: string | null; //'single-choice'
+// };
+// create: number; //the spaces will show new to old
+// votes_num: number; //for create how many QR
+// choices_id: Choices;
+
+//Choices Table
+
 export interface Audience {
   id: string; //PK, UUID
   qr_code: string;
   wallet_address: string;
   token_claimed: boolean; //default: false
-  performance_id: string; //FK Performance table
+  proposal_id: string;
 }
 
-export interface Performances {
-  //Proposal
-  id: string; //PK, UUID
-  name: string;
+//Performances
+export interface Proposal {
+  id: string;
+  title: string;
+  body: string;
   avatar: string;
-  description: string;
-  start: Date;
-  end: Date;
-  create: Date; //the spaces will show new to old
+  symbol: string;
+  state: string; //'pending', 'closed', 'active'
+  voting: {
+    start: number; //tooltip date
+    end: number; //tooltip date
+    type: string | null; //'single-choice'
+  };
+  create: number; //the spaces will show new to old
   votes_num: number; //for create how many QR
-  active: boolean;
+
+  //maybe put on teams
+  scores: number[];
+  scores_state: string; //'final'
+  scores_total: number;
+  votes: number;
 
   teamsCount: number;
 
-  teams: Teams[];
+  //Data Table
 }
 
-export interface Teams {
+export interface ExtendedProposal {
+  id: string;
+  title: string;
+  body: string;
+  avatar: string;
+  choices: Choices[];
+  symbol: string;
+  state: string; //'pending', 'closed', 'active'
+  voting: {
+    start: number; //tooltip date
+    end: number; //tooltip date
+    type: string | null; //'single-choice'
+    votes_num: number; //for create how many QR
+  };
+  create: number; //the spaces will show new to old
+
+  //maybe put on teams
+  scores: number[];
+  scores_state: string; //'final'
+  scores_total: number;
+  votes: number;
+
+  teamsCount: number;
+}
+
+export interface Choices {
   //Performers
   id: string; //PK, UUID
-  performance_id: string; //FK performance
   name: string;
-  photo: string;
-  votes: number; //toal votes the team has received
+  photo?: string;
+  votes?: number; //toal votes has received
+
+  //Data Table
+  // id: string; //PK, UUID
+  // proposal_id: string; //FK
+  // name: string;
+  // photo: string;
+  // votes: number; //toal votes the team has received
 }
 
 export interface Votes {
@@ -60,4 +126,10 @@ export interface FormError {
 export interface AdminAccount {
   username: string;
   password: string;
+}
+
+export interface Image {
+  name?: string;
+  type?: string; //'image/jpeg', 'image/jpg', 'image/png'
+  url?: string;
 }

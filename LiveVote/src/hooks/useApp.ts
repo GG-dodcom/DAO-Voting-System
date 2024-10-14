@@ -1,53 +1,50 @@
-import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
-import domains from '@/../snapshot-spaces/spaces/domains.json';
-import aliases from '@/../snapshot-spaces/spaces/aliases.json';
-import { getInjected } from '@snapshot-labs/lock/src/utils';
-// import { useStorage } from '@vueuse/core';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { useState } from 'react';
+import { useAppKitAccount, useAppKit, createAppKit } from '@reown/appkit/react';
+import { useAccount } from 'wagmi';
+import { mainnet, polygon, bsc } from 'viem/chains';
+import { WagmiAdapter } from '@reown/appkit-adapter-wagmi';
+import { projectId } from '../utils/web3';
 
-const domainName = window.location.hostname;
-const env = import.meta.env.VITE_ENV;
-let domain = domains[domainName];
+const domain = window.location.hostname;
 
-if (env === 'develop') {
-  domain = import.meta.env.VITE_VIEW_AS_SPACE ?? domain;
-}
+// 2. Setup wagmi adapter
+const wagmiAdapter = new WagmiAdapter({
+  projectId,
+  networks: [mainnet, polygon, bsc],
+});
 
-const domainAlias = Object.keys(aliases).find(
-  (alias) => aliases[alias] === domain
-);
-
-const isReady = ref(false);
+// 3. Create modal
+createAppKit({
+  adapters: [wagmiAdapter],
+  networks: [mainnet, polygon],
+  metadata: {
+    name: 'AppKit',
+    description: 'AppKit React Wagmi Example',
+    url: '',
+    icons: [],
+  },
+  projectId,
+  themeMode: 'light',
+  themeVariables: {
+    '--w3m-accent': '#f15b40',
+    '--w3m-color-mix': '#f15b40',
+  },
+});
 
 export function useApp() {
-  const { login } = useWeb3();
+  const [isReady, setIsReady] = useState(false);
 
-  // const termsAccepted = useStorage('snapshot.termsAccepted', false);
-
-  function connectWallet() {
-    const auth = getInstance();
-
-    // if (!termsAccepted.value) return;
-
-    if (window?.parent === window)
-      // Auto connect if previous session was connected
-      auth.getConnector().then((connector) => {
-        if (connector) return login(connector);
-      });
-
-    const injected = computed(() => getInjected());
-    // edge case if MM and CBW are both installed
-    if (injected.value?.id === 'metamask') return;
-  }
+  const { address } = useAppKitAccount();
+  const { isConnected, chainId } = useAccount();
+  const modal = useAppKit();
 
   async function init() {
-    isReady.value = true;
-    connectWallet();
+    setIsReady(true);
   }
 
   return {
     domain,
-    domainAlias,
-    env,
     isReady,
     init,
   };

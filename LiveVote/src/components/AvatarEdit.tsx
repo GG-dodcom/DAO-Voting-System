@@ -5,17 +5,18 @@ import { IHoPencil } from '../assets/icons';
 interface Profile {
   name?: string;
   about?: string;
-  avatar?: string;
+  avatar?: File | null;
 }
 
 interface AvatarEditProps {
   address: string;
   profile?: Profile;
+  size?: string;
 }
 
 /* After import image the image is not change, cause the image need
   backend to return a url link to open */
-const AvatarEdit: React.FC<AvatarEditProps> = ({ address, profile }) => {
+const AvatarEdit: React.FC<AvatarEditProps> = ({ address, size = '80' }) => {
   const [form, setForm] = useState<Profile>({
     avatar: '',
   });
@@ -37,7 +38,7 @@ const AvatarEdit: React.FC<AvatarEditProps> = ({ address, profile }) => {
             <AvatarUser
               address={address}
               previewFile={previewFile}
-              size={'80px'}
+              size={size}
             />
             <AvatarOverlayEdit loading={uploading} avatar={form.avatar} />
             <div className="absolute bottom-[2px] right-0 rounded-full bg-skin-heading p-1">

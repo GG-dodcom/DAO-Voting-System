@@ -1,20 +1,18 @@
 import React from 'react';
 
-interface BaseIconProps {
+interface Props {
   name: string;
   size?: string;
+  className?: string;
 }
 
-const BaseIcon: React.FC<BaseIconProps> = ({ name = '', size = '16' }) => {
-  const iconStyle = {
-    fontSize: `${size}px`,
-    lineHeight: `${size}px`,
-  };
-
+const BaseIcon: React.FC<Props> = ({ name = '', size = '16', className }) => {
   return (
     <i
-      className={`iconfont icon${name}`}
-      style={size ? iconStyle : undefined}
+      className={`iconfont icon${name} ${className}`}
+      style={
+        size ? { fontSize: `${size}px`, lineHeight: `${size}px` } : undefined
+      }
     />
   );
 };

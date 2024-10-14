@@ -4,9 +4,9 @@ import { useFlashNotification } from '../hooks/useFlashNotification';
 import { BaseInput, BaseModal, TuneButton } from '.';
 import { AdminAccount } from '../utils/interfaces';
 import { useTranslation } from 'react-i18next';
-import schemas from '../schemas';
 import API_PATHS from '../utils/queries';
 import { useRestfulAPI } from '../hooks';
+import schemas from '../schemas';
 
 interface LoginFormProps {
   open: boolean;
@@ -55,51 +55,50 @@ const LoginForm: React.FC<LoginFormProps> = ({ open, onClose }) => {
   };
 
   return (
-    <BaseModal
-      open={open}
-      hideClose={true}
-      onClose={onClose}
-      header={
-        <div className="flex flex-row items-center justify-center">
-          <h3>{t('login.header')}</h3>
-        </div>
-      }
-    >
-      {/* Modal Body */}
-      <div className="space-y-2 p-4">
-        {/* Username Input */}
-        <BaseInput
-          value={form.username}
-          onChange={(value) => setForm({ ...form, username: value })}
-          title={t('login.username')}
-          type="text"
-          placeholder={t('login.usernamePlaceholder')}
-          maxLength={properties.username.maxLength}
-          focusOnMount
-        />
-        <BaseInput
-          value={form.password}
-          onChange={(value) => setForm({ ...form, password: value })}
-          title={t('login.password')}
-          type="password"
-          placeholder={t('login.passwordPlaceholder')}
-          maxLength={properties.password.maxLength}
-          focusOnMount
-        />
-      </div>
-
-      {/* Modal Footer */}
-      <div className="p-4">
-        <TuneButton
-          type="submit"
-          loading={loading}
-          primary
-          className="w-full"
-          onClick={submit}
-        >
-          {t('submit')}
-        </TuneButton>
-      </div>
+    <BaseModal open={open} hideClose={true} onClose={onClose}>
+      {{
+        header: (
+          <div className="flex flex-row items-center justify-center">
+            <h3>{t('login.header')}</h3>
+          </div>
+        ),
+        children: (
+          <div className="space-y-2 p-4">
+            {/* Username Input */}
+            <BaseInput
+              value={form.username}
+              onChange={(value) => setForm({ ...form, username: value })}
+              title={t('login.username')}
+              type="text"
+              placeholder={t('login.usernamePlaceholder')}
+              maxLength={properties.username.maxLength}
+              focusOnMount
+            />
+            <BaseInput
+              value={form.password}
+              onChange={(value) => setForm({ ...form, password: value })}
+              title={t('login.password')}
+              type="password"
+              placeholder={t('login.passwordPlaceholder')}
+              maxLength={properties.password.maxLength}
+              focusOnMount
+            />
+          </div>
+        ),
+        footer: (
+          <div className="p-4">
+            <TuneButton
+              type="submit"
+              loading={loading}
+              primary
+              className="w-full"
+              onClick={submit}
+            >
+              {t('submit')}
+            </TuneButton>
+          </div>
+        ),
+      }}
     </BaseModal>
   );
 };

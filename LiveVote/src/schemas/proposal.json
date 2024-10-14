@@ -1,0 +1,73 @@
+{
+  "$ref": "#/definitions/Proposal",
+  "definitions": {
+    "Proposal": {
+      "title": "Proposal",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "title": "name",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "body": {
+          "type": "string",
+          "title": "body",
+          "minLength": 0,
+          "maxLengthWithSpaceType": {
+            "default": 10000,
+            "turbo": 40000
+          }
+        },
+        "choices": {
+          "type": "array",
+          "title": "choices",
+          "minItems": 1,
+          "maxLengthWithSpaceType": {
+            "default": 500,
+            "turbo": 1000
+          }
+        },
+        "labels": {
+          "type": "array",
+          "title": "labels",
+          "maxItems": 10,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 8,
+            "pattern": "^[a-zA-Z0-9]+$"
+          }
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "single-choice",
+            "approval",
+            "ranked-choice",
+            "quadratic",
+            "weighted",
+            "custom",
+            "basic"
+          ]
+        },
+        "start": {
+          "type": "number",
+          "title": "start",
+          "minimum": 1000000000,
+          "maximum": 2000000000
+        },
+        "end": {
+          "type": "number",
+          "title": "end",
+          "minimum": 1000000000,
+          "maximum": 2000000000
+        }
+      },
+      "required": ["name", "body", "choices", "start", "end"],
+      "additionalProperties": false
+    }
+  }
+}

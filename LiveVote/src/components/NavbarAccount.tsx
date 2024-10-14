@@ -7,7 +7,7 @@ export default function NavbarAccount() {
     <div className="flex items-center">
       <w3m-button
         label={t('connectWallet')}
-        balance="hide"
+        balance="show"
         size="md"
         loadingLabel="Connecting"
       />

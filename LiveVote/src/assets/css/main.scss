@@ -2,7 +2,6 @@
 @import 'viewerjs/dist/viewer.css';
 @import './tippy.scss';
 @import './tune.scss';
-@import './LoadingSpinner.scss';
 
 @tailwind base;
 @tailwind components;
@@ -209,7 +208,7 @@ input[type='number'] {
 // It also needs word-break.
 .break-words {
   overflow-wrap: break-word;
-  word-break: break-word;
+  word-break: normal;
 }
 
 // v-viewer package styling

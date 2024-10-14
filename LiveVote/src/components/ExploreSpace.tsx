@@ -75,7 +75,7 @@ const ExploreSpaces: React.FC = () => {
             {performancesHome.map((performancesHome) => (
               <div key={performancesHome.id}>
                 {/* TODO: */}
-                <a href={`/performanceTeams/${performancesHome.id}`}>
+                <a href={`/spaceProposal/${performancesHome.id}`}>
                   <div
                     className="mb-0 flex items-center justify-center text-center transition-all hover:border-skin-text"
                     style={{ height: '266px' }}

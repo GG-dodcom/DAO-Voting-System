@@ -10,9 +10,11 @@ interface BaseModalProps {
   hideClose?: boolean;
   maxHeight?: string;
   onClose?: () => void | undefined;
-  children?: React.ReactNode;
-  header?: React.ReactNode;
-  footer?: React.ReactNode;
+  children?: {
+    children?: React.ReactNode;
+    header?: React.ReactNode;
+    footer?: React.ReactNode;
+  };
 }
 
 const BaseModal: React.FC<BaseModalProps> = ({
@@ -21,8 +23,6 @@ const BaseModal: React.FC<BaseModalProps> = ({
   maxHeight = '420px',
   onClose,
   children,
-  header,
-  footer,
 }) => {
   const { height } = useWindowSize();
   const modalRef = useRef<HTMLDivElement>(null);
@@ -63,15 +63,19 @@ const BaseModal: React.FC<BaseModalProps> = ({
           ref={modalRef}
         >
           {/* Header */}
-          {header && <div className="pt-3 text-center">{header}</div>}
+          {children?.header && (
+            <div className="pt-3 text-center">{children?.header}</div>
+          )}
 
           {/* Modal Body */}
           <div className="modal-body" style={{ maxHeight: maxHeight }}>
-            {children}
+            {children?.children}
           </div>
 
           {/* Footer */}
-          {footer && <div className="border-t p-4 text-center">{footer}</div>}
+          {children?.footer && (
+            <div className="border-t p-4 text-center">{children?.footer}</div>
+          )}
 
           {/* Close Button */}
           {!hideClose && (

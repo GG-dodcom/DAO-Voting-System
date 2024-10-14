@@ -23,6 +23,8 @@ const API_PATHS = {
   // const uploadedUrl = `ipfs://${receipt.cid}`;
 
   adminlogin: `${API_BASE_URL}/auth/login`,
+
+  createProposal: `${API_BASE_URL}/createProposal`,
 };
 
 export default API_PATHS;

@@ -2,7 +2,6 @@
 import { useState } from 'react';
 import { useFlashNotification } from './useFlashNotification';
 import { useTranslation } from 'react-i18next';
-import API_PATHS from '../utils/queries';
 
 export function useImageUpload() {
   const [isUploadingImage, setIsUploadingImage] = useState(false);
@@ -27,7 +26,6 @@ export function useImageUpload() {
     reset();
     if (!file) return;
     setIsUploadingImage(true);
-    const formData = new FormData();
 
     if (!['image/jpeg', 'image/jpg', 'image/png'].includes(file.type)) {
       setImageUploadError(t('errors.unsupportedImageType'));
@@ -41,11 +39,8 @@ export function useImageUpload() {
       return;
     }
 
-    formData.append('file', file);
-
     try {
-      const receipt = await pin(formData, API_PATHS.postImangeUpload);
-      const uploadedUrl = `ipfs://${receipt.cid}`;
+      const uploadedUrl = URL.createObjectURL(file);
       setImageUrl(uploadedUrl);
       setImageName(file.name);
       onSuccess({ name: file.name, url: uploadedUrl });

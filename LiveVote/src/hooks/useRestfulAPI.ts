@@ -23,15 +23,9 @@ export function useRestfulAPI() {
   ): Promise<{ success: boolean; result: any }> {
     try {
       setLoading(true);
-      const response: any = await axios.post(path, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ data }),
-      }); // Send POST request with data
+      const response: any = await axios.post(path, data); // Send POST request with data
 
-      if (response.data.statusCode === '200') {
+      if (response.status === 200) {
         return { success: true, result: response.data }; // Return success message
       }
       return { success: false, result: response.data }; // Handle unexpected status
@@ -52,35 +46,3 @@ export function useRestfulAPI() {
     queryLoading: loading,
   };
 }
-
-//usage
-// import React, { useEffect } from 'react';
-// import { useQuery } from './useQuery'; // Adjust path as necessary
-
-// const MyComponent = () => {
-//   const { fetchQuery, queryLoading } = useQuery();
-
-//   const handleFetchData = async () => {
-//     try {
-//       const data = await fetchQuery('/api/some-endpoint'); // Provide the correct path
-//       console.log('Fetched Data:', data);
-//     } catch (error) {
-//       console.error('Error:', error);
-//     }
-//   };
-
-//   useEffect(() => {
-//     handleFetchData();
-//   }, []);
-
-//   return (
-//     <div>
-//       {queryLoading ? <p>Loading...</p> : <p>Data loaded</p>}
-//       <button onClick={handleFetchData} disabled={queryLoading}>
-//         Fetch Data
-//       </button>
-//     </div>
-//   );
-// };
-
-// export default MyComponent;

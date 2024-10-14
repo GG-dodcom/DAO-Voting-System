@@ -1,4 +1,19 @@
 {
+  "next": "Next",
+  "select": "Select",
+  "back": "Back",
+  "confirmAction": "Confirm action",
+  "cancel": "Cancel",
+  "linkPreview": "This link will take you to {url}.</br> Be careful, this link could be malicious. Are you sure you want to continue? ",
+
+  "proposalBy": "by {0}",
+  "voted": "Voted",
+  "startIn": "start {0}",
+  "endIn": "ends {0}",
+  "proposalTimeLeft": "{0} left",
+  "endedAgo": "ended {0}",
+  "warningFlaggedProposal": "This proposal might contain scams, offensive material, or be malicious in nature. Please proceed with caution.",
+  "warningFlaggedSpace": "This space might contain scams, offensive material, or be malicious in nature. Please proceed with caution.",
   "connectWallet": "Connect wallet",
   "submit": "Submit",
   "edit": "Edit",
@@ -8,7 +23,86 @@
   "verifiedSpace": "Verified space",
   "spaceCount": "{0} space(s)",
   "noResultsFound": "Oops, we can't find any results",
+  "settings": {
+    "anyType": "Any",
+    "type": {
+      "label": "Type",
+      "information": "The type of voting system used for this space. (Enforced on all future proposals)"
+    }
+  },
+  "create": {
+    "proposalTitle": "Title",
+    "proposalDescription": "Description (optional)",
+    "preview": "Preview",
+    "choices": "Choices",
+    "addChoice": "Add choice",
+    "startDate": "Select start date",
+    "endDate": "Select end date",
+    "startTime": "Select start time",
+    "endTime": "Select end time",
+    "publish": "Publish",
+    "untitled": "Untitled",
+    "snapshotBlock": "Snapshot block number",
+    "voting": "Voting",
+    "votingSystem": "Voting system",
+    "choice": "Choice {0}",
+    "period": "Voting period",
+    "start": "Start",
+    "end": "End",
+    "days": "Days",
+    "hours": "Hours",
+    "minutes": "Minutes",
+    "schedule": "Schedule proposal",
+    "delayEnforced": "The space enforces a delay until voting can start",
+    "periodEnforced": "The space enforces the duration of the voting period",
+    "typeEnforced": "{type} is enforced by the space",
+    "privacyEnforced": "{type} is enforced by the space",
+    "edit": "Edit",
+    "continue": "Continue",
+    "now": "Now",
+    "votingPeriodExplainer": "This is the time period in which users will be able to vote. The proposal will be visible and pending before the start of the voting period.",
+    "uploadImageExplainer": "Attach images by dragging & dropping, selecting or pasting them.",
+    "uploading": "Uploading image",
+    "markdown": "Styling with Markdown is supported",
+    "errorGettingSnapshot": "We encountered an error while fetching the snapshot block number which is needed to calculate your voting power. Please try again later.",
+    "errorTimeInPast": "Entered time is in the past. Please select a future time.",
+    "errorSpaceHibernatedAdmin": "Admins your attention is required. This space has been hibernated due to a lack of activity, and as a result, proposal creation is currently disabled. To re-enable your space, please go to the settings page and click \"Reactivate\".",
+    "errorSpaceHibernatedUsers": "This space has been hibernated due to a lack of activity. As a result, the creation of proposals has been temporarily disabled. To resume your ability to create proposals, the space needs to be reactivated by an admin. Please check back later or contact your space admin for further information."
+  },
+  "voting": {
+    "selectVoting": "Select voting system",
+    "single-choice": {
+      "label": "Single choice voting",
+      "description": "Each voter may select only one choice."
+    },
+    "approval": {
+      "label": "Approval voting",
+      "description": "Each voter may select any number of choices."
+    },
+    "quadratic": {
+      "label": "Quadratic voting",
+      "description": "Each voter may spread voting power across any number of choices. Results are calculated quadratically."
+    },
+    "ranked-choice": {
+      "label": "Ranked choice voting",
+      "description": "Each voter may select and rank any number of choices. Results are calculated by instant-runoff counting method."
+    },
+    "weighted": {
+      "label": "Weighted voting",
+      "description": "Each voter may spread voting power across any number of choices."
+    },
+    "basic": {
+      "label": "Basic voting",
+      "description": "Single choice voting with three choices: For, Against or Abstain"
+    }
+  },
   "metaInfo": {
+    "default": {
+      "name": "LiveVote",
+      "description": "LiveVote",
+      "url": "https://localhost:5173",
+      "icons": "https://ibb.co/4pr9C9p"
+    },
     "home": {
       "title": "Snapshot - Where decisions get made",
       "description": "Snapshot is an off-chain voting platform that allows DAOs, DeFi protocols, or NFT communities to participate in the decentralized governance easily and without gas fees."
@@ -21,6 +115,22 @@
     "usernamePlaceholder": "Enter username",
     "password": "Password",
     "passwordPlaceholder": "Enter password"
+  },
+  "proposals": {
+    "header": "Proposals",
+    "new": "New proposal",
+    "noProposals": "There aren't any proposals here yet!",
+    "createProposal": "Create proposal",
+    "showMore": "Show more",
+    "showLess": "Show less",
+    "states": {
+      "all": "All",
+      "core": "Core",
+      "community": "Community",
+      "active": "Active",
+      "pending": "Pending",
+      "closed": "Closed"
+    }
   },
   "errors": {
     "fileTooBig": "File size should be smaller than 1MB",

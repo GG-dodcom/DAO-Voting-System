@@ -3,18 +3,20 @@ import { sanitizeUrl } from '@braintree/sanitize-url';
 import { Link } from 'react-router-dom';
 import { IHoExternalLink } from '../assets/icons';
 
-type LinkProps = {
+type BaseLinkProps = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   link: Record<string, any> | string;
   hideExternalIcon?: boolean;
   disabled?: boolean;
+  className?: string;
   children: React.ReactNode;
 };
 
-const BaseLink: React.FC<LinkProps> = ({
+const BaseLink: React.FC<BaseLinkProps> = ({
   link,
   hideExternalIcon = false,
   disabled = false,
+  className,
   children,
 }) => {
   const isExternal = typeof link === 'string';
@@ -25,7 +27,9 @@ const BaseLink: React.FC<LinkProps> = ({
       href={sanitizeUrl(link)}
       target="_blank"
       rel="noopener noreferrer"
-      className={`whitespace-nowrap ${disabled ? 'pointer-events-none' : ''}`}
+      className={`whitespace-nowrap ${
+        disabled ? 'pointer-events-none' : ''
+      } ${className}`}
     >
       {children}
       {!hideExternalIcon && (
@@ -36,7 +40,9 @@ const BaseLink: React.FC<LinkProps> = ({
     // Internal link (router link)
     <Link
       to={link}
-      className={`whitespace-nowrap ${disabled ? 'pointer-events-none' : ''}`}
+      className={`whitespace-nowrap ${
+        disabled ? 'pointer-events-none' : ''
+      } ${className}`}
     >
       {children}
     </Link>
