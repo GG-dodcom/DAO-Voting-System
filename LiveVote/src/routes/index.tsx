@@ -9,6 +9,7 @@ const AdminHome = lazy(() => import('../pages/AdminHome.tsx'));
 const AdminSignIn = lazy(() => import('../pages/AdminSignIn.tsx'));
 const SpaceProposals = lazy(() => import('../pages/SpaceProposals.tsx'));
 const SpaceCreate = lazy(() => import('../pages/SpaceCreate.tsx'));
+const SpaceProposal = lazy(() => import('../pages/SpaceProposal.tsx'));
 
 const AppRoutes: React.FC = () => {
   return (
@@ -17,10 +18,12 @@ const AppRoutes: React.FC = () => {
         <Route path="/" element={<App />} />
         <Route path="/about" element={<About />} />
         <Route path="/exploreView" element={<ExploreView />} />
-        <Route path="/spaceProposals/:id" element={<SpaceProposals />} />
+        <Route path="/spaceProposals" element={<SpaceProposals />} />
+        <Route path="/proposal/:id" element={<SpaceProposal spaceKey={''} />} />
         <Route path="/userManual" element={<UserManual />} />
         <Route path="/admin" element={<AdminHome />} />
         <Route path="/admin_login" element={<AdminSignIn />} />
+        <Route path="/spaceCreate" element={<SpaceCreate />} />
       </Routes>
     </Suspense>
   );

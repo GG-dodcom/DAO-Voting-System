@@ -1,83 +1,58 @@
-// src/components/Proposals.tsx
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useEffect, useState } from 'react';
+import {
+  BaseBlock,
+  BaseLink,
+  BaseNoResults,
+  LoadingRow,
+  TheLayout,
+  TuneButton,
+} from '../components';
+import { Proposal } from '../utils/interfaces';
+import ProposalsItem from '../components/ProposalsItem';
+import { useRestfulAPI } from '../hooks';
+import API_PATHS from '../utils/queries';
+import { useAppKitAccount } from '@reown/appkit/react';
 
-import React, { useEffect, useState, useCallback } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { BoostSubgraph, ExtendedSpace, Proposal } from '../utils/interfaces';
-
-interface SpaceProposalsProps {
-  space: ExtendedSpace;
-}
-
-const SpaceProposals: React.FC<SpaceProposalsProps> = ({ space }) => {
-  const [loading, setLoading] = useState(false);
-  const [boosts, setBoosts] = useState<BoostSubgraph[]>([]);
-  const [spaceProposals, setSpaceProposals] = useState<Proposal[]>([]);
-
-  const location = useLocation();
-  const navigate = useNavigate();
-
-  const { loadBy, loadingMore, stopLoadingMore, loadMore } =
-    useInfiniteLoader(); // Create a custom loader for proposals
-  const { emitUpdateLastSeenProposal } = useUnseenProposals();
-  const { profiles, loadProfiles } = useProfiles();
-  const { apolloQuery } = useApolloQuery();
-  const { web3Account } = useWeb3();
-  const { isFollowing } = useFollowSpace(space.id);
-  const { sanitizeBoosts } = useBoost(); // Ensure you have a valid useBoost hook
-
-  useEffect(() => {
-    document.title = `Proposals for ${space.name}`; // Set meta title
-  }, [space.name]);
-
-  const spaceMembers = [...space.members, ...space.moderators, ...space.admins];
-  const subSpaces =
-    space.children?.map((space) => space.id.toLowerCase()) ?? [];
-
-  const fetchProposals = async (skip = 0) => {
-    const response = await apolloQuery({
-      query: PROPOSALS_QUERY,
-      variables: {
-        first: loadBy,
-        skip,
-        space_in: [space.id, ...subSpaces],
-        // Add your other filters here
-      },
-    });
-    return response?.proposals || [];
-  };
-
-  const loadMoreProposals = async (skip: number) => {
-    if (skip === 0) return;
-    const proposals = await fetchProposals(skip);
-    stopLoadingMore = proposals.length < loadBy;
-    setSpaceProposals((prev) => [...prev, ...proposals]);
-  };
-
-  useInfiniteScroll(
-    document,
-    () => {
-      if (loadingMore || spaceProposals.length < 6) return;
-      loadMore(() => loadMoreProposals(spaceProposals.length));
-    },
-    { distance: 400 }
+const SpaceProposals: React.FC = () => {
+  const [proposals, setProposals] = useState<Proposal[]>([]);
+  const [userVotedProposalIds, setUserVotedProposalIds] = useState<string[]>(
+    []
   );
 
-  useEffect(() => {
-    const loadInitialProposals = async () => {
-      setLoading(true);
-      const proposals = await fetchProposals();
-      setSpaceProposals(proposals);
-      setLoading(false);
-    };
+  const { fetchQuery, queryLoading } = useRestfulAPI();
+  const { address } = useAppKitAccount();
 
-    loadInitialProposals();
-  }, [space.id]);
-
-  useEffect(() => {
-    if (web3Account) {
-      emitUpdateLastSeenProposal(space.id);
+  const getProposals = async () => {
+    try {
+      const response = await fetchQuery(API_PATHS.fetchProposals);
+      setProposals(response);
+    } catch (error) {
+      console.error('Error fetching proposals:', error);
     }
-  }, [web3Account]);
+  };
+
+  const getUserVotedProposalIds = async (voter: string) => {
+    if (!voter) return;
+
+    const votes = await fetchQuery(API_PATHS.fetchUserVotedProposalIds, {
+      address: voter,
+    });
+
+    const proposalIds = votes ?? [];
+    setUserVotedProposalIds((prevIds) => [
+      ...new Set([...prevIds, ...proposalIds]),
+    ]);
+  };
+
+  useEffect(() => {
+    getProposals();
+  }, []);
+
+  useEffect(() => {
+    console.log(address);
+    if (address) getUserVotedProposalIds(address);
+  }, [address]);
 
   return (
     <TheLayout>
@@ -86,40 +61,33 @@ const SpaceProposals: React.FC<SpaceProposalsProps> = ({ space }) => {
 
         <div className="mb-4 flex flex-col justify-between gap-x-3 gap-y-[10px] px-[20px] sm:flex-row md:px-0">
           <BaseLink
-            link={{ name: 'spaceCreate' }}
+            link={'/spaceCreate'}
+            hideExternalIcon
             data-testid="create-proposal-button"
           >
-            <TuneButton primary={isFollowing} className="w-full sm:w-auto">
-              New proposal
-            </TuneButton>
+            <TuneButton className="w-full sm:w-auto">New proposal</TuneButton>
           </BaseLink>
         </div>
 
-        {loading && <LoadingRow block />}
-        {spaceProposals.length < 1 && <BaseNoResults />}
+        {queryLoading && <LoadingRow block />}
+
+        {proposals.length < 1 && <BaseNoResults />}
         <div className="mb-3 space-y-3">
-          {spaceProposals.map((proposal, i) => (
+          {proposals.map((proposal, i) => (
             <BaseBlock key={i} slim className="transition-colors">
               <ProposalsItem
                 proposal={proposal}
-                profiles={profiles}
-                space={space}
                 voted={userVotedProposalIds.includes(proposal.id)}
-                hideSpaceAvatar={proposal.space.id === space.id}
                 to={{
-                  name: 'spaceProposal',
-                  params: { id: proposal.id, key: proposal.space.id },
+                  pathname: `/proposal/${proposal.id}`,
                 }}
-                boosts={boosts}
               />
             </BaseBlock>
           ))}
         </div>
-        {loadingMore && !loading && <LoadingRow block />}
       </div>
     </TheLayout>
   );
 };
 
 export default SpaceProposals;
-

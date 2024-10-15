@@ -1,0 +1,23 @@
+{
+  "id": "1",
+  "title": "Proposal for Art Exhibition",
+  "body": "This proposal outlines the details for the upcoming art exhibition, which aims to showcase local artists.",
+  "avatar": "https://ibb.co/ZK6MHBm",
+  "choices": [
+    { "id": "choice1", "name": "Artist A", "avatar": null },
+    { "id": "choice2", "name": "Artist B", "avatar": null },
+    { "id": "choice3", "name": "Artist C", "avatar": null }
+  ],
+  "symbol": "ART",
+  "state": "active",
+  "voting": {
+    "start": 1696935680000,
+    "end": 1697540480000,
+    "type": "single-choice",
+    "votes_num": 100
+  },
+  "create": 1696935680000,
+  "scores": [50, 30, 20],
+  "scores_state": "final",
+  "scores_total": 100
+}

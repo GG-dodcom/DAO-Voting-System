@@ -19,6 +19,7 @@ import IHoExclamationCircle from '~icons/heroicons-outline/exclamation-circle';
 import IHoSparkles from '~icons/heroicons-outline/sparkles';
 import IHoCalendar from '~icons/heroicons-outline/calendar';
 import IHoPlusSm from '~icons/heroicons-outline/plus-sm';
+import IHoChevronRight from '~icons/heroicons-outline/chevron-right';
 
 export {
   ISSpinner,
@@ -38,4 +39,5 @@ export {
   IHoSparkles,
   IHoCalendar,
   IHoPlusSm,
+  IHoChevronRight,
 };

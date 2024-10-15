@@ -33,62 +33,34 @@ export interface Audience {
 
 //Performances
 export interface Proposal {
+  length: number;
   id: string;
   title: string;
   body: string;
-  avatar: string;
-  symbol: string;
-  state: string; //'pending', 'closed', 'active'
-  voting: {
-    start: number; //tooltip date
-    end: number; //tooltip date
-    type: string | null; //'single-choice'
-  };
-  create: number; //the spaces will show new to old
-  votes_num: number; //for create how many QR
-
-  //maybe put on teams
-  scores: number[];
-  scores_state: string; //'final'
-  scores_total: number;
-  votes: number;
-
-  teamsCount: number;
-
-  //Data Table
-}
-
-export interface ExtendedProposal {
-  id: string;
-  title: string;
-  body: string;
-  avatar: string;
+  avatar: File | null | string;
   choices: Choices[];
-  symbol: string;
-  state: string; //'pending', 'closed', 'active'
-  voting: {
+  symbol?: string;
+  state?: string; //'pending', 'closed', 'active'
+  voting?: {
     start: number; //tooltip date
     end: number; //tooltip date
     type: string | null; //'single-choice'
     votes_num: number; //for create how many QR
   };
-  create: number; //the spaces will show new to old
+  create?: number; //the spaces will show new to old
 
   //maybe put on teams
-  scores: number[];
-  scores_state: string; //'final'
-  scores_total: number;
-  votes: number;
-
-  teamsCount: number;
+  scores?: number[];
+  scores_state?: string; //'final'
+  scores_total?: number;
 }
 
 export interface Choices {
   //Performers
   id: string; //PK, UUID
   name: string;
-  photo?: string;
-  votes?: number; //toal votes has received
+  avatar?: File | string | null;
+  score?: number; //toal votes has received
 
   //Data Table
   // id: string; //PK, UUID

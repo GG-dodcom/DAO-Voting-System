@@ -16,7 +16,7 @@ import {
   TuneButton,
 } from '.';
 
-const ExploreSpaces: React.FC = () => {
+const ExploreProposal: React.FC = () => {
   const { t } = useTranslation();
   const {
     loadPerformancesHome,
@@ -58,24 +58,11 @@ const ExploreSpaces: React.FC = () => {
         ) : performancesHome.length < 1 ? (
           <BaseNoResults />
         ) : (
-          // <InfiniteScroll
-          //   dataLength={performancesHome.length} // This is important field to render the next data
-          //   next={() => loadMoreSpacesHome()} // Function that fetches more data
-          //   hasMore={enablePerformancesHomeScroll} // Define when there are more items
-          //   loader={
-          //     <div className="mt-4 flex h-[46px]">
-          //       <div className="mx-auto">
-          //         <LoadingSpinner big />
-          //       </div>
-          //     </div>
-          //   }
-          //   scrollThreshold={0.9} // Optional: scroll threshold
-          // >
           <div className="grid gap-4 md:grid-cols-3 lg:grid-cols-4">
             {performancesHome.map((performancesHome) => (
               <div key={performancesHome.id}>
                 {/* TODO: */}
-                <a href={`/spaceProposal/${performancesHome.id}`}>
+                <a href={`/spaceProposals/${performancesHome.id}`}>
                   <div
                     className="mb-0 flex items-center justify-center text-center transition-all hover:border-skin-text"
                     style={{ height: '266px' }}
@@ -102,7 +89,6 @@ const ExploreSpaces: React.FC = () => {
               </div>
             ))}
           </div>
-          // </InfiniteScroll>
         )}
         {!enablePerformancesHomeScroll &&
           performancesHomeTotal > performancesHome.length &&
@@ -125,4 +111,4 @@ const ExploreSpaces: React.FC = () => {
   );
 };
 
-export default ExploreSpaces;
+export default ExploreProposal;

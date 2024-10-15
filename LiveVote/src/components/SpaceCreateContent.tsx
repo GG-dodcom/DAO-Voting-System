@@ -125,6 +125,10 @@ const SpaceCreateContent: React.FC<Props> = ({
         <AvatarEdit
           address={parseInt((Date.now() / 1e3).toFixed()).toString()}
           size="80"
+          properties={'avatar'}
+          form={form}
+          setForm={setForm}
+          setFormDraft={setFormDraft}
         />
         {preview ? (
           <h1 className="w-full break-all">

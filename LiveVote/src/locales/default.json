@@ -21,7 +21,7 @@
   "homeLoadmore": "Load more",
   "teams": "No teams | {count} team | {count} teams",
   "verifiedSpace": "Verified space",
-  "spaceCount": "{0} space(s)",
+  "choicesCount": "{0} choice(s)",
   "noResultsFound": "Oops, we can't find any results",
   "settings": {
     "anyType": "Any",

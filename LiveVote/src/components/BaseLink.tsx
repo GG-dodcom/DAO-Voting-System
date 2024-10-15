@@ -14,7 +14,7 @@ type BaseLinkProps = {
 
 const BaseLink: React.FC<BaseLinkProps> = ({
   link,
-  hideExternalIcon = false,
+  hideExternalIcon = true,
   disabled = false,
   className,
   children,

@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useEffect, useMemo } from 'react';
+import { useMemo } from 'react';
 import { useFlaggedMessageStatus } from '../hooks/useFlaggedMessageStatus';
 import { Proposal } from '../utils/interfaces';
 import removeMd from 'remove-markdown';
 import {
-  AvatarSpace,
+  BaseAvatar,
   BaseLink,
   LabelProposalState,
   MessageWarningFlagged,
@@ -14,30 +14,25 @@ import {
   ProposalsItemTitle,
 } from '.';
 import { Link } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
 
-interface ProposalsItemProps {
-  proposal: Proposal; //Proposal; //Profile
+interface Props {
+  proposal: Proposal;
   voted: boolean;
   to: Record<string, unknown>;
   hideSpaceAvatar?: boolean;
 }
 
-const ProposalsItem: React.FC<ProposalsItemProps> = ({
+const ProposalsItem: React.FC<Props> = ({
   proposal,
   voted,
   to,
   hideSpaceAvatar = false,
 }) => {
-  const { t } = useTranslation();
   const { isMessageVisible, setMessageVisibility } = useFlaggedMessageStatus(
     proposal.id
   );
 
-  const body = useMemo(
-    () => removeMd(proposal.description),
-    [proposal.description]
-  );
+  const body = useMemo(() => removeMd(proposal.body), [proposal.body]);
 
   return (
     <div>
@@ -55,32 +50,42 @@ const ProposalsItem: React.FC<ProposalsItemProps> = ({
                   {!hideSpaceAvatar && (
                     <>
                       <BaseLink
+                        hide-external-icon={true}
                         link={`/proposal/${proposal.id}`}
-                        hide-external-icon
                         className="text-skin-text"
                       >
                         <div className="flex items-center">
-                          <AvatarSpace
-                            space={{ id: proposal.id, avatar: proposal.avatar }}
-                            size={'20'}
+                          <BaseAvatar
+                            size={'45'}
+                            src={
+                              typeof proposal.avatar === 'string'
+                                ? proposal.avatar
+                                : ''
+                            }
                           />
+                          {/* <img
+                            src="https://ibb.co/ZK6MHBm"
+                            alt="Description of the image"
+                          /> */}
+                          {/* <AvatarSpace
+                            space={{
+                              id: proposal.id,
+                              avatar:
+                                typeof proposal.avatar === 'string'
+                                  ? proposal.avatar
+                                  : undefined,
+                            }}
+                            size={'20'}
+                          /> */}
                           <span className="ml-1 text-skin-link">
                             {proposal.title}
                           </span>
                         </div>
                       </BaseLink>
-                      <span>{t('proposalBy')}</span>
                     </>
                   )}
-                  {/* <BaseUser
-                    address={proposal.author}
-                    profile={profiles[proposal.author]}
-                    space={space}
-                    proposal={proposal}
-                    hideAvatar={!hideSpaceAvatar}
-                  /> */}
                 </div>
-                <LabelProposalState state={proposal.state} />
+                <LabelProposalState state={proposal.state || ''} />
               </div>
 
               <Link to={to as any} className="cursor-pointer">
@@ -88,7 +93,8 @@ const ProposalsItem: React.FC<ProposalsItemProps> = ({
 
                 {body && <ProposalsItemBody>{body}</ProposalsItemBody>}
 
-                {proposal.scores_state === 'final' &&
+                {proposal.scores_total &&
+                  proposal.scores_state === 'final' &&
                   proposal.scores_total > 0 && (
                     <ProposalsItemResults proposal={proposal} />
                   )}

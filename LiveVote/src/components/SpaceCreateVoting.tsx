@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect, useMemo } from 'react';
 import { t } from 'i18next';
@@ -9,6 +10,8 @@ import {
   SpaceCreateVotingDateStart,
   UiInput,
   SpaceCreateVotingDateEnd,
+  AvatarEdit,
+  TuneInput,
 } from '.';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 import { IHoPlusSm } from '../assets/icons';
@@ -17,6 +20,7 @@ interface Props {
   form: any;
   setForm: any;
   formDraft: any;
+  setFormDraft: any;
   userSelectedDateStart: any;
   setUserSelectedDateStart: any;
   setUserSelectedDateEnd: any;
@@ -29,6 +33,7 @@ const SpaceCreateVoting: React.FC<Props> = ({
   form,
   setForm,
   formDraft,
+  setFormDraft,
   userSelectedDateStart,
   setUserSelectedDateStart,
   setUserSelectedDateEnd,
@@ -39,7 +44,7 @@ const SpaceCreateVoting: React.FC<Props> = ({
   const disableChoiceEdit = useMemo(() => form.type === 'basic', [form.type]);
 
   const addChoices = (num: number) => {
-    setForm((prev: { choices: string | any[] }) => ({
+    setForm((prev: { choices: any[] }) => ({
       ...prev,
       choices: [
         ...prev.choices,
@@ -51,6 +56,8 @@ const SpaceCreateVoting: React.FC<Props> = ({
           })),
       ],
     }));
+
+    setFormDraft(form);
   };
 
   const setDateStart = (ts: number) => {
@@ -70,12 +77,13 @@ const SpaceCreateVoting: React.FC<Props> = ({
         setForm((prev: any) => ({
           ...prev,
           start: Number((Date.now() / 1e3).toFixed()),
+          choices: prev.choices || [], // Initialize choices if undefined
         }));
       }
     };
 
     initializeForm();
-  }, [formDraft, setForm, userSelectedDateStart]);
+  }, []);
 
   useEffect(() => {
     console.log('voting', form);
@@ -124,48 +132,62 @@ const SpaceCreateVoting: React.FC<Props> = ({
                             {...provided.draggableProps}
                             {...provided.dragHandleProps}
                           >
-                            <UiInput
-                              value={choice.text}
-                              onChange={(value) => {
-                                const newChoices = [...form.choices];
-                                newChoices[index].text = value as string;
-                                setForm((prev: any) => ({
-                                  ...prev,
-                                  choices: newChoices,
-                                }));
-                              }}
-                              maxLength={'32'}
-                              disabled={disableChoiceEdit}
-                              placeholder={index > 0 ? t('optional') : ''}
-                              className="group"
-                              focusOnMount={index === 0}
-                              data-testid={`input-proposal-choice-${index}`}
-                            >
-                              {{
-                                label: (
-                                  <div
-                                    className={`drag-handle flex cursor-grab items-center active:cursor-grabbing 
+                            <div className="flex items-start">
+                              <UiInput
+                                value={choice.text}
+                                onChange={(value) => {
+                                  const newChoices = [...form.choices];
+                                  newChoices[index].text = value as string;
+                                  setForm((prev: any) => ({
+                                    ...prev,
+                                    choices: newChoices,
+                                  }));
+                                }}
+                                maxLength={'32'}
+                                disabled={disableChoiceEdit}
+                                placeholder={index > 0 ? t('optional') : ''}
+                                className="group flex-1 mr-4"
+                                focusOnMount={index === 0}
+                                data-testid={`input-proposal-choice-${index}`}
+                              >
+                                {{
+                                  label: (
+                                    <div
+                                      className={`drag-handle flex cursor-grab items-center active:cursor-grabbing 
                                     ${
                                       disableChoiceEdit
                                         ? 'cursor-not-allowed active:cursor-not-allowed'
                                         : ''
                                     }`}
-                                  >
-                                    <BaseIcon
-                                      name="draggable"
-                                      size={'16'}
-                                      className="mr-[12px]"
-                                    />
-                                    {t('create.choice', { 0: [index + 1] })}
-                                  </div>
-                                ),
-                                info: (
-                                  <span className="hidden text-xs text-skin-text group-focus-within:block">
-                                    {`${choice.text.length}/32`}
-                                  </span>
-                                ),
-                              }}
-                            </UiInput>
+                                    >
+                                      <BaseIcon
+                                        name="draggable"
+                                        size={'16'}
+                                        className="mr-[12px]"
+                                      />
+                                      {t('create.choice', { 0: [index + 1] })}
+                                    </div>
+                                  ),
+                                  info: (
+                                    <span className="hidden text-xs text-skin-text group-focus-within:block">
+                                      {`${choice.text.length}/32`}
+                                    </span>
+                                  ),
+                                }}
+                              </UiInput>
+                              <div className="flex flex-col">
+                                <AvatarEdit
+                                  address={parseInt(
+                                    (Date.now() / 1e3).toFixed()
+                                  ).toString()}
+                                  size="50"
+                                  properties={`choices.${choice.key}.avatar`}
+                                  form={form}
+                                  setForm={setForm}
+                                  // setFormDraft={setFormDraft}
+                                />
+                              </div>
+                            </div>
                           </div>
                         )}
                       </Draggable>
@@ -187,7 +209,8 @@ const SpaceCreateVoting: React.FC<Props> = ({
       </BaseBlock>
 
       <BaseBlock title={t('create.votingQR')}>
-        <UiInput
+        <TuneInput
+          type={'number'}
           value={form.votes_num}
           onChange={(value) => {
             setForm((prev: any) => ({
@@ -195,25 +218,9 @@ const SpaceCreateVoting: React.FC<Props> = ({
               votes_num: value,
             }));
           }}
-          maxLength={'10'}
-          placeholder={t('votingQRNum')}
-        >
-          {{
-            label: (
-              <div
-                className={`drag-handle flex cursor-grab items-center active:cursor-grabbing 
-                `}
-              >
-                {t('create.votes_num')}
-              </div>
-            ),
-            info: (
-              <span className="hidden text-xs text-skin-text group-focus-within:block">
-                {`${form.votes_num.length}/10`}
-              </span>
-            ),
-          }}
-        </UiInput>
+          label={t('create.votes_num')}
+          autofocus
+        />
       </BaseBlock>
 
       <BaseBlock

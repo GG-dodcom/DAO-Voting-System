@@ -8,37 +8,41 @@ import { validateForm } from './validation';
 export interface ProposalForm {
   name: string;
   body: string;
-  choices: { key: number; text: string; avatar: string }[];
+  choices: {
+    key: number;
+    text: string;
+    avatar: { file: File | null; url: string };
+  }[];
   start: number;
   end: number;
   type: string;
   votes_num: number;
-  avatar: string;
+  avatar: { file: File | null; url: string };
 }
 
 const EMPTY_PROPOSAL: ProposalForm = {
   name: '',
   body: '',
   choices: [
-    { key: 0, text: '', avatar: '' },
-    { key: 1, text: '', avatar: '' },
+    { key: 0, text: '', avatar: { file: null, url: '' } },
+    { key: 1, text: '', avatar: { file: null, url: '' } },
   ],
   start: parseInt((Date.now() / 1e3).toFixed()),
   end: 0,
   type: 'single-choice',
   votes_num: 0,
-  avatar: '',
+  avatar: { file: null, url: '' },
 };
 
 const EMPTY_PROPOSAL_DRAFT = {
   name: '',
   body: '',
   choices: [
-    { key: 0, text: '', avatar: '' },
-    { key: 1, text: '', avatar: '' },
+    { key: 0, text: '', avatar: { file: null, url: '' } },
+    { key: 1, text: '', avatar: { file: null, url: '' } },
   ],
   isBodySet: false,
-  avatar: '',
+  avatar: { file: null, url: '' },
 };
 
 export function useFormSpaceProposal(spaceType = 'default') {
@@ -46,9 +50,13 @@ export function useFormSpaceProposal(spaceType = 'default') {
   const [formDraft, setFormDraft] = useLocalStorage<{
     name: string;
     body: string;
-    choices: { key: number; text: string; avatar: string }[];
+    choices: {
+      key: number;
+      text: string;
+      avatar: { file: File | null; url: string };
+    }[];
     isBodySet: boolean;
-    avatar: '';
+    avatar: { file: File | null; url: string };
   }>(`proposal.draft`, clone(EMPTY_PROPOSAL_DRAFT));
 
   const [userSelectedDateStart, setUserSelectedDateStart] = useState(false);
@@ -68,6 +76,7 @@ export function useFormSpaceProposal(spaceType = 'default') {
         name: formDraft.name,
         body: formDraft.body,
         choices: formDraft.choices || EMPTY_PROPOSAL.choices,
+        avatar: formDraft.avatar,
         start: EMPTY_PROPOSAL.start,
         end: EMPTY_PROPOSAL.end,
         type: EMPTY_PROPOSAL.type,

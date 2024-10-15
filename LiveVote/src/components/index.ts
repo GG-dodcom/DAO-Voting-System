@@ -5,6 +5,7 @@ export { default as TuneIconHint } from './Tune/TuneIconHint';
 export { default as TuneLabelInput } from './Tune/TuneLabelInput';
 export { default as TuneInput } from './Tune/TuneInput';
 export { default as TuneButtonSelect } from './Tune/TuneButtonSelect';
+export { default as TuneBlockHeader } from './Tune/TuneBlockHeader';
 
 export { default as AvatarEdit } from './AvatarEdit';
 export { default as AvatarOverlayEdit } from './AvatarOverlayEdit';
@@ -63,3 +64,8 @@ export { default as InputDate } from './InputDate';
 export { default as SpaceCreateVotingDateStart } from './SpaceCreateVotingDateStart';
 export { default as SpaceCreateVotingDateEnd } from './SpaceCreateVotingDateEnd';
 export { default as SpaceCreateVoting } from './SpaceCreateVoting';
+export { default as ProposalsItem } from './ProposalsItem';
+export { default as BaseBreadcrumbs } from './BaseBreadcrumbs';
+export { default as SpaceProposalPage } from './SpaceProposalPage';
+export { default as ExploreProposal } from './ExploreProposal';
+export { default as SpaceProposalVoteSingleChoice } from './SpaceProposalVoteSingleChoice';

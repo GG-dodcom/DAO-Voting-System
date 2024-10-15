@@ -9,7 +9,7 @@ import {
   TuneButton,
   NavbarAccount,
 } from '../components';
-import { ExtendedProposal } from '../utils/interfaces';
+import { Proposal } from '../utils/interfaces';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { t } from 'i18next';
 import { useFormSpaceProposal } from '../hooks/useFormSpaceProposal';
@@ -52,13 +52,13 @@ const SpaceCreate: React.FC = () => {
   const { postQuery, queryLoading } = useRestfulAPI();
   const { notify } = useFlashNotification();
 
-  const proposalRef = useRef<ExtendedProposal>({
+  const proposalRef = useRef<Proposal>({
     id: '',
     title: '',
     body: '',
-    avatar: '',
-    choices: [{ id: '', name: '' }],
-    state: 'pending',
+    avatar: null,
+    choices: [{ id: '', name: '', avatar: null }],
+    state: '',
     voting: {
       start: 0,
       end: 0,
@@ -155,6 +155,10 @@ const SpaceCreate: React.FC = () => {
       .map((choice, index) => ({
         key: index, // Generate a key based on index or use a unique identifier
         text: choice.text,
+        avatar: {
+          file: choice.avatar.file,
+          url: choice.avatar.url,
+        },
       }))
       .filter((choiceText) => choiceText.text.length > 0); // Filter out empty choices
 
@@ -178,9 +182,14 @@ const SpaceCreate: React.FC = () => {
       title: formattedForm.name,
       body: formattedForm.body,
       choices: formattedForm.choices.map(
-        (choice: { key: number; text: string }) => ({
+        (choice: {
+          key: number;
+          text: string;
+          avatar: { file: File | null; url: string } | null;
+        }) => ({
           id: choice.key.toString(),
           name: choice.text,
+          avatar: choice.avatar?.file || null,
         })
       ),
       voting: {
@@ -194,7 +203,7 @@ const SpaceCreate: React.FC = () => {
 
     const response: any = await postQuery(
       API_PATHS.createProposal,
-      formattedForm
+      proposalRef.current
     );
 
     if (response.success) {
@@ -216,19 +225,8 @@ const SpaceCreate: React.FC = () => {
   };
 
   useEffect(() => {
-    console.log(form);
-    console.log(
-      'currentStep',
-      currentStep,
-      'form.name',
-      form.name,
-      form.body.length <= bodyCharactersLimit,
-      validationErrors.name,
-      !validationErrors.name,
-      validationErrors.body,
-      !validationErrors.body
-    );
-    console.log('isEdition', isEditing);
+    console.log('form', form);
+    console.log('formDraft', formDraft);
   }, [
     currentStep,
     form.name,
@@ -242,6 +240,7 @@ const SpaceCreate: React.FC = () => {
     preview,
     form,
     isEditing,
+    formDraft,
   ]);
 
   useEffect(() => {
@@ -289,6 +288,7 @@ const SpaceCreate: React.FC = () => {
               dateStart={dateStart}
               dateEnd={dateEnd || 0}
               isEditing={isEditing}
+              setFormDraft={setFormDraft}
             />
           )}
         </div>

@@ -12,6 +12,7 @@ declare global{
 	const Custom: typeof import('./src/stories/Components/InputDate.stories')['Custom']
 	const Custom: typeof import('./src/stories/Components/MessageWarningFlagged.stories')['Custom']
 	const Custom: typeof import('./src/stories/Components/ModalSelectDate.stories')['Custom']
+	const Custom: typeof import('./src/stories/Components/ProposalsItem.stories')['Custom']
 	const Custom: typeof import('./src/stories/Components/SpaceCreateVotingDateStart.stories')['Custom']
 	const Custom: typeof import('./src/stories/Components/UiInput.stories')['Custom']
 }
