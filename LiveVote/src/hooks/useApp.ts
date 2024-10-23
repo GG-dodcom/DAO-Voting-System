@@ -35,8 +35,8 @@ createAppKit({
 export function useApp() {
   const [isReady, setIsReady] = useState(false);
 
-  const { address } = useAppKitAccount();
-  const { isConnected, chainId } = useAccount();
+  const { address, caipAddress, isConnected, status } = useAppKitAccount();
+
   const modal = useAppKit();
 
   async function init() {

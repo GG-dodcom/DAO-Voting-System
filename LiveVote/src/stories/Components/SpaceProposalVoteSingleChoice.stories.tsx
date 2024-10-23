@@ -8,28 +8,37 @@ import { Proposal } from '../../utils/interfaces';
 const mockProposal: Proposal = {
   id: '1',
   title: 'Proposal for Art Exhibition',
-  body: 'This proposal outlines the details for the upcoming art exhibition, showcasing talented local artists. Each artist will present their work to the audience.',
-  avatar: null, // You can set a string URL or a File object if needed
+  body: 'This proposal outlines the details for the upcoming art exhibition, which aims to showcase local artists.',
+  avatar: 'image/2.jpg',
   choices: [
     {
       id: 'choice1',
       name: 'Artist A',
-      avatar: null, // Set a URL or a File object if available
-      score: 50, // Total votes received
+      avatar: 'image/1.jpg',
     },
     {
       id: 'choice2',
       name: 'Artist B',
-      avatar: null, // Set a URL or a File object if available
-      score: 30, // Total votes received
+      avatar: 'image/2.jpg',
     },
     {
       id: 'choice3',
       name: 'Artist C',
-      avatar: null, // Set a URL or a File object if available
-      score: 20, // Total votes received
+      avatar: 'image/2.jpg',
     },
   ],
+  symbol: 'ART',
+  state: 'active',
+  voting: {
+    start: 1696935680000,
+    end: 1697540480000,
+    type: 'single-choice',
+    votes_num: 100,
+  },
+  create: 1696935680000,
+  scores: [50, 30, 20],
+  scores_state: 'final',
+  scores_total: 100,
 };
 
 const handleSelectChoice = (choice: number | null) => {

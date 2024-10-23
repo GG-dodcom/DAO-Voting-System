@@ -1,5 +1,6 @@
 import ISSpinner from '~icons/s/spinner';
 import ISVoted from '~icons/s/voted';
+import ISShutter from '~icons/s/shutter';
 
 import IHoCheck from '~icons/heroicons-outline/check';
 import IHoChevronUp from '~icons/heroicons-outline/chevron-up';
@@ -20,8 +21,21 @@ import IHoSparkles from '~icons/heroicons-outline/sparkles';
 import IHoCalendar from '~icons/heroicons-outline/calendar';
 import IHoPlusSm from '~icons/heroicons-outline/plus-sm';
 import IHoChevronRight from '~icons/heroicons-outline/chevron-right';
+import IHoLockClosed from '~icons/heroicons-outline/lock-closed';
+import IHoDotsHorizontal from '~icons/heroicons-outline/dots-horizontal';
+import IHoTrash from '~icons/heroicons-outline/trash';
+import IHoDocumentDuplicate from '~icons/heroicons-outline/document-duplicate';
+import IHoArrowSmUp from '~icons/heroicons-outline/arrow-sm-up';
+import IHoArrowSmDown from '~icons/heroicons-outline/arrow-sm-down';
+import IHoEyeOff from '~icons/heroicons-outline/eye-off';
 
 export {
+  IHoEyeOff,
+  ISShutter,
+  IHoArrowSmDown,
+  IHoArrowSmUp,
+  IHoDocumentDuplicate,
+  IHoTrash,
   ISSpinner,
   ISVoted,
   IHoCheck,
@@ -40,4 +54,6 @@ export {
   IHoCalendar,
   IHoPlusSm,
   IHoChevronRight,
+  IHoLockClosed,
+  IHoDotsHorizontal,
 };

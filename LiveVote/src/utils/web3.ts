@@ -10,11 +10,11 @@ export const projectId = import.meta.env.VITE_PUBLIC_PROJECT_ID;
 
 if (!projectId) throw new Error('Project ID is not defined');
 
-const metadata = {
+export const metadata = {
   name: 'LiveVote',
   description: 'LiveVote',
   url: 'https://localhost:5173',
-  icons: ['https://ibb.co/4pr9C9p'],
+  icons: ['https://ibb.co/D54bZF8'],
 };
 
 // Create wagmiConfig

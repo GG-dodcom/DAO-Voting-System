@@ -1,13 +1,12 @@
+import { t } from 'i18next';
 import React from 'react';
-import { useTranslation } from 'react-i18next';
 
-interface LabelProposalStateProps {
+interface Props {
   state: string;
+  className?: string;
 }
 
-const LabelProposalState: React.FC<LabelProposalStateProps> = ({ state }) => {
-  const { t } = useTranslation(); // Using react-i18next for translations
-
+const LabelProposalState: React.FC<Props> = ({ state, className }) => {
   const stateClass = () => {
     if (state === 'closed') return 'bg-[#BB6BD9]';
     if (state === 'active') return 'bg-green';
@@ -16,7 +15,9 @@ const LabelProposalState: React.FC<LabelProposalStateProps> = ({ state }) => {
 
   return (
     <div
-      className={`text-white rounded-full px-[12px] text-sm h-[24px] w-fit leading-[23px] ${stateClass()}`}
+      className={`text-white rounded-full px-[12px] text-sm h-[24px] w-fit leading-[23px] 
+        ${stateClass()} 
+        ${className}`}
     >
       {t(`proposals.states.${state}`)}
     </div>

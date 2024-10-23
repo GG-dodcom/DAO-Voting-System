@@ -3,11 +3,11 @@
     "id": "1",
     "title": "Proposal for Art Exhibition",
     "body": "This proposal outlines the details for the upcoming art exhibition, which aims to showcase local artists.",
-    "avatar": "https://ibb.co/ZK6MHBm",
+    "avatar": "image/2.jpg",
     "choices": [
-      { "id": "choice1", "name": "Artist A", "avatar": null },
-      { "id": "choice2", "name": "Artist B", "avatar": null },
-      { "id": "choice3", "name": "Artist C", "avatar": null }
+      { "id": "choice1", "name": "Artist A", "avatar": "image/2.jpg" },
+      { "id": "choice2", "name": "Artist B", "avatar": "image/1.jpg" },
+      { "id": "choice3", "name": "Artist C", "avatar": "image/3.jpg" }
     ],
     "symbol": "ART",
     "state": "active",
@@ -26,7 +26,7 @@
     "id": "2",
     "title": "Community Clean-Up Day",
     "body": "A proposal for organizing a community clean-up day to enhance local parks.",
-    "avatar": null,
+    "avatar": "image/1.jpg",
     "choices": [
       { "id": "choice1", "name": "Team Green", "avatar": null },
       { "id": "choice2", "name": "Team Blue", "avatar": null }
@@ -48,7 +48,7 @@
     "id": "3",
     "title": "New Park Construction",
     "body": "Proposal to construct a new park in the downtown area to provide more green space.",
-    "avatar": null,
+    "avatar": "image/3.jpg",
     "choices": [
       { "id": "choice1", "name": "Park A", "avatar": null },
       { "id": "choice2", "name": "Park B", "avatar": null },
@@ -71,7 +71,7 @@
     "id": "4",
     "title": "Neighborhood Watch Program",
     "body": "Establishing a neighborhood watch program to enhance community safety.",
-    "avatar": null,
+    "avatar": "image/azora.jpg",
     "choices": [
       { "id": "choice1", "name": "Neighborhood Team 1", "avatar": null },
       { "id": "choice2", "name": "Neighborhood Team 2", "avatar": null }
@@ -93,7 +93,7 @@
     "id": "5",
     "title": "New Library Initiative",
     "body": "Proposal to initiate a new library program to enhance literacy in the community.",
-    "avatar": null,
+    "avatar": "image/2.jpg",
     "choices": [
       { "id": "choice1", "name": "Library Program A", "avatar": null },
       { "id": "choice2", "name": "Library Program B", "avatar": null },

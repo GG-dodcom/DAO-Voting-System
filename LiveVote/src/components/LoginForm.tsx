@@ -1,56 +1,54 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState } from 'react';
-import { useFlashNotification } from '../hooks/useFlashNotification';
+import { useFlashNotification } from '../context';
 import { BaseInput, BaseModal, TuneButton } from '.';
 import { AdminAccount } from '../utils/interfaces';
 import { useTranslation } from 'react-i18next';
 import API_PATHS from '../utils/queries';
 import { useRestfulAPI } from '../hooks';
 import schemas from '../schemas';
+import { useNavigate } from 'react-router-dom';
 
-interface LoginFormProps {
+interface Props {
   open: boolean;
   onClose: () => void;
+  onSuccess: (isAdmin: boolean) => void;
 }
 
-const LoginForm: React.FC<LoginFormProps> = ({ open, onClose }) => {
+const LoginForm: React.FC<Props> = ({ open, onClose, onSuccess }) => {
   const { notify } = useFlashNotification();
   const { t } = useTranslation();
-  const { postQuery } = useRestfulAPI();
+  const { postQuery, queryLoading } = useRestfulAPI();
+  const navigate = useNavigate();
 
   const [form, setForm] = useState<AdminAccount>({
     username: '',
     password: '',
   });
-  const [loading, setLoading] = useState(false); // State to manage loading
   const properties = schemas.adminAccount.properties;
 
   const submit = async () => {
-    setLoading(true); // Set loading to true when the login starts
+    // Send the FormData to the backend
+    const response = await postQuery(API_PATHS.adminlogin, form);
 
-    try {
-      // Send the FormData to the backend
-      const response = await postQuery(API_PATHS.adminlogin, form);
+    if (response.error) {
+      notify(['red', response.error]);
+      return;
+    }
 
-      if (response.success) {
-        // Handle successful login
-        notify(['green', response.result.message]);
-        // Reroute to admin home page
-        window.location.href = '/admin';
-      } else {
-        // Handle unsuccessful login
-        notify([
-          'red',
-          response.result.message ||
-            'Login failed: Invalid username or password',
-        ]);
-      }
-    } catch (error: any) {
-      // Handle unexpected errors
-      notify(['red', `An error occurred: ${error.message}`]);
-    } finally {
-      setLoading(false); // Set loading to false when the login process ends
-      onClose();
+    if (response.data.success) {
+      // Handle successful login
+      notify(['green', response.data.message]);
+      onSuccess(true);
+      // Reroute home page
+      navigate('/');
+    } else {
+      // Handle unsuccessful login
+      notify([
+        'red',
+        response.data.message || 'Login failed: Invalid username or password',
+      ]);
+      setForm({ username: '', password: '' });
     }
   };
 
@@ -83,19 +81,17 @@ const LoginForm: React.FC<LoginFormProps> = ({ open, onClose }) => {
               maxLength={properties.password.maxLength}
               focusOnMount
             />
-          </div>
-        ),
-        footer: (
-          <div className="p-4">
-            <TuneButton
-              type="submit"
-              loading={loading}
-              primary
-              className="w-full"
-              onClick={submit}
-            >
-              {t('submit')}
-            </TuneButton>
+            <div className=" p-4 text-center">
+              <TuneButton
+                type="submit"
+                loading={queryLoading}
+                primary
+                className="w-full"
+                onClick={submit}
+              >
+                {t('submit')}
+              </TuneButton>
+            </div>
           </div>
         ),
       }}

@@ -37,10 +37,6 @@ const EMPTY_PROPOSAL: ProposalForm = {
 const EMPTY_PROPOSAL_DRAFT = {
   name: '',
   body: '',
-  choices: [
-    { key: 0, text: '', avatar: { file: null, url: '' } },
-    { key: 1, text: '', avatar: { file: null, url: '' } },
-  ],
   isBodySet: false,
   avatar: { file: null, url: '' },
 };
@@ -50,11 +46,6 @@ export function useFormSpaceProposal(spaceType = 'default') {
   const [formDraft, setFormDraft] = useLocalStorage<{
     name: string;
     body: string;
-    choices: {
-      key: number;
-      text: string;
-      avatar: { file: File | null; url: string };
-    }[];
     isBodySet: boolean;
     avatar: { file: File | null; url: string };
   }>(`proposal.draft`, clone(EMPTY_PROPOSAL_DRAFT));
@@ -75,8 +66,8 @@ export function useFormSpaceProposal(spaceType = 'default') {
       setForm({
         name: formDraft.name,
         body: formDraft.body,
-        choices: formDraft.choices || EMPTY_PROPOSAL.choices,
         avatar: formDraft.avatar,
+        choices: EMPTY_PROPOSAL.choices,
         start: EMPTY_PROPOSAL.start,
         end: EMPTY_PROPOSAL.end,
         type: EMPTY_PROPOSAL.type,
@@ -112,9 +103,7 @@ export function useFormSpaceProposal(spaceType = 'default') {
     validationErrors,
     isValid,
     resetForm,
-    setForm, // Expose setForm to update the form state directly
-    setFormDraft: (newDraft: typeof EMPTY_PROPOSAL_DRAFT) => {
-      setFormDraft(newDraft); // Update local storage
-    },
+    setForm,
+    setFormDraft,
   };
 }

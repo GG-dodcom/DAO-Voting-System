@@ -135,8 +135,6 @@ export function useIntl() {
     formatNumber(number, percentNumberFormatter);
 
   const getRelativeProposalPeriod = (state: any, start: any, end: any): any => {
-    console.log(formatRelativeTime(end, longRelativeTimeFormatter));
-
     if (state === 'closed') {
       return t('endedAgo', {
         0: formatRelativeTime(end, longRelativeTimeFormatter),

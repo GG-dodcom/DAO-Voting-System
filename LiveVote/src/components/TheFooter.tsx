@@ -10,7 +10,7 @@ const TheFooter: React.FC = () => {
   const livevoteTextLinks = [
     {
       text: 'About',
-      link: 'https://example.com',
+      link: '/about',
     },
   ];
 
@@ -30,7 +30,10 @@ const TheFooter: React.FC = () => {
               <FooterLinks>
                 <FooterTitle>LiveVote</FooterTitle>
                 {livevoteTextLinks.map((item) => (
-                  <FooterLinksItem key={item.text} link={item.link}>
+                  <FooterLinksItem
+                    key={item.text}
+                    link={{ pathname: item.link }}
+                  >
                     {item.text}
                   </FooterLinksItem>
                 ))}
@@ -39,7 +42,10 @@ const TheFooter: React.FC = () => {
               <FooterLinks>
                 <FooterTitle>Resources</FooterTitle>
                 {resourcesTextLinks.map((item) => (
-                  <FooterLinksItem key={item.text} link={item.link}>
+                  <FooterLinksItem
+                    key={item.text}
+                    link={{ pathname: item.link }}
+                  >
                     {item.text}
                   </FooterLinksItem>
                 ))}

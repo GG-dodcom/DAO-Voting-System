@@ -3,7 +3,7 @@
 import React, { ReactNode } from 'react';
 import BaseContainer from './BaseContainer'; // Adjust the import path as needed
 
-interface TheLayoutProps {
+interface Props {
   slim?: boolean;
   reverse?: boolean;
   children?: ReactNode;
@@ -11,9 +11,10 @@ interface TheLayoutProps {
   contentRight?: ReactNode;
   contentLeft?: ReactNode;
   sidebarRight?: ReactNode;
+  className?: string;
 }
 
-const TheLayout: React.FC<TheLayoutProps> = ({
+const TheLayout: React.FC<Props> = ({
   slim = true,
   reverse = false,
   children,
@@ -21,9 +22,10 @@ const TheLayout: React.FC<TheLayoutProps> = ({
   contentRight,
   contentLeft,
   sidebarRight,
+  className,
 }) => {
   return (
-    <BaseContainer slim={slim}>
+    <BaseContainer slim={slim} className={className}>
       {children}
       {sidebarLeft && (
         <div id="sidebar-left" className="float-left w-full lg:w-1/4">

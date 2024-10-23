@@ -1,219 +1,158 @@
-import React, { useState, useEffect, useMemo } from 'react';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import React, { useState, useEffect } from 'react';
 import {
   BaseBreadcrumbs,
   LabelProposalState,
-  MessageWarningFlagged,
   TheLayout,
-  ExploreProposal,
-  SpaceProposalVoteSingleChoice,
+  SpaceProposalHeader,
+  SpaceProposalContent,
+  SpaceProposalInformation,
+  SpaceProposalResults,
+  SpaceProposalVote,
+  ModalVote,
 } from '.';
-import { Proposal } from '../utils/interfaces';
+import { Proposal, Results } from '../utils/interfaces';
+import { useRestfulAPI } from '../hooks';
+import API_PATHS from '../utils/queries';
+import { useAppKitAccount } from '@reown/appkit/react';
 
 interface Props {
   proposal: Proposal;
+  onReload: () => void;
 }
 
 const SpaceProposalPage: React.FC<Props> = ({ proposal }) => {
-  // const { id: proposalId } = useParams<{ id: string }>();
-  // const location = useLocation();
-  // const { web3, web3Account } = useWeb3();
-  // const { modalEmailOpen, setModalEmailOpen } = useModal();
-  // const { isMessageVisible, setMessageVisibility } = useFlaggedMessageStatus(
-  //   proposalId || ''
-  // );
+  const isAdmin = localStorage.getItem('isAdmin') === 'true';
+  const [modalOpen, setModalOpen] = useState(false);
+  const [selectedChoices, setSelectedChoices] = useState<any>(null);
+  const [loadedResults, setLoadedResults] = useState(false);
+  const [results, setResults] = useState<Results>({
+    scores_state: '',
+    scores: [],
+    scoresTotal: 0,
+  });
 
-  // const [modalOpen, setModalOpen] = useState(false);
-  // const [selectedChoices, setSelectedChoices] = useState<any>(null);
-  // const [loadedResults, setLoadedResults] = useState(false);
-  // const [results, setResults] = useState<Results | null>(null);
-  // const [waitingForSigners, setWaitingForSigners] = useState(false);
+  const { address } = useAppKitAccount();
+  const { fetchQuery } = useRestfulAPI();
 
-  // const isAdmin = useMemo(() => {
-  //   const admins = (space.admins || []).map((admin) => admin.toLowerCase());
-  //   return admins.includes(web3Account?.toLowerCase() || '');
-  // }, [space.admins, web3Account]);
-
-  // const isModerator = useMemo(() => {
-  //   const moderators = (space.moderators || []).map((moderator) =>
-  //     moderator.toLowerCase()
-  //   );
-  //   return moderators.includes(web3Account?.toLowerCase() || '');
-  // }, [space.moderators, web3Account]);
-
-  // const strategies = useMemo(() => {
-  //   return proposal?.strategies ?? space.strategies;
-  // }, [proposal?.strategies, space.strategies]);
-
-  // const boostEnabled = useMemo(() => {
-  //   return (
-  //     BOOST_ENABLED_VOTING_TYPES.includes(proposal.type) && space.boost.enabled
-  //   );
-  // }, [proposal.type, space.boost.enabled]);
-
-  // const { modalAccountOpen, isModalPostVoteOpen, setIsModalPostVoteOpen } =
-  //   useModal();
-  // const { modalTermsOpen, termsAccepted, acceptTerms } = useTerms(space.id);
-
-  // const clickVote = () => {
-  //   if (!web3.account) {
-  //     setModalAccountOpen(true);
-  //   } else if (!termsAccepted && space.terms) {
-  //     setModalTermsOpen(true);
-  //   } else {
-  //     setModalOpen(true);
-  //   }
-  // };
-
-  // const reloadProposal = () => {
-  //   // Implement reload logic here
-  // };
+  const reloadProposal = () => {};
 
   // const openPostVoteModal = (isWaitingForSigners: boolean) => {
   //   setWaitingForSigners(isWaitingForSigners);
   //   setIsModalPostVoteOpen(true);
   // };
 
-  // const loadResults = async () => {
-  //   // Implement loadResults logic here
-  //   setLoadedResults(true);
-  // };
+  const loadResults = async () => {
+    if (proposal.state == 'closed' && proposal.result?.scores.length === 0) {
+      try {
+        const result: any = await fetchQuery(
+          API_PATHS.fetchScores
+          //   {
+          //   id: proposal.id,
+          // }
+        );
 
-  // const handleChoiceQuery = () => {
-  //   const searchParams = new URLSearchParams(location.search);
-  //   const choice = searchParams.get('choice');
-  //   if (web3Account && choice && proposal.state === 'active') {
-  //     setSelectedChoices(parseInt(choice));
-  //     clickVote();
-  //   }
-  // };
+        proposal.result.scores_state = result.scores_state;
+        proposal.result.scores = result.scores;
+        proposal.result.scoresTotal = result.scoresTotal;
 
-  // useEffect(() => {
-  //   handleChoiceQuery();
-  // }, [web3Account]);
+        setResults(proposal.result);
 
-  // useEffect(() => {
-  //   loadResults();
-  // }, [proposal]);
+        console.log('proposal.result', proposal.result);
+      } catch (e) {
+        console.error('Error fetching scores', e);
+      }
+    }
+    setLoadedResults(true);
+  };
 
-  // useEffect(() => {
-  //   setMessageVisibility(proposal.flagged);
-  // }, []);
+  const clickVote = () => {
+    if (address) {
+      setModalOpen(true);
+    }
+  };
+
+  const handleChoiceQuery = () => {
+    const searchParams = new URLSearchParams(location.search);
+    const choice = searchParams.get('choice');
+    if (address && choice && proposal.state === 'active') {
+      setSelectedChoices(parseInt(choice));
+      clickVote();
+    }
+  };
+
+  useEffect(() => {
+    handleChoiceQuery();
+  }, [address]);
+
+  useEffect(() => {
+    if (proposal.state == 'closed') loadResults();
+  }, [proposal]);
 
   return (
-    <>
+    <div>
       <BaseBreadcrumbs
         pages={[
           { id: '1', name: 'Home', to: '/', current: false },
-          { id: '2', name: proposal.title, to: '/proposal', current: false },
+          {
+            id: '2',
+            name: proposal.title,
+            to: '/proposal/:id',
+            current: true,
+          },
         ]}
         className="px-[20px] md:px-4 -mt-1 pb-[16px] lg:pb-[20px]"
       />
-      <SpaceProposalVoteSingleChoice
-        proposal={proposal}
-        userChoice={null}
-        isEditing={false}
-        onSelectChoice={function (choice: number | null): void {
-          throw new Error('Function not implemented.');
-        }}
-      />
-      {/* <TheLayout className="mt-[20px]">
-        <div className="content-left">
-          {isMessageVisible ? (
-            <MessageWarningFlagged
-              type="proposal"
-              responsive
-              onForceShow={() => setMessageVisibility(false)}
-            />
-          ) : (
-            <>
-              <div className="px-[20px] md:px-0">
-                <LabelProposalState
-                  state={proposal.state}
-                  className="mb-[12px]"
-                />
-                <SpaceProposalHeader
-                  space={space}
-                  proposal={proposal}
-                  isAdmin={isAdmin}
-                  isModerator={isModerator}
-                />
-                <SpaceProposalContent space={space} proposal={proposal} />
-              </div>
-              <div className="space-y-[20px] md:space-y-4 px-[20px] md:px-0">
-                <SpaceProposalVote
-                  selectedChoices={selectedChoices}
-                  proposal={proposal}
-                  onOpen={() => setModalOpen(true)}
-                  onClickVote={clickVote}
-                />
-                <SpaceProposalVotes space={space} proposal={proposal} />
-              </div>
-            </>
-          )}
-        </div>
-        <div className="sidebar-right">
-          {!isMessageVisible && (
-            <div className="mt-[20px] lg:space-y-3 space-y-[20px] lg:mt-0 px-[20px] md:px-0">
-              <SpaceProposalInformation
-                space={space}
-                proposal={proposal}
-                strategies={strategies}
+      <TheLayout
+        className="mt-[20px]"
+        contentLeft={
+          <div>
+            <div className="px-[20px] md:px-0">
+              <LabelProposalState
+                state={proposal.state}
+                className="mb-[12px]"
               />
+              <SpaceProposalHeader proposal={proposal} isAdmin={isAdmin} />
+              <SpaceProposalContent proposal={proposal} />
+            </div>
+          </div>
+        }
+        sidebarRight={
+          <div>
+            <div className="mt-[20px] lg:space-y-3 space-y-[20px] lg:mt-0 px-[20px] md:px-0">
+              <SpaceProposalInformation proposal={proposal} />
               <SpaceProposalResults
                 loaded={loadedResults}
-                space={space}
                 proposal={proposal}
                 results={results}
-                strategies={strategies}
-                isAdmin={isAdmin}
-                onReload={reloadProposal}
               />
-              {Object.keys(space.plugins).length > 0 &&
-                loadedResults &&
-                results && (
-                  <SpaceProposalPluginsSidebar
-                    id={proposalId || ''}
-                    space={space}
-                    proposal={proposal}
-                    results={results}
-                    loadedResults={loadedResults}
-                    strategies={strategies}
-                  />
-                )}
             </div>
-          )}
+          </div>
+        }
+      />
+
+      <div>
+        <div className="px-0 md:px-4 mx-auto max-w-[1012px] mt-[20px]">
+          <SpaceProposalVote
+            modelValue={selectedChoices}
+            proposal={proposal}
+            onUpdateModelValue={(choice: any) => setSelectedChoices(choice)}
+            onClickVote={clickVote}
+          />
+          {/* <SpaceProposalVotes space={space} proposal={proposal} /> */}
         </div>
-      </TheLayout>
-      <ModalVote
-        open={modalOpen}
-        space={space}
-        proposal={proposal}
-        selectedChoices={selectedChoices}
-        strategies={strategies}
-        onClose={() => setModalOpen(false)}
-        onReload={reloadProposal}
-        onOpenPostVoteModal={openPostVoteModal}
-      />
-      <ModalTerms
-        open={modalTermsOpen}
-        space={space}
-        action="Vote"
-        onClose={() => setModalTermsOpen(false)}
-        onAccept={() => {
-          acceptTerms();
-          setModalOpen(true);
-        }}
-      />
-      <ModalPostVote
-        open={isModalPostVoteOpen}
-        space={space}
-        proposal={proposal}
-        selectedChoices={selectedChoices}
-        waitingForSigners={waitingForSigners}
-        onClose={() => setIsModalPostVoteOpen(false)}
-        onSubscribeEmail={() => setModalEmailOpen(true)}
-      /> */}
-    </>
+      </div>
+
+      {modalOpen && (
+        <ModalVote
+          open={modalOpen}
+          proposal={proposal}
+          selectedChoices={selectedChoices - 1}
+          onClose={() => setModalOpen(false)}
+          onReload={reloadProposal}
+        />
+      )}
+    </div>
   );
 };
 

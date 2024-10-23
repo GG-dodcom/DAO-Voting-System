@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState } from 'react';
 import Tippy from '@tippyjs/react';
 import {
@@ -26,6 +27,7 @@ interface BaseBlockProps {
   button?: React.ReactNode;
   children: React.ReactNode;
   className?: string;
+  style?: any;
 }
 
 const BaseBlock: React.FC<BaseBlockProps> = ({
@@ -45,6 +47,7 @@ const BaseBlock: React.FC<BaseBlockProps> = ({
   button,
   children,
   className,
+  style,
 }) => {
   const [isCollapsed, setIsCollapsed] = useState(true);
 
@@ -57,6 +60,7 @@ const BaseBlock: React.FC<BaseBlockProps> = ({
   return (
     <div
       className={`border-y border-skin-border bg-skin-block-bg text-base md:rounded-xl md:border ${className}`}
+      style={style}
     >
       {title && (
         <div

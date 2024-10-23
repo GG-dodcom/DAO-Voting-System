@@ -4,11 +4,12 @@ import { IHoExclamationCircle, IHoInformationCircle } from '../assets/icons';
 interface BaseMessage {
   level: 'info' | 'warning' | 'warning-red';
   children: React.ReactNode;
+  className?: string;
 }
 
-const BaseMessage: React.FC<BaseMessage> = ({ level, children }) => {
+const BaseMessage: React.FC<BaseMessage> = ({ level, children, className }) => {
   return (
-    <div>
+    <div className={`${className}`}>
       {level === 'info' ? (
         <IHoInformationCircle className="float-left mr-1 text-sm" />
       ) : (

@@ -4,8 +4,7 @@ import React, { ReactNode } from 'react';
 import { config, projectId } from '../utils/web3';
 import { createWeb3Modal } from '@web3modal/wagmi/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { State, useAccount, WagmiProvider } from 'wagmi';
-import { useAppKitAccount } from '@reown/appkit/react';
+import { State, WagmiProvider } from 'wagmi';
 
 // Setup queryClient
 const queryClient = new QueryClient();
@@ -38,14 +37,3 @@ export default function Web3ModalProvider({
     </WagmiProvider>
   );
 }
-
-export const useWagmiAccount = () => {
-  const { address } = useAppKitAccount();
-  const { isConnected, chain } = useAccount();
-
-  return {
-    address,
-    isConnected,
-    chainId: chain?.id,
-  };
-};

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useNavigate } from 'react-router-dom';
 import {
@@ -7,16 +8,16 @@ import {
   SpaceCreateVoting,
   BaseBlock,
   TuneButton,
-  NavbarAccount,
 } from '../components';
-import { Proposal } from '../utils/interfaces';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { t } from 'i18next';
 import { useFormSpaceProposal } from '../hooks/useFormSpaceProposal';
 import proposal from '../schemas/proposal.json';
-import { useFlashNotification, useRestfulAPI } from '../hooks';
+import { useRestfulAPI } from '../hooks';
 import API_PATHS from '../utils/queries';
-import { useAccount } from 'wagmi';
+import Tippy from '@tippyjs/react';
+import { useFlashNotification } from '../context';
+import { useAppKitAccount } from '@reown/appkit/react';
 
 enum Step {
   CONTENT,
@@ -48,26 +49,10 @@ const SpaceCreate: React.FC = () => {
     setUserSelectedDateEnd,
     setUserSelectedDateStart,
   } = useFormSpaceProposal(spaceType);
-  const { isConnected } = useAccount();
+  const { isConnected } = useAppKitAccount();
   const { postQuery, queryLoading } = useRestfulAPI();
   const { notify } = useFlashNotification();
 
-  const proposalRef = useRef<Proposal>({
-    id: '',
-    title: '',
-    body: '',
-    avatar: null,
-    choices: [{ id: '', name: '', avatar: null }],
-    state: '',
-    voting: {
-      start: 0,
-      end: 0,
-      type: '',
-      votes_num: 0,
-    },
-    create: 0,
-  });
-  const [validationLoading, setValidationLoading] = useState(false);
   const [preview, setPreview] = useState(false);
   const [currentStep, setCurrentStep] = useState<Step>(Step.CONTENT);
   const isEditing = false;
@@ -77,41 +62,38 @@ const SpaceCreate: React.FC = () => {
     dateEnd?: number;
   };
 
-  const sanitizeDateRange = useCallback(
-    ({ dateStart, dateEnd }: DateRange): DateRange => {
-      const threeDays = 259200;
-      const currentTimestamp = Math.floor(Date.now() / 1000);
+  const sanitizeDateRange = ({ dateStart, dateEnd }: DateRange): DateRange => {
+    const threeDays = 259200;
+    const currentTimestamp = Math.floor(Date.now() / 1000);
 
-      const sanitizedDateStart = Math.max(dateStart, currentTimestamp);
+    const sanitizedDateStart = Math.max(dateStart, currentTimestamp);
 
-      if (typeof dateEnd === 'undefined') {
-        return { dateStart: sanitizedDateStart };
-      }
+    if (typeof dateEnd === 'undefined') {
+      return { dateStart: sanitizedDateStart };
+    }
 
-      if (userSelectedDateEnd) {
-        return { dateStart: sanitizedDateStart, dateEnd };
-      }
+    if (userSelectedDateEnd) {
+      return { dateStart: sanitizedDateStart, dateEnd };
+    }
 
-      return {
-        dateStart: sanitizedDateStart,
-        dateEnd: sanitizedDateStart + threeDays,
-      };
-    },
-    [userSelectedDateEnd]
-  );
+    return {
+      dateStart: sanitizedDateStart,
+      dateEnd: sanitizedDateStart + threeDays,
+    };
+  };
 
-  const dateStart = useMemo(() => {
+  const dateStart = () => {
     const { dateStart } = sanitizeDateRange({ dateStart: form.start });
     return dateStart;
-  }, [form.start, sanitizeDateRange]);
+  };
 
-  const dateEnd = useMemo(() => {
+  const dateEnd = () => {
     const { dateEnd } = sanitizeDateRange({
       dateStart: form.start,
       dateEnd: form.end,
     });
     return dateEnd;
-  }, [form.end, form.start, sanitizeDateRange]);
+  };
 
   const stepIsValid = useMemo(() => {
     // Validating Step.CONTENT
@@ -156,7 +138,7 @@ const SpaceCreate: React.FC = () => {
         key: index, // Generate a key based on index or use a unique identifier
         text: choice.text,
         avatar: {
-          file: choice.avatar.file,
+          file: choice.avatar.file || null,
           url: choice.avatar.url,
         },
       }))
@@ -176,16 +158,15 @@ const SpaceCreate: React.FC = () => {
 
   const handleCreate = async () => {
     const formattedForm = getFormattedForm();
-    // Map the form data to proposalRef
-    proposalRef.current = {
-      ...proposalRef.current,
+
+    const response: any = await postQuery(API_PATHS.createProposal, {
       title: formattedForm.name,
       body: formattedForm.body,
       choices: formattedForm.choices.map(
         (choice: {
           key: number;
           text: string;
-          avatar: { file: File | null; url: string } | null;
+          avatar: { file: File | null } | null;
         }) => ({
           id: choice.key.toString(),
           name: choice.text,
@@ -199,21 +180,21 @@ const SpaceCreate: React.FC = () => {
         votes_num: formattedForm.votes_num,
       },
       create: parseInt((Date.now() / 1e3).toFixed()),
-    };
+    });
 
-    const response: any = await postQuery(
-      API_PATHS.createProposal,
-      proposalRef.current
-    );
+    if (response.error) {
+      notify(['red', response.error]);
+      return;
+    }
 
-    if (response.success) {
+    if (response.data.success) {
       resetForm();
       notify(['green', t('notify.proposalCreated')]);
     } else {
       notify(['red', response.result.message]);
     }
     resetForm();
-    navigate({ pathname: '/admin' });
+    navigate({ pathname: '/' });
   };
 
   const nextStep = () => {
@@ -227,21 +208,7 @@ const SpaceCreate: React.FC = () => {
   useEffect(() => {
     console.log('form', form);
     console.log('formDraft', formDraft);
-  }, [
-    currentStep,
-    form.name,
-    form.body.length,
-    form.choices,
-    bodyCharactersLimit,
-    validationErrors.name,
-    validationErrors.body,
-    dateEnd,
-    dateStart,
-    preview,
-    form,
-    isEditing,
-    formDraft,
-  ]);
+  }, [form]);
 
   useEffect(() => {
     const initializeData = async () => {
@@ -259,7 +226,7 @@ const SpaceCreate: React.FC = () => {
         <div>
           {currentStep === Step.CONTENT && (
             <div className="mb-3 overflow-hidden px-4 md:px-0">
-              <ButtonBack onClick={() => navigate({ pathname: '/admin' })} />
+              <ButtonBack onClick={() => navigate(-1)} />
             </div>
           )}
 
@@ -282,13 +249,13 @@ const SpaceCreate: React.FC = () => {
               form={form}
               setForm={setForm}
               formDraft={formDraft}
+              userSelectedDateEnd={userSelectedDateEnd}
               userSelectedDateStart={userSelectedDateStart}
               setUserSelectedDateStart={setUserSelectedDateStart}
               setUserSelectedDateEnd={setUserSelectedDateEnd}
-              dateStart={dateStart}
-              dateEnd={dateEnd || 0}
+              dateStart={dateStart()}
+              dateEnd={dateEnd() || 0}
               isEditing={isEditing}
-              setFormDraft={setFormDraft}
             />
           )}
         </div>
@@ -311,6 +278,7 @@ const SpaceCreate: React.FC = () => {
           {currentStep === Step.VOTING ? (
             <TuneButton
               loading={queryLoading}
+              disabled={!stepIsValid}
               className="block w-full"
               primary
               data-testid="create-proposal-publish-button"
@@ -318,18 +286,19 @@ const SpaceCreate: React.FC = () => {
             >
               {t('create.publish')}
             </TuneButton>
-          ) : isConnected ? (
-            <TuneButton
-              className="block w-full"
-              loading={validationLoading}
-              disabled={(!stepIsValid && !!isConnected) || validationLoading}
-              primary
-              onClick={() => nextStep()}
-            >
-              {t('create.continue')}
-            </TuneButton>
           ) : (
-            <NavbarAccount />
+            <Tippy content={t('plsConnctWallet')} disabled={isConnected}>
+              <div>
+                <TuneButton
+                  className="block w-full"
+                  disabled={!stepIsValid || !isConnected}
+                  primary
+                  onClick={() => nextStep()}
+                >
+                  {t('create.continue')}
+                </TuneButton>
+              </div>
+            </Tippy>
           )}
         </BaseBlock>
       }

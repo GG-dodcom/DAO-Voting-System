@@ -1,0 +1,13 @@
+[
+  {
+    "voter": "0x1234567890abcdef1234567890abcdef12345678",
+    "choice": {
+      "id": "1a2b3c4d-5e6f-7g8h-9i10-111213141516",
+      "name": "Performer 1",
+      "avatar": null
+    },
+    "scores": 10,
+    "reason": "Great performance and energy!",
+    "created": 1678945623
+  }
+]

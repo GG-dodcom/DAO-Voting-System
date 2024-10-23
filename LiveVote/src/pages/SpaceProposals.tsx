@@ -13,8 +13,10 @@ import ProposalsItem from '../components/ProposalsItem';
 import { useRestfulAPI } from '../hooks';
 import API_PATHS from '../utils/queries';
 import { useAppKitAccount } from '@reown/appkit/react';
+import { useNavigate } from 'react-router-dom';
 
 const SpaceProposals: React.FC = () => {
+  const isAdmin = localStorage.getItem('isAdmin') === 'true';
   const [proposals, setProposals] = useState<Proposal[]>([]);
   const [userVotedProposalIds, setUserVotedProposalIds] = useState<string[]>(
     []
@@ -22,6 +24,7 @@ const SpaceProposals: React.FC = () => {
 
   const { fetchQuery, queryLoading } = useRestfulAPI();
   const { address } = useAppKitAccount();
+  const navigate = useNavigate();
 
   const getProposals = async () => {
     try {
@@ -45,6 +48,11 @@ const SpaceProposals: React.FC = () => {
     ]);
   };
 
+  const signOut = () => {
+    localStorage.removeItem('isAdmin');
+    navigate('/'); //window.location.reload(); // Reloads the page to reflect the sign-out
+  };
+
   useEffect(() => {
     getProposals();
   }, []);
@@ -59,15 +67,18 @@ const SpaceProposals: React.FC = () => {
       <div>
         <h1 className="hidden lg:mb-3 lg:block">Proposals</h1>
 
-        <div className="mb-4 flex flex-col justify-between gap-x-3 gap-y-[10px] px-[20px] sm:flex-row md:px-0">
-          <BaseLink
-            link={'/spaceCreate'}
-            hideExternalIcon
-            data-testid="create-proposal-button"
-          >
-            <TuneButton className="w-full sm:w-auto">New proposal</TuneButton>
-          </BaseLink>
-        </div>
+        {isAdmin && (
+          <div className="mb-4 flex flex-col justify-end gap-x-3 gap-y-[10px] px-[20px] sm:flex-row md:px-0">
+            <BaseLink
+              link={{ pathname: '/create' }}
+              hideExternalIcon
+              data-testid="create-proposal-button"
+            >
+              <TuneButton className="w-full sm:w-auto">New proposal</TuneButton>
+            </BaseLink>
+            <TuneButton onClick={signOut}>Sign Out</TuneButton>
+          </div>
+        )}
 
         {queryLoading && <LoadingRow block />}
 

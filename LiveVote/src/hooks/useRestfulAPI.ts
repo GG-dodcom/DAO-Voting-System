@@ -17,24 +17,38 @@ export function useRestfulAPI() {
     }
   }
 
-  async function postQuery(
-    path: string,
-    data: any
-  ): Promise<{ success: boolean; result: any }> {
+  async function postQuery(path: string, data: any): Promise<any> {
     try {
       setLoading(true);
       const response: any = await axios.post(path, data); // Send POST request with data
 
-      if (response.status === 200) {
-        return { success: true, result: response.data }; // Return success message
+      // Check if the response status is in the range of success
+      if (response.status >= 200 && response.status < 300) {
+        return { data: response.data }; // Handle successful response
+      } else {
+        // Handle unexpected status
+        return { error: `Unexpected status code: ${response.status}` };
       }
-      return { success: false, result: response.data }; // Handle unexpected status
     } catch (error: any) {
       // Handle error and return error message
-      const errorMessage =
-        error.response?.data.message ||
-        `An error occurred while saving data. ${error}`;
-      return { success: false, result: errorMessage };
+      let errorMessage: string;
+
+      // Differentiate between errors
+      if (axios.isAxiosError(error)) {
+        // Axios error (network errors, etc.)
+        errorMessage =
+          error.response?.data.message ||
+          error.message || // General error message
+          'An error occurred while processing the request.';
+      } else if (error instanceof Error) {
+        // Other errors
+        errorMessage = error.message;
+      } else {
+        // Fallback for unknown error types
+        errorMessage = 'An unexpected error occurred.';
+      }
+
+      return { error: errorMessage };
     } finally {
       setLoading(false);
     }

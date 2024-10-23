@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { useFlashNotification, useImageUpload } from '../hooks';
+import { useImageUpload } from '../hooks';
+import { useFlashNotification } from '../context';
 
 interface InputUploadAvatarProps {
   isViewOnly?: boolean;

@@ -27,20 +27,14 @@ const InputDate: React.FC<Props> = ({
   const [modalDateSelectOpen, setModalDateSelectOpen] =
     useState<boolean>(false);
 
-  const handleClick = () => {
-    if (!disabled) {
-      setModalDateSelectOpen(true);
-    }
-  };
-
   return (
     <div className="w-full">
       <LabelInput information={information}>{title}</LabelInput>
-      <Tippy content={tooltip || ''}>
+      <Tippy content={tooltip} disabled={!tooltip}>
         <TuneButton
           className={`relative inset-y-0 flex !h-[42px] w-full items-center truncate pl-[44px] pr-3 text-left 
             ${disabled ? 'cursor-not-allowed' : 'cursor-pointer'}`}
-          onClick={handleClick}
+          onClick={() => (disabled ? null : setModalDateSelectOpen(true))}
         >
           <span className={`${disabled ? 'text-skin-text opacity-60' : ''}`}>
             {dateString}

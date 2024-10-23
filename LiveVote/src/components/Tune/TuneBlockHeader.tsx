@@ -6,7 +6,7 @@ interface Props {
   subTitle?: string;
   counter?: number;
   information?: string;
-  children: React.ReactNode;
+  children?: React.ReactNode;
 }
 
 const TuneBlockHeader: React.FC<Props> = ({

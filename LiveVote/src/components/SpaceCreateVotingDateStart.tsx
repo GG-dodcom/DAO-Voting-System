@@ -12,7 +12,7 @@ interface Props {
 
 const SpaceCreateVotingDateStart: React.FC<Props> = ({
   delay = 0,
-  isEditing = false,
+  isEditing,
   date,
   onSelect,
 }) => {

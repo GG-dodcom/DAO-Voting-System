@@ -21,9 +21,19 @@ const SpaceProposal: React.FC = () => {
       //   id: proposalId.id,
       // }
     );
-    if (!fetchedProposal) return navigate('/error-404');
+    if (!fetchedProposal) return navigate('/');
 
-    setProposal(fetchedProposal);
+    // Initialize 'proposal.result' and set the proposal state
+    const initializedProposal = {
+      ...fetchedProposal,
+      result: {
+        scores_state: '',
+        scores: [],
+        scoresTotal: 0,
+      },
+    };
+
+    setProposal(initializedProposal);
   };
 
   // On component mount, load the proposal
@@ -40,7 +50,9 @@ const SpaceProposal: React.FC = () => {
         proposal && (
           <SpaceProposalPage
             proposal={proposal}
-            // reloadProposal={loadProposal}
+            onReload={function (): void {
+              throw new Error('Function not implemented.');
+            }} // reloadProposal={loadProposal}
           />
         )
       )}

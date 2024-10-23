@@ -13,7 +13,7 @@ interface Props {
 const ModalSelectDate: React.FC<Props> = ({
   open,
   value,
-  type = 'start',
+  type,
   onInput,
   onClose,
 }) => {

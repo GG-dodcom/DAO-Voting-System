@@ -5,15 +5,11 @@ import { useIntl } from '../hooks/useIntl';
 import { useTranslation } from 'react-i18next';
 import {
   AvatarEdit,
-  BaseIcon,
-  BaseLink,
   BaseMarkdown,
   LabelInput,
-  LoadingSpinner,
   TuneErrorInput,
   TuneInput,
 } from '.';
-import Tippy from '@tippyjs/react';
 import { useImageUpload } from '../hooks';
 
 interface Props {
@@ -37,11 +33,10 @@ const SpaceCreateContent: React.FC<Props> = ({
 }) => {
   const { t } = useTranslation();
   const { formatNumber } = useIntl();
-  const [imageDragging, setImageDragging] = useState(false);
   const textAreaEl = useRef<HTMLTextAreaElement | null>(null);
 
-  const [inputName, setInputName] = useState<string>(form.name);
-  const [inputBody, setInputBody] = useState<string>(form.body);
+  const [inputName, setInputName] = useState<string>(formDraft.name);
+  const [inputBody, setInputBody] = useState<string>(formDraft.body);
 
   useEffect(() => {
     // Update form when inputBody changes
@@ -57,7 +52,6 @@ const SpaceCreateContent: React.FC<Props> = ({
       name: inputName,
       body: inputBody,
       isBodySet: inputBody.trim() !== '', // Set to true if body is not empty
-      choices: formDraft?.choices || form.choices,
     });
   }, [inputBody, inputName]);
 
@@ -74,7 +68,7 @@ const SpaceCreateContent: React.FC<Props> = ({
     setForm({ ...form, body: currentBodyWithImage });
   };
 
-  const { upload, imageUploadError, isUploadingImage } = useImageUpload();
+  const { upload } = useImageUpload();
 
   const handlePaste = (e: React.ClipboardEvent<HTMLTextAreaElement>) => {
     for (const item of e.clipboardData.items) {
@@ -90,15 +84,6 @@ const SpaceCreateContent: React.FC<Props> = ({
     }
   };
 
-  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    for (const item of e.dataTransfer.files) {
-      if (item.type.startsWith('image/')) {
-        upload(item, injectImageToBody);
-      }
-    }
-  };
-
   useEffect(() => {
     const initializeData = async () => {
       if (formDraft) {
@@ -106,9 +91,6 @@ const SpaceCreateContent: React.FC<Props> = ({
         setForm({
           name: formDraft.name,
           body: formDraft.body,
-          choices: formDraft.choices || form.choices,
-          start: form.start,
-          end: form.end,
           type: form.type,
         });
         setInputBody(formDraft.body);
@@ -123,13 +105,13 @@ const SpaceCreateContent: React.FC<Props> = ({
       <div className="flex flex-col space-y-3">
         <LabelInput>{t('create.avatar')}</LabelInput>
         <AvatarEdit
-          address={parseInt((Date.now() / 1e3).toFixed()).toString()}
           size="80"
           properties={'avatar'}
           form={form}
           setForm={setForm}
           setFormDraft={setFormDraft}
         />
+
         {preview ? (
           <h1 className="w-full break-all">
             {form.name || t('create.untitled')}
@@ -154,9 +136,6 @@ const SpaceCreateContent: React.FC<Props> = ({
               </div>
             </div>
             <div
-              onDrop={handleDrop}
-              onDragOver={() => setImageDragging(true)}
-              onDragLeave={() => setImageDragging(false)}
               className={`peer min-h-[240px] overflow-hidden rounded-t-xl border focus-within:border-skin-text ${
                 validationErrors?.body ? 'tune-error-border' : ''
               }`}
@@ -170,44 +149,6 @@ const SpaceCreateContent: React.FC<Props> = ({
                 onPaste={handlePaste}
               />
             </div>
-            {/* <label
-              className={`relative flex items-center justify-between rounded-b-xl border border-t-0 px-2 py-1 peer-focus-within:border-skin-text ${
-                validationErrors?.body ? 'tune-error-border' : ''
-              }`}
-            >
-              <input
-                type="file"
-                accept="image/jpg, image/jpeg, image/png"
-                className="absolute bottom-0 left-0 right-0 top-0 ml-0 w-full p-[5px] opacity-0"
-                onChange={(e) => {
-                  const file = e.target.files?.[0];
-                  if (file) {
-                    upload(file, injectImageToBody);
-                  }
-                }}
-              />
-              <span className="pointer-events-none relative pl-1 text-sm">
-                {isUploadingImage ? (
-                  <span className="flex">
-                    <LoadingSpinner small className="-mt-[2px] mr-2" />
-                    {t('create.uploading')}
-                  </span>
-                ) : imageUploadError !== '' ? (
-                  <span>{imageUploadError}</span>
-                ) : (
-                  <span>{t('create.uploadImageExplainer')}</span>
-                )}
-              </span>
-              <Tippy content={t('create.markdown')}>
-                <BaseLink
-                  link="https://docs.github.com/github/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax"
-                  hide-external-icon
-                  className="relative inline"
-                >
-                  <BaseIcon name="markdown" className="text-skin-text" />
-                </BaseLink>
-              </Tippy>
-            </label> */}
             {validationErrors?.body && (
               <TuneErrorInput error={validationErrors.body} />
             )}

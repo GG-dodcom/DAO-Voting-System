@@ -21,6 +21,7 @@ interface TextareaAutosizeProps {
   definition?: any;
   isDisabled?: boolean;
   onChange?: (value: string | number) => void;
+  className?: string;
 }
 
 const TextareaAutosize: React.FC<TextareaAutosizeProps> = ({
@@ -35,6 +36,7 @@ const TextareaAutosize: React.FC<TextareaAutosizeProps> = ({
   definition = null,
   isDisabled = false,
   onChange,
+  className,
   ...props
 }) => {
   const [val, setVal] = useState<string | number>(value);
@@ -108,7 +110,7 @@ const TextareaAutosize: React.FC<TextareaAutosizeProps> = ({
       <textarea
         ref={textareaRef}
         value={val}
-        className={`mt-1 h-auto w-full rounded-3xl border border-skin-border px-4 py-3 focus:border-skin-text ${
+        className={`${className} mt-1 h-auto w-full rounded-3xl border border-skin-border px-4 py-3 focus:border-skin-text ${
           isDisabled ? 'cursor-not-allowed' : ''
         }`}
         style={computedStyles()}

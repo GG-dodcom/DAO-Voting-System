@@ -8,7 +8,7 @@ const TheNavbar = () => {
         <div className="flex items-center py-[12px]">
           <div className="flex flex-auto items-center">
             <Link
-              to="/"
+              to={{ pathname: '/' }}
               className="hidden items-center sm:block"
               style={{ fontSize: '24px' }}
             >

@@ -2,10 +2,19 @@
   "next": "Next",
   "select": "Select",
   "back": "Back",
+  "confirm": "Confirm",
   "confirmAction": "Confirm action",
   "cancel": "Cancel",
   "linkPreview": "This link will take you to {url}.</br> Be careful, this link could be malicious. Are you sure you want to continue? ",
-
+  "privacy": "All votes will be encrypted until the voting period has ended and the final score is calculated",
+  "resultsError": "Results could not be calculated. This is often due to a misconfigured strategy or an unresponsive RPC node involved in the strategy.",
+  "resultsCalculating": "Final results are being calculated. If you still see this message after a few minutes contact the space admin.",
+  "results": "Results",
+  "currentResults": "Current results",
+  "information": "Information",
+  "plsConnctWallet": "Please connect wallet",
+  "reason": "Reason",
+  "noVotingPower": "Oops, it seems you don't have any voting power at performance {performanceName}.",
   "proposalBy": "by {0}",
   "voted": "Voted",
   "startIn": "start {0}",
@@ -23,6 +32,22 @@
   "verifiedSpace": "Verified space",
   "choicesCount": "{0} choice(s)",
   "noResultsFound": "Oops, we can't find any results",
+  "optional": "(optional)",
+
+  "modalNotifications": {
+    "wrong timestamp": {
+      "title": "Wrong timestamp",
+      "message": "The message timestamp is not valid. Please check the clock on your device, make sure it is set to the correct date and time and try again."
+    },
+    "space with ticket requires voting validation": {
+      "title": "Missing voting validation",
+      "message": "Your proposal cannot be submitted due to a missing voting validation rule required with the 'ticket' strategy. Please adjust your settings by either using another strategy or adding the required validation."
+    },
+    "space missing proposal validation": {
+      "title": "Missing proposal validation",
+      "message": "Your proposal cannot be submitted due to a missing proposal validation rule. To prevent unauthorized proposals and spam, add a validation rule in your space settings."
+    }
+  },
   "settings": {
     "anyType": "Any",
     "type": {
@@ -31,6 +56,9 @@
     }
   },
   "create": {
+    "avatar": "Avatar",
+    "votingQR": "Voting QR",
+    "votes_num": "Total voting rights",
     "proposalTitle": "Title",
     "proposalDescription": "Description (optional)",
     "preview": "Preview",
@@ -132,12 +160,61 @@
       "closed": "Closed"
     }
   },
+  "proposal": {
+    "castVote": "Cast your vote",
+    "vote": "Vote",
+    "startDate": "Start date",
+    "endDate": "End date",
+    "votingSystem": "Voting system",
+    "privacy": "Privacy",
+    "invalidChoice": "Invalid choice",
+    "postVoteModal": {
+      "defaultTitle": "Your vote is in!",
+      "gnosisSafeTitle": "Your vote is pending...",
+      "gnosisSafeDescription": " Votes with a Safe require additional signers and will be visible once the transaction is confirmed",
+      "seeQueue": "See queued transactions",
+      "tips": {
+        "1": "Votes can be changed while the proposal is active"
+      },
+      "subscribe": "Subscribe with email"
+    },
+    "downloadCsvVotes": {
+      "title": "Download as CSV",
+      "postDownloadModal": {
+        "title": "Generating votes report",
+        "message": {
+          "pendingGeneration": {
+            "title": "Your report is currently being generated",
+            "description": "It may take a few minutes. Please check back shortly."
+          },
+          "unsupportedEnv": {
+            "title": "Unsupported environment",
+            "description": "Votes report are not available on demo."
+          },
+          "unknownError": {
+            "title": "We're having trouble connecting to the server responsible for downloads",
+            "description": "Please try again in a few moments. If the problem persists, consider contacting our support team."
+          }
+        }
+      }
+    },
+    "votesModal": {
+      "title": "Votes",
+      "filtersPopover": {
+        "title": "Filters",
+        "votingPower": "Voting power",
+        "onlyVotesWithReason": "Only show votes with a reason",
+        "more": "More"
+      }
+    }
+  },
   "errors": {
     "fileTooBig": "File size should be smaller than 1MB",
     "unsupportedImageType": "File type not supported, Supported formats are jpeg, jpg and png"
   },
   "notify": {
-    "somethingWentWrong": "Oops, something went wrong!"
+    "somethingWentWrong": "Oops, something went wrong!",
+    "proposalDeleted": "Proposal deleted"
   },
   "footerView": {
     "resources": "Resources",
