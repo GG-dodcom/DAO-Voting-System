@@ -22,13 +22,7 @@ export function useRestfulAPI() {
       setLoading(true);
       const response: any = await axios.post(path, data); // Send POST request with data
 
-      // Check if the response status is in the range of success
-      if (response.status >= 200 && response.status < 300) {
-        return { data: response.data }; // Handle successful response
-      } else {
-        // Handle unexpected status
-        return { error: `Unexpected status code: ${response.status}` };
-      }
+      return response;
     } catch (error: any) {
       // Handle error and return error message
       let errorMessage: string;

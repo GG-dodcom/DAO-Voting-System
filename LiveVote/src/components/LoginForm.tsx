@@ -31,25 +31,16 @@ const LoginForm: React.FC<Props> = ({ open, onClose, onSuccess }) => {
     // Send the FormData to the backend
     const response = await postQuery(API_PATHS.adminlogin, form);
 
-    if (response.error) {
-      notify(['red', response.error]);
-      return;
-    }
-
-    if (response.data.success) {
-      // Handle successful login
+    if (response.status == 200) {
       notify(['green', response.data.message]);
       onSuccess(true);
       // Reroute home page
       navigate('/');
     } else {
-      // Handle unsuccessful login
-      notify([
-        'red',
-        response.data.message || 'Login failed: Invalid username or password',
-      ]);
-      setForm({ username: '', password: '' });
+      notify(['red', response.status + ', ' + response.data.message]);
     }
+
+    setForm({ username: '', password: '' });
   };
 
   return (
