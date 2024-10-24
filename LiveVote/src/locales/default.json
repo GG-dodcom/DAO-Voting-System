@@ -1,10 +1,15 @@
 {
+  "livevote": "LiveVote",
   "next": "Next",
   "select": "Select",
   "back": "Back",
   "confirm": "Confirm",
   "confirmAction": "Confirm action",
   "cancel": "Cancel",
+  "failed": "Failed",
+  "votingPower": "Your voting power",
+  "eligibleVoters": "Eligible Voters",
+  "voterTurnout": "Voter Turnout",
   "linkPreview": "This link will take you to {url}.</br> Be careful, this link could be malicious. Are you sure you want to continue? ",
   "privacy": "All votes will be encrypted until the voting period has ended and the final score is calculated",
   "resultsError": "Results could not be calculated. This is often due to a misconfigured strategy or an unresponsive RPC node involved in the strategy.",
@@ -33,7 +38,18 @@
   "choicesCount": "{0} choice(s)",
   "noResultsFound": "Oops, we can't find any results",
   "optional": "(optional)",
-
+  "votingQRNum": "Total number available for vote",
+  "votingPeriodNotAvailable": "Voting period not available",
+  "choice": "Choice {0}",
+  "votes": "Votes",
+  "votingPowerFailedMessage": "Your voting power could not be calculated. This is often due to a misconfigured strategy or an unresponsive RPC node involved in the strategy. If the problem persists, consider contacting our support team on {help}",
+  "votingValidationFailedMessage": "We were not able to validate your eligibility to vote. This is often due to a misconfigured vote validation setting or an unresponsive RPC node. If the problem persists, consider contacting our support team on {help}",
+  "comment": {
+    "placeholder": "Share your reason (optional)"
+  },
+  "votingValidation": {
+    "label": "Validation"
+  },
   "modalNotifications": {
     "wrong timestamp": {
       "title": "Wrong timestamp",
@@ -58,7 +74,7 @@
   "create": {
     "avatar": "Avatar",
     "votingQR": "Voting QR",
-    "votes_num": "Total voting rights",
+    "votes_num": "Number Of Voting QR",
     "proposalTitle": "Title",
     "proposalDescription": "Description (optional)",
     "preview": "Preview",
@@ -214,7 +230,8 @@
   },
   "notify": {
     "somethingWentWrong": "Oops, something went wrong!",
-    "proposalDeleted": "Proposal deleted"
+    "proposalDeleted": "Proposal deleted",
+    "proposalCreated": "Proposal created"
   },
   "footerView": {
     "resources": "Resources",

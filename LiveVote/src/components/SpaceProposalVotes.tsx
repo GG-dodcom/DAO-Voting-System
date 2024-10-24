@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
 import { Proposal } from '../utils/interfaces';
 import {
@@ -29,7 +30,7 @@ const SpaceProposalVotes: React.FC<Props> = ({ proposal }) => {
 
   // Use useMediaQuery to check if the screen size is at least 'sm'
   const isSmallScreen = useMediaQuery({
-    query: `(min-width: ${breakpoints.sm}px)`,
+    query: `(max-width: ${breakpoints.sm})`,
   });
 
   const { votes, loadingVotes, loadVotes } = useProposalVotes(

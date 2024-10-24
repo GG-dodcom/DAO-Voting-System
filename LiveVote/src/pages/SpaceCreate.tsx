@@ -13,12 +13,10 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { t } from 'i18next';
 import { useFormSpaceProposal } from '../hooks/useFormSpaceProposal';
 import proposal from '../schemas/proposal.json';
-import { useRestfulAPI } from '../hooks';
 import API_PATHS from '../utils/queries';
 import Tippy from '@tippyjs/react';
 import { useFlashNotification } from '../context';
 import { useAppKitAccount } from '@reown/appkit/react';
-import { fileToBase64 } from '../utils/utils';
 
 enum Step {
   CONTENT,
@@ -50,11 +48,11 @@ const SpaceCreate: React.FC = () => {
     setUserSelectedDateStart,
   } = useFormSpaceProposal(spaceType);
   const { isConnected } = useAppKitAccount();
-  const { postQuery, queryLoading } = useRestfulAPI();
   const { notify } = useFlashNotification();
 
   const [preview, setPreview] = useState(false);
   const [currentStep, setCurrentStep] = useState<Step>(Step.CONTENT);
+  const [loading, setLoading] = useState<boolean>(false);
   const isEditing = false;
 
   type DateRange = {
@@ -160,196 +158,42 @@ const SpaceCreate: React.FC = () => {
   };
 
   const handleCreate = async () => {
+    setLoading(true);
+
     const formattedForm = getFormattedForm();
-
-    // const data = {
-    //   title: formattedForm.name,
-    //   body: formattedForm.body,
-    //   avatar:
-    //     formattedForm.avatar.file instanceof File
-    //       ? await fileToBase64(formattedForm.avatar.file)
-    //       : null,
-    //   choices: await Promise.all(
-    //     formattedForm.choices.map(
-    //       async (choice: {
-    //         key: number;
-    //         text: string;
-    //         avatar: { file: File | null } | null;
-    //       }) => ({
-    //         id: choice.key.toString(),
-    //         name: choice.text,
-    //         avatar:
-    //           choice.avatar?.file instanceof File
-    //             ? await fileToBase64(choice.avatar.file)
-    //             : null,
-    //       })
-    //     )
-    //   ),
-    // };
-
-    // console.log(data);
-
-    const formData = new FormData();
-
-    formData.append('title', formattedForm.name);
-    formData.append('body', formattedForm.body);
-    if (formattedForm.avatar?.file) {
-      formData.append('avatar', formattedForm.avatar?.file);
-    }
-
-    formattedForm.choices.forEach((choice, index) => {
-      formData.append(`choices[${index}].id`, choice.key.toString());
-      formData.append(`choices[${index}].name`, choice.text);
-      if (choice.avatar?.file) {
-        formData.append(`choices[${index}].avatar`, choice.avatar.file);
-      }
-    });
-    formData.append('symbol', 'VOTE');
-    formData.append('start', formattedForm.start.toString());
-    formData.append('end', formattedForm.end.toString());
-    formData.append('type', formattedForm.type);
-    formData.append('votes_num', formattedForm.votes_num.toString());
-
-    formData.append(
-      'create',
-      parseInt((Date.now() / 1e3).toFixed()).toString()
-    );
-
-    console.log(formData);
-
-    try {
-      const response: any = await fetch(API_PATHS.createProposal, {
-        method: 'POST',
-        body: formData,
-      });
-
-      const result = await response.json();
-      console.log(result);
-
-      if (response.ok) {
-        alert('Proposal created successfully!');
-      } else {
-        alert(`Error: ${result.message}`);
-      }
-    } catch (error) {
-      console.error('Error', error);
-      alert('An error occurred while creating the proposal.');
-    }
-
-    // resetForm();
-    // const response: any = await postQuery(API_PATHS.createProposal, {
-    //   title: formattedForm.name,
-    //   body: formattedForm.body,
-    //   avatar:
-    //     formattedForm.avatar?.file instanceof File
-    //       ? await fileToBase64(formattedForm.avatar.file)
-    //       : null,
-    //   choices: formattedForm.choices.map(
-    //     async (choice: {
-    //       key: number;
-    //       text: string;
-    //       avatar: { file: File | null } | null;
-    //     }) => ({
-    //       id: choice.key.toString(),
-    //       name: choice.text,
-    //       avatar:
-    //         choice.avatar?.file instanceof File
-    //           ? await fileToBase64(choice.avatar.file)
-    //           : null,
-    //     })
-    //   ),
-    //   voting: {
-    //     start: formattedForm.start,
-    //     end: formattedForm.end,
-    //     type: formattedForm.type,
-    //     votes_num: formattedForm.votes_num,
-    //   },
-    //   create: parseInt((Date.now() / 1e3).toFixed()),
-    // });
-
-    // if (response.error) {
-    //   notify(['red', response.error]);
-    //   return;
-    // }
-
-    // if (response.data.success) {
-    //   resetForm();
-    //   notify(['green', t('notify.proposalCreated')]);
-    // } else {
-    //   notify(['red', response.result.message]);
-    // }
-    resetForm();
-    navigate({ pathname: '/' });
-  };
-
-  const submitFile = async () => {
-    const formData = new FormData();
-
-    if (form.avatar?.file) {
-      formData.append('avatar', form.avatar?.file);
-    }
-
-    console.log(formData);
-
-    try {
-      const response: any = await fetch(API_PATHS.createProposal, {
-        method: 'POST',
-        body: formData,
-      });
-
-      const result = await response.json();
-      console.log(result);
-
-      if (response.ok) {
-        alert('Proposal created successfully!');
-      } else {
-        alert(`Error: ${result.message}`);
-      }
-    } catch (error) {
-      console.error('Error', error);
-      alert('An error occurred while creating the proposal.');
-    }
-  };
-
-  const submitJson = async () => {
     const formData = new FormData();
 
     const jsonData = {
-      title: form.name,
-      body: form.body,
+      title: formattedForm.name,
+      body: formattedForm.body,
+      symbol: 'VOTE',
+      choices: formattedForm.choices.map(
+        async (choice: { key: number; text: string }) => ({
+          id: choice.key.toString(),
+          name: choice.text,
+        })
+      ),
+      startDate: formattedForm.start,
+      endDate: formattedForm.end,
+      type: formattedForm.type,
+      numOfQR: formattedForm.votes_num,
+      timestamp: parseInt((Date.now() / 1e3).toFixed()),
     };
 
-    // Convert JSON to a string and append it to FormData
-    formData.append('json', JSON.stringify(jsonData));
+    // Manually set the JSON part with a Blob and specify Content-Type as 'application/json'
+    formData.append(
+      'proposalData',
+      new Blob([JSON.stringify(jsonData)], { type: 'application/json' })
+    );
 
-    console.log('submit json', formData);
+    // Append the main avatar file
+    if (formattedForm.avatar.file)
+      formData.append('files', formattedForm.avatar.file);
 
-    try {
-      const response: any = await fetch(API_PATHS.createProposal, {
-        method: 'POST',
-        body: formData,
-      });
-
-      const result = await response.json();
-      console.log(result);
-
-      if (response.ok) {
-        alert('Proposal created successfully!');
-      } else {
-        alert(`Error: ${result.message}`);
-      }
-    } catch (error) {
-      console.error('Error', error);
-      alert('An error occurred while creating the proposal.');
-    }
-  };
-
-  const submitData = async () => {
-    const formData = new FormData();
-    formData.append('title', form.name);
-    formData.append('body', form.body);
-
-    console.log('submit data', formData);
+    // Append the choice avatars
+    formattedForm.choices.forEach((choice) => {
+      if (choice.avatar.file) formData.append('files', choice.avatar.file);
+    });
 
     try {
       const response: any = await fetch(API_PATHS.createProposal, {
@@ -361,14 +205,18 @@ const SpaceCreate: React.FC = () => {
       console.log(result);
 
       if (response.ok) {
-        alert('Proposal created successfully!');
+        resetForm();
+        notify(['green', t('notify.proposalCreated')]);
       } else {
         alert(`Error: ${result.message}`);
       }
     } catch (error) {
-      console.error('Error', error);
-      alert('An error occurred while creating the proposal.');
+      notify(['red', error]);
+    } finally {
+      setLoading(false);
     }
+    resetForm();
+    navigate({ pathname: '/' });
   };
 
   const nextStep = () => {
@@ -388,10 +236,6 @@ const SpaceCreate: React.FC = () => {
     <TheLayout
       contentLeft={
         <div>
-          <TuneButton onClick={submitData}>Submit Data</TuneButton>
-          <TuneButton onClick={submitJson}>Submit Json</TuneButton>
-          <TuneButton onClick={submitFile}>Submit File</TuneButton>
-
           {currentStep === Step.CONTENT && (
             <div className="mb-3 overflow-hidden px-4 md:px-0">
               <ButtonBack onClick={() => navigate(-1)} />
@@ -443,7 +287,7 @@ const SpaceCreate: React.FC = () => {
 
           {currentStep === Step.VOTING ? (
             <TuneButton
-              loading={queryLoading}
+              loading={loading}
               disabled={!stepIsValid}
               className="block w-full"
               primary

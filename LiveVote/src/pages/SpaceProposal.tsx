@@ -48,12 +48,7 @@ const SpaceProposal: React.FC = () => {
         <LoadingSpinner className="overlay big" />
       ) : (
         proposal && (
-          <SpaceProposalPage
-            proposal={proposal}
-            onReload={function (): void {
-              throw new Error('Function not implemented.');
-            }} // reloadProposal={loadProposal}
-          />
+          <SpaceProposalPage proposal={proposal} onReload={loadProposal} />
         )
       )}
     </div>

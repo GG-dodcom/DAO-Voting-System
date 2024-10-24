@@ -63,7 +63,7 @@ const API_PATHS = {
 
   adminlogin: `${API_BASE_URL}/auth/login`,
 
-  createProposal: `${API_BASE_URL}/createProposal`,
+  createProposal: `${API_BASE_URL}/proposals/create-proposal`,
 
   loadUserVotes: `${API_BASE_URL}/loadUserVotes`,
   loadUserVote: `${API_BASE_URL}/loadUserVote`,

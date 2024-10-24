@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React from 'react';
 import { Proposal } from '../utils/interfaces';
@@ -78,7 +79,7 @@ const SpaceProposalHeader: React.FC<Props> = ({ proposal, isAdmin }) => {
         </div>
       </div>
       <div className="flex grow items-center space-x-3">
-        {isAdmin ? (
+        {/* {isAdmin ? (
           <BaseMenu
             className="!ml-auto pl-3"
             items={threeDotItems()}
@@ -102,7 +103,7 @@ const SpaceProposalHeader: React.FC<Props> = ({ proposal, isAdmin }) => {
           </BaseMenu>
         ) : (
           <></>
-        )}
+        )} */}
       </div>
     </div>
   );

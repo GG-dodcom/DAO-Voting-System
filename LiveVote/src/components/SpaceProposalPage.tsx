@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState, useEffect } from 'react';
 import {
@@ -22,7 +23,7 @@ interface Props {
   onReload: () => void;
 }
 
-const SpaceProposalPage: React.FC<Props> = ({ proposal }) => {
+const SpaceProposalPage: React.FC<Props> = ({ proposal, onReload }) => {
   const isAdmin = localStorage.getItem('isAdmin') === 'true';
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedChoices, setSelectedChoices] = useState<any>(null);
@@ -36,12 +37,9 @@ const SpaceProposalPage: React.FC<Props> = ({ proposal }) => {
   const { address } = useAppKitAccount();
   const { fetchQuery } = useRestfulAPI();
 
-  const reloadProposal = () => {};
-
-  // const openPostVoteModal = (isWaitingForSigners: boolean) => {
-  //   setWaitingForSigners(isWaitingForSigners);
-  //   setIsModalPostVoteOpen(true);
-  // };
+  const reloadProposal = () => {
+    onReload();
+  };
 
   const loadResults = async () => {
     if (proposal.state != 'active') {
@@ -114,6 +112,9 @@ const SpaceProposalPage: React.FC<Props> = ({ proposal }) => {
               <SpaceProposalHeader proposal={proposal} isAdmin={isAdmin} />
               <SpaceProposalContent proposal={proposal} />
             </div>
+            <div className="space-y-[20px] md:space-y-4 px-[20px] md:px-0">
+              <SpaceProposalVotes proposal={proposal} />
+            </div>
           </div>
         }
         sidebarRight={
@@ -138,7 +139,6 @@ const SpaceProposalPage: React.FC<Props> = ({ proposal }) => {
             onUpdateModelValue={(choice: any) => setSelectedChoices(choice)}
             onClickVote={clickVote}
           />
-          <SpaceProposalVotes proposal={proposal} />
         </div>
       </div>
 

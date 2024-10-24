@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect, useState } from 'react';
 import { useAppKitAccount } from '@reown/appkit/react';
@@ -63,12 +64,12 @@ const ModalVote: React.FC<Props> = ({
         proposalId: proposal.id,
         choice: selectedChoices,
         reason: reason,
-        // timestamp
+        timestamp: parseInt((Date.now() / 1e3).toFixed()),
       });
       console.log('save vote data');
     }
     onClose();
-    // onReload();
+    onReload();
   };
 
   const loadVotingPower = async () => {

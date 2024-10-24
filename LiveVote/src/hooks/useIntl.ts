@@ -106,9 +106,15 @@ export function useIntl() {
     timestamp: number,
     formatter?: Intl.RelativeTimeFormat
   ) => {
-    const relativeTo = new Date().getTime() / 1e3;
+    const relativeTo = new Date().getTime() / 1e3; // Current time in seconds
 
     const { duration, unit } = getDurationAndUnit(timestamp - relativeTo);
+
+    // Ensure duration is a finite number
+    if (!isFinite(duration)) {
+      console.error('Invalid duration calculated for relative time format');
+      return ''; // Return an empty string or some fallback message
+    }
 
     formatter = formatter || defaultRelativeTimeFormatter;
 
