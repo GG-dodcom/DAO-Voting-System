@@ -28,8 +28,12 @@ import IHoDocumentDuplicate from '~icons/heroicons-outline/document-duplicate';
 import IHoArrowSmUp from '~icons/heroicons-outline/arrow-sm-up';
 import IHoArrowSmDown from '~icons/heroicons-outline/arrow-sm-down';
 import IHoEyeOff from '~icons/heroicons-outline/eye-off';
+import IHoClock from '~icons/heroicons-outline/clock';
+import IHoExclamation from '~icons/heroicons-outline/exclamation';
 
 export {
+  IHoExclamation,
+  IHoClock,
   IHoEyeOff,
   ISShutter,
   IHoArrowSmDown,

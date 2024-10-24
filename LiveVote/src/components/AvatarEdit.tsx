@@ -8,7 +8,6 @@ import { t } from 'i18next';
 interface Props {
   form: any;
   setForm: any;
-  setFormDraft?: any;
   properties: string;
   size?: string;
 }
@@ -16,7 +15,6 @@ interface Props {
 const AvatarEdit: React.FC<Props> = ({
   form,
   setForm,
-  setFormDraft,
   properties,
   size = '80',
 }) => {
@@ -43,25 +41,15 @@ const AvatarEdit: React.FC<Props> = ({
           url, // Set the URL
         };
       }
-    } else {
-      // Traverse the keys to reach the right property
-      keys.forEach((key, index) => {
-        if (index === keys.length - 1) {
-          // Determine if we are saving to an object
-          if (typeof current[key] !== 'object') {
-            current[key] = {}; // Ensure it's an object if it doesn't exist
-          }
-          current[key].file = file; // Set the file
-          current[key].url = url; // Set the URL (assuming you get it back from your upload logic)
-        } else {
-          current[key] = current[key] || {}; // Ensure nested objects exist
-          current = current[key]; // Move deeper into the object
-        }
-      });
+    } else if (properties === 'avatar') {
+      // Check if properties is just 'avatar'
+      current.avatar = {
+        file, // Set the file directly
+        url, // Set the URL directly
+      };
     }
 
     setForm(newForm); // Update the form state
-    if (setFormDraft) setFormDraft(newForm); // Update the draft if set
   };
 
   const uploadImage = async (file: File) => {
@@ -106,7 +94,6 @@ const AvatarEdit: React.FC<Props> = ({
     });
 
     setForm(newForm); // Update the form state
-    if (setFormDraft) setFormDraft(newForm); // Update the draft if set
   };
 
   const openFilePicker = () => {

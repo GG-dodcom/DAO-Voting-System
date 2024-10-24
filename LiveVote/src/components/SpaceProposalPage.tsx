@@ -43,25 +43,23 @@ const SpaceProposalPage: React.FC<Props> = ({ proposal }) => {
   // };
 
   const loadResults = async () => {
-    if (proposal.state == 'closed' && proposal.result?.scores.length === 0) {
-      try {
-        const result: any = await fetchQuery(
-          API_PATHS.fetchScores
-          //   {
-          //   id: proposal.id,
-          // }
-        );
+    if (proposal.state != 'active') {
+      const result: any = await fetchQuery(
+        API_PATHS.fetchScores
+        //   {
+        //   proposalId: proposal.id,
+        // }
+      );
 
+      if (proposal.result?.scores.length === 0) {
         proposal.result.scores_state = result.scores_state;
         proposal.result.scores = result.scores;
         proposal.result.scoresTotal = result.scoresTotal;
-
-        setResults(proposal.result);
-
-        console.log('proposal.result', proposal.result);
-      } catch (e) {
-        console.error('Error fetching scores', e);
       }
+
+      setResults(result);
+
+      console.log('proposal.result', proposal.result);
     }
     setLoadedResults(true);
   };
@@ -86,7 +84,7 @@ const SpaceProposalPage: React.FC<Props> = ({ proposal }) => {
   }, [address]);
 
   useEffect(() => {
-    if (proposal.state == 'closed') loadResults();
+    if (proposal.state != 'active') loadResults();
   }, [proposal]);
 
   return (

@@ -18,6 +18,7 @@ import API_PATHS from '../utils/queries';
 import Tippy from '@tippyjs/react';
 import { useFlashNotification } from '../context';
 import { useAppKitAccount } from '@reown/appkit/react';
+import { fileToBase64 } from '../utils/utils';
 
 enum Step {
   CONTENT,
@@ -43,7 +44,6 @@ const SpaceCreate: React.FC = () => {
     setFormDraft,
     resetForm,
     validationErrors,
-    setFormFromDraft,
     userSelectedDateStart,
     userSelectedDateEnd,
     setUserSelectedDateEnd,
@@ -62,38 +62,41 @@ const SpaceCreate: React.FC = () => {
     dateEnd?: number;
   };
 
-  const sanitizeDateRange = ({ dateStart, dateEnd }: DateRange): DateRange => {
-    const threeDays = 259200;
-    const currentTimestamp = Math.floor(Date.now() / 1000);
+  const sanitizeDateRange = useCallback(
+    ({ dateStart, dateEnd }: DateRange): DateRange => {
+      const threeDays = 259200;
+      const currentTimestamp = Math.floor(Date.now() / 1000);
 
-    const sanitizedDateStart = Math.max(dateStart, currentTimestamp);
+      const sanitizedDateStart = Math.max(dateStart, currentTimestamp);
 
-    if (typeof dateEnd === 'undefined') {
-      return { dateStart: sanitizedDateStart };
-    }
+      if (typeof dateEnd === 'undefined') {
+        return { dateStart: sanitizedDateStart };
+      }
 
-    if (userSelectedDateEnd) {
-      return { dateStart: sanitizedDateStart, dateEnd };
-    }
+      if (userSelectedDateEnd) {
+        return { dateStart: sanitizedDateStart, dateEnd };
+      }
 
-    return {
-      dateStart: sanitizedDateStart,
-      dateEnd: sanitizedDateStart + threeDays,
-    };
-  };
+      return {
+        dateStart: sanitizedDateStart,
+        dateEnd: sanitizedDateStart + threeDays,
+      };
+    },
+    [userSelectedDateEnd]
+  );
 
-  const dateStart = () => {
+  const dateStart = useMemo(() => {
     const { dateStart } = sanitizeDateRange({ dateStart: form.start });
     return dateStart;
-  };
+  }, [form.start, sanitizeDateRange]);
 
-  const dateEnd = () => {
+  const dateEnd = useMemo(() => {
     const { dateEnd } = sanitizeDateRange({
       dateStart: form.start,
       dateEnd: form.end,
     });
     return dateEnd;
-  };
+  }, [form.end, form.start, sanitizeDateRange]);
 
   const stepIsValid = useMemo(() => {
     // Validating Step.CONTENT
@@ -159,28 +162,98 @@ const SpaceCreate: React.FC = () => {
   const handleCreate = async () => {
     const formattedForm = getFormattedForm();
 
-    const response: any = await postQuery(API_PATHS.createProposal, {
+    const data = {
       title: formattedForm.name,
       body: formattedForm.body,
-      choices: formattedForm.choices.map(
-        (choice: {
-          key: number;
-          text: string;
-          avatar: { file: File | null } | null;
-        }) => ({
-          id: choice.key.toString(),
-          name: choice.text,
-          avatar: choice.avatar?.file || null,
-        })
+      avatar:
+        formattedForm.avatar.file instanceof File
+          ? await fileToBase64(formattedForm.avatar.file)
+          : null,
+      choices: await Promise.all(
+        formattedForm.choices.map(
+          async (choice: {
+            key: number;
+            text: string;
+            avatar: { file: File | null } | null;
+          }) => ({
+            id: choice.key.toString(),
+            name: choice.text,
+            avatar:
+              choice.avatar?.file instanceof File
+                ? await fileToBase64(choice.avatar.file)
+                : null,
+          })
+        )
       ),
-      voting: {
+    };
+
+    console.log(data);
+
+    const formData = new FormData();
+
+    formData.append('title', formattedForm.name);
+    formData.append('body', formattedForm.body);
+    if (formattedForm.avatar?.file) {
+      formData.append('avatar', formattedForm.avatar?.file);
+    }
+    formattedForm.choices.forEach((choice, index) => {
+      formData.append(`choices[${index}].id`, choice.key.toString());
+      formData.append(`choices[${index}].name`, choice.text);
+      if (choice.avatar?.file) {
+        formData.append(`choices[${index}].avatar`, choice.avatar.file);
+      }
+    });
+
+    formData.append(
+      'voting',
+      JSON.stringify({
         start: formattedForm.start,
         end: formattedForm.end,
         type: formattedForm.type,
         votes_num: formattedForm.votes_num,
-      },
-      create: parseInt((Date.now() / 1e3).toFixed()),
+      })
+    );
+    formData.append(
+      'create',
+      parseInt((Date.now() / 1e3).toFixed()).toString()
+    );
+
+    console.log(formData);
+    const response: any = await fetch(API_PATHS.createProposal, {
+      method: 'POST',
+      body: formData,
     });
+
+    // resetForm();
+    // const response: any = await postQuery(API_PATHS.createProposal, {
+    //   title: formattedForm.name,
+    //   body: formattedForm.body,
+    //   avatar:
+    //     formattedForm.avatar?.file instanceof File
+    //       ? await fileToBase64(formattedForm.avatar.file)
+    //       : null,
+    //   choices: formattedForm.choices.map(
+    //     async (choice: {
+    //       key: number;
+    //       text: string;
+    //       avatar: { file: File | null } | null;
+    //     }) => ({
+    //       id: choice.key.toString(),
+    //       name: choice.text,
+    //       avatar:
+    //         choice.avatar?.file instanceof File
+    //           ? await fileToBase64(choice.avatar.file)
+    //           : null,
+    //     })
+    //   ),
+    //   voting: {
+    //     start: formattedForm.start,
+    //     end: formattedForm.end,
+    //     type: formattedForm.type,
+    //     votes_num: formattedForm.votes_num,
+    //   },
+    //   create: parseInt((Date.now() / 1e3).toFixed()),
+    // });
 
     if (response.error) {
       notify(['red', response.error]);
@@ -209,16 +282,6 @@ const SpaceCreate: React.FC = () => {
     console.log('form', form);
     console.log('formDraft', formDraft);
   }, [form]);
-
-  useEffect(() => {
-    const initializeData = async () => {
-      if (formDraft) {
-        setFormFromDraft();
-      }
-    };
-
-    initializeData();
-  }, []); // No dependencies, runs only once
 
   return (
     <TheLayout
@@ -253,8 +316,8 @@ const SpaceCreate: React.FC = () => {
               userSelectedDateStart={userSelectedDateStart}
               setUserSelectedDateStart={setUserSelectedDateStart}
               setUserSelectedDateEnd={setUserSelectedDateEnd}
-              dateStart={dateStart()}
-              dateEnd={dateEnd() || 0}
+              dateStart={dateStart}
+              dateEnd={dateEnd || 0}
               isEditing={isEditing}
             />
           )}

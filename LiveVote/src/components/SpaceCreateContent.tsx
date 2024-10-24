@@ -84,22 +84,6 @@ const SpaceCreateContent: React.FC<Props> = ({
     }
   };
 
-  useEffect(() => {
-    const initializeData = async () => {
-      if (formDraft) {
-        // Update form and set inputBody from formDraft
-        setForm({
-          name: formDraft.name,
-          body: formDraft.body,
-          type: form.type,
-        });
-        setInputBody(formDraft.body);
-      }
-    };
-
-    initializeData();
-  }, []); // No dependencies, runs only once
-
   return (
     <div className="mb-5 px-4 md:px-0">
       <div className="flex flex-col space-y-3">
@@ -109,7 +93,6 @@ const SpaceCreateContent: React.FC<Props> = ({
           properties={'avatar'}
           form={form}
           setForm={setForm}
-          setFormDraft={setFormDraft}
         />
 
         {preview ? (

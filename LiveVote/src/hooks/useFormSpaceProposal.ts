@@ -1,5 +1,5 @@
 // src/hooks/useFormSpaceProposal.ts
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useLocalStorage } from 'react-use';
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 import schemas from '../schemas';
@@ -42,13 +42,26 @@ const EMPTY_PROPOSAL_DRAFT = {
 };
 
 export function useFormSpaceProposal(spaceType = 'default') {
-  const [form, setForm] = useState<ProposalForm>(clone(EMPTY_PROPOSAL));
   const [formDraft, setFormDraft] = useLocalStorage<{
     name: string;
     body: string;
     isBodySet: boolean;
     avatar: { file: File | null; url: string };
   }>(`proposal.draft`, clone(EMPTY_PROPOSAL_DRAFT));
+  const [form, setForm] = useState<ProposalForm>(
+    formDraft
+      ? {
+          name: formDraft.name,
+          body: formDraft.body,
+          avatar: EMPTY_PROPOSAL.avatar,
+          choices: EMPTY_PROPOSAL.choices,
+          start: EMPTY_PROPOSAL.start,
+          end: EMPTY_PROPOSAL.end,
+          type: EMPTY_PROPOSAL.type,
+          votes_num: EMPTY_PROPOSAL.votes_num,
+        }
+      : clone(EMPTY_PROPOSAL)
+  );
 
   const [userSelectedDateStart, setUserSelectedDateStart] = useState(false);
   const [userSelectedDateEnd, setUserSelectedDateEnd] = useState(false);
@@ -61,20 +74,11 @@ export function useFormSpaceProposal(spaceType = 'default') {
   };
 
   // Set form state based on formDraft
-  const setFormFromDraft = () => {
-    if (formDraft) {
-      setForm({
-        name: formDraft.name,
-        body: formDraft.body,
-        avatar: formDraft.avatar,
-        choices: EMPTY_PROPOSAL.choices,
-        start: EMPTY_PROPOSAL.start,
-        end: EMPTY_PROPOSAL.end,
-        type: EMPTY_PROPOSAL.type,
-        votes_num: EMPTY_PROPOSAL.votes_num,
-      });
-    }
-  };
+  // const setFormFromDraft = () => {
+  //   if (formDraft) {
+  //     setForm({});
+  //   }
+  // };
 
   const validationErrors = validateForm(schemas.proposal, form, {
     spaceType,
@@ -82,20 +86,19 @@ export function useFormSpaceProposal(spaceType = 'default') {
 
   const isValid = Object.keys(validationErrors).length === 0;
 
-  useEffect(() => {
-    if (formDraft) {
-      // Set the form to the current draft when it changes
-      setForm((prevForm) => ({
-        ...prevForm,
-        ...formDraft,
-      }));
-    }
-  }, [formDraft]);
+  // useEffect(() => {
+  //   if (formDraft) {
+  //     // Set the form to the current draft when it changes
+  //     setForm((prevForm) => ({
+  //       ...prevForm,
+  //       ...formDraft,
+  //     }));
+  //   }
+  // }, [formDraft]);
 
   return {
     form,
     formDraft,
-    setFormFromDraft,
     userSelectedDateStart,
     setUserSelectedDateStart,
     userSelectedDateEnd,

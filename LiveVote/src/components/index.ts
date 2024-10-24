@@ -88,3 +88,4 @@ export { default as BaseProgressBar } from './BaseProgressBar';
 export { default as SpaceProposalResultsQuorum } from './SpaceProposalResultsQuorum';
 export { default as SpaceProposalVote } from './SpaceProposalVote';
 export { default as ModalVote } from './ModalVote';
+export { default as SpaceProposalVotesModalDownload } from './SpaceProposalVotesModalDownload';
