@@ -10,6 +10,7 @@ import {
   SpaceProposalResults,
   SpaceProposalVote,
   ModalVote,
+  SpaceProposalVotes,
 } from '.';
 import { Proposal, Results } from '../utils/interfaces';
 import { useRestfulAPI } from '../hooks';
@@ -137,7 +138,7 @@ const SpaceProposalPage: React.FC<Props> = ({ proposal }) => {
             onUpdateModelValue={(choice: any) => setSelectedChoices(choice)}
             onClickVote={clickVote}
           />
-          {/* <SpaceProposalVotes space={space} proposal={proposal} /> */}
+          <SpaceProposalVotes proposal={proposal} />
         </div>
       </div>
 

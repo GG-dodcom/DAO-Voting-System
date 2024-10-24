@@ -15,7 +15,6 @@ const AppRoutes: React.FC = () => {
       <Routes>
         <Route path="/" element={<SpaceProposals />} />
         <Route path="/spaceProposals" element={<SpaceProposals />} />
-
         <Route path="/about" element={<About />} />
         <Route path="/proposal/:id" element={<SpaceProposal />} />
         <Route path="/userManual" element={<UserManual />} />

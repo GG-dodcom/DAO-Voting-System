@@ -1,36 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-//Audience Table
-// id: string; //PK, UUID
-// qr_code: string;
-// wallet_address: string;
-// token_claimed: boolean; //default: false
-// proposal_id: string; //FK Performance table
-
-//Proposal Table
-// id: string;
-// title: string;
-// body: string;
-// avatar: string;
-// symbol: string;
-// state: string; //'pending', 'closed', 'active'
-// voting: {
-//   start: number; //tooltip date
-//   end: number; //tooltip date
-//   type: string | null; //'single-choice'
-// };
-// create: number; //the spaces will show new to old
-// votes_num: number; //for create how many QR
-// choices_id: Choices;
-
-//Choices Table
-
-export interface Audience {
-  id: string; //PK, UUID
-  qr_code: string;
-  wallet_address: string;
-  token_claimed: boolean; //default: false
-  proposal_id: string;
-}
+// export interface Audience {
+//   id: string; //PK, UUID
+//   qr_code: string;
+//   wallet_address: string;
+//   token_claimed: boolean; //default: false
+//   proposal_id: string;
+// }
 
 //Performances
 export interface Proposal {
@@ -50,6 +25,7 @@ export interface Proposal {
   create?: number; //the spaces will show new to old
 
   result?: Results;
+  votes: number; //total peopel vote.
   //maybe put on teams
   scores?: number[];
   scores_state?: string; //'final', 'invalid', 'pending'
@@ -62,7 +38,7 @@ export interface Results {
   scoresTotal: number;
 }
 
-export type Choice = number | number[] | Record<string, any>;
+export type Choice = number;
 
 export interface Choices {
   //Performers
@@ -85,24 +61,12 @@ export interface SingleChoiceVote {
   scores: number[];
 }
 
-export interface Votes {
-  id: string; //PK, UUID: Unique identifier for each vote.
-  audience_id: string; //FK: Reference to the user who cast the vote.
-  team_id: string; //FK: Reference to the team being voted for.
-  vote_timestamp: Date; //Timestamp when the vote was cast.
-}
-
 export interface Vote {
   voter: string; //wallet address
   choice: Choice;
   scores: number;
   reason: string;
   created: number;
-}
-
-export interface VoteFilters {
-  orderDirection: string;
-  onlyWithReason: boolean;
 }
 
 export interface Sponsorship {
@@ -132,9 +96,4 @@ export interface Image {
   name?: string;
   type?: string; //'image/jpeg', 'image/jpg', 'image/png'
   url?: string;
-}
-
-export interface VoteFilters {
-  orderDirection: string;
-  onlyWithReason: boolean;
 }

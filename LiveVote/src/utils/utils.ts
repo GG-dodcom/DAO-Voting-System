@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import pkg from '../../package.json';
+import { Proposal } from './interfaces';
 
 export function shortenAddress(str = '') {
   return `${str.slice(0, 6)}...${str.slice(str.length - 4)}`;
@@ -55,4 +56,8 @@ export function fileToBase64(file: File): Promise<string> {
       reject(error);
     };
   });
+}
+
+export function getChoiceString(proposal: Proposal, selected: number) {
+  return proposal.choices[selected - 1].name;
 }

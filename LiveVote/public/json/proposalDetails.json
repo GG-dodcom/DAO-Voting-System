@@ -31,12 +31,13 @@
     }
   ],
   "symbol": "ART",
-  "state": "active",
+  "state": "closed",
   "voting": {
     "start": 1696935680000,
     "end": 1697540480000,
     "type": "single-choice",
     "votes_num": 100
   },
-  "create": 1696935680000
+  "create": 1696935680000,
+  "votes": 100
 }

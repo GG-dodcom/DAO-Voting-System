@@ -89,3 +89,7 @@ export { default as SpaceProposalResultsQuorum } from './SpaceProposalResultsQuo
 export { default as SpaceProposalVote } from './SpaceProposalVote';
 export { default as ModalVote } from './ModalVote';
 export { default as SpaceProposalVotesModalDownload } from './SpaceProposalVotesModalDownload';
+export { default as SpaceProposalVotesListItemChoice } from './SpaceProposalVotesListItemChoice';
+export { default as SpaceProposalVotesItem } from './SpaceProposalVotesItem';
+export { default as SpaceProposalVotes } from './SpaceProposalVotes';
+export { default as SpaceProposalVotesModal } from './SpaceProposalVotesModal';

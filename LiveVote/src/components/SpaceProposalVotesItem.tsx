@@ -1,52 +1,49 @@
-import React, { useMemo, useRef } from 'react';
+import React from 'react';
 import { Proposal, Vote } from '../utils/interfaces';
 import { shorten } from '../utils/utils';
+import { AvatarUser, SpaceProposalVotesListItemChoice } from '.';
 
 interface Props {
   proposal: Proposal;
   vote: Vote;
   isSmall: boolean;
-  onOpenReceiptModal: () => void;
+  className?: string;
 }
 
-const SpaceProposalVotesListItem: React.FC<Props> = ({
+const SpaceProposalVotesItem: React.FC<Props> = ({
   proposal,
   vote,
   isSmall,
-  onOpenReceiptModal,
+  className,
 }) => {
-  const titles = useMemo(() => {
-    return proposal.strategies.map((strategy) => strategy.params.symbol || '');
-  }, [proposal.strategies]);
-
-  const { formatCompactNumber } = useIntl();
-
-  const balanceFormatted = useMemo(() => {
-    const balance = formatCompactNumber(vote.balance);
-    return balance.length >= 8 ? shorten(balance) : balance;
-  }, [vote.balance, formatCompactNumber]);
-
-  const handleOpenReceiptModal = () => {
-    onOpenReceiptModal();
-  };
-
   return (
-    <div className={`py-[12px] ${isSmall ? 'py-[8px]' : ''}`}>
+    <div className={`py-[12px] ${isSmall ? 'py-[8px]' : ''} ${className}`}>
       <div
         className={`flex items-center gap-4 ${
-          isSmall ? '' : 'justify-between'
+          isSmall ? 'justify-between' : ''
         }`}
       >
+        <div
+          className={`${
+            isSmall
+              ? 'w-[136px] min-w-[136px] text-left'
+              : 'w-[200px] min-w-[200px] text-left'
+          } 
+            flex flex-nowrap items-center space-x-1`}
+        >
+          <AvatarUser address={vote.voter} size="20" />
+          <span className={`w-full cursor-pointer truncate text-skin-link`}>
+            {vote.voter}
+          </span>
+        </div>
+
         {!isSmall && (
           <SpaceProposalVotesListItemChoice proposal={proposal} vote={vote} />
         )}
 
         <div className="flex w-[130px] min-w-[130px] items-center justify-end whitespace-nowrap text-right text-skin-link">
           <span className="truncate">
-            {`${balanceFormatted} ${shorten(
-              proposal.symbol || 'VOTE',
-              'symbol'
-            )}`}
+            {`${vote.scores} ${shorten(proposal.symbol || 'VOTE', 'symbol')}`}
           </span>
         </div>
       </div>
@@ -62,4 +59,4 @@ const SpaceProposalVotesListItem: React.FC<Props> = ({
   );
 };
 
-export default SpaceProposalVotesListItem;
+export default SpaceProposalVotesItem;

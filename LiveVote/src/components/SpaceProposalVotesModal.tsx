@@ -1,20 +1,18 @@
-import React, { useEffect, useRef, useState, useMemo } from 'react';
-import { Proposal, VoteFilters } from '../utils/interfaces';
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useEffect, useRef, useMemo } from 'react';
+import { Proposal } from '../utils/interfaces';
 import { useProposalVotes } from '../hooks/useProposalVotes';
 import {
   BaseCounter,
   BaseNoResults,
   LoadingList,
   LoadingSpinner,
+  SpaceProposalVotesItem,
   TuneModal,
   TuneModalTitle,
 } from '.';
 import { t } from 'i18next';
-
-const VOTES_FILTERS_DEFAULT: VoteFilters = {
-  orderDirection: 'desc',
-  onlyWithReason: false,
-};
+import { useIntersection } from 'react-use';
 
 interface Props {
   proposal: Proposal;
@@ -28,69 +26,29 @@ const SpaceProposalVotesModal: React.FC<Props> = ({
   onClose,
 }) => {
   const votesEndEl = useRef<HTMLDivElement | null>(null);
-  const [filterOptions, setFilterOptions] = useState<VoteFilters>(
-    VOTES_FILTERS_DEFAULT
-  );
-  const [searchInput, setSearchInput] = useState<string>('');
+  const { votes, loadingVotes, loadingMoreVotes, loadVotes, loadMoreVotes } =
+    useProposalVotes(proposal, 20);
 
-  const {
-    votes,
-    loadingVotes,
-    loadingMoreVotes,
-    loadVotes,
-    loadMoreVotes,
-    loadSingleVote,
-  } = useProposalVotes(proposal, 20);
-
-  const filters = useMemo(
-    () => ({
-      orderDirection: filterOptions.orderDirection,
-      onlyWithReason: filterOptions.onlyWithReason,
-    }),
-    [filterOptions]
-  );
-
-  const showNoResults = useMemo(
-    () =>
-      !loadingVotes &&
-      votes.length === 0 &&
-      (searchInput || filters.onlyWithReason),
-    [loadingVotes, votes, searchInput, filters]
-  );
-
-  const handleIntersection = ([entry]: IntersectionObserverEntry[]) => {
-    const hasMoreVotes = proposal.votes > votes.length;
-    if (open && entry.isIntersecting && searchInput === '' && hasMoreVotes) {
-      loadMoreVotes(filters);
-    }
-  };
-
-  useIntersectionObserver(votesEndEl, handleIntersection, {
+  const intersection = useIntersection(votesEndEl, {
     threshold: 1,
   });
 
+  const showNoResults = useMemo(
+    () => !loadingVotes && votes.length === 0,
+    [loadingVotes, votes]
+  );
+
+  const hasMoreVotes = proposal.votes > votes.length;
+
   useEffect(() => {
-    if (open) {
-      setFilterOptions(VOTES_FILTERS_DEFAULT);
-      setSearchInput('');
+    if (open && intersection?.isIntersecting && hasMoreVotes) {
+      loadMoreVotes();
     }
+  }, [intersection, open, hasMoreVotes]);
+
+  useEffect(() => {
+    if (open) loadVotes();
   }, [open]);
-
-  useEffect(() => {
-    const debounceTimeout = setTimeout(() => {
-      if (searchInput) {
-        loadSingleVote(searchInput);
-      } else if (votes.length < 2) {
-        loadVotes(filters);
-      }
-    }, 300);
-
-    return () => clearTimeout(debounceTimeout);
-  }, [searchInput, votes, filters]);
-
-  useEffect(() => {
-    loadVotes(filters);
-  }, [filters]);
 
   return (
     <TuneModal open={open} onClose={onClose}>

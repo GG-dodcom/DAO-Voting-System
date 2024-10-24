@@ -1,12 +1,13 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useState } from 'react';
-import { Proposal, Vote, VoteFilters } from '../utils/interfaces';
+import { Proposal, Vote } from '../utils/interfaces';
 import { useRestfulAPI } from './useRestfulAPI';
 import API_PATHS from '../utils/queries';
 
 type QueryParams = {
   voter?: string;
-} & Partial<VoteFilters>;
+};
 
 export function useProposalVotes(proposal: Proposal, loadBy = 6) {
   const { fetchQuery } = useRestfulAPI();
@@ -18,17 +19,19 @@ export function useProposalVotes(proposal: Proposal, loadBy = 6) {
   const [userVote, setUserVote] = useState<Vote | null>(null);
 
   // fetch votes based on the proposal and queryParams
-  async function _fetchVotes(queryParams: QueryParams, skip = 0) {
-    const response = await fetchQuery(API_PATHS.loadUserVote, {
-      id: proposal.id,
-      first: loadBy,
-      skip,
-      orderBy: 'timestamp',
-      orderDirection: queryParams.orderDirection || 'desc',
-      reason_not: queryParams.onlyWithReason ? '' : undefined,
-      voter: queryParams.voter || undefined,
-    });
+  async function _fetchVotes(skip = 0) {
+    const response = await fetchQuery(
+      API_PATHS.loadUserVotes
+      //   {
+      //   id: proposal.id,
+      //   first: loadBy,
+      //   skip,
+      //   orderBy: 'timestamp',
+      //   voter: queryParams.voter || undefined,
+      // }
+    );
 
+    console.log(response);
     return response;
   }
 
@@ -42,12 +45,12 @@ export function useProposalVotes(proposal: Proposal, loadBy = 6) {
   }
 
   // fetches votes for the given proposal based on the provided filter.
-  async function loadVotes(filter: Partial<VoteFilters> = {}) {
+  async function loadVotes() {
     if (loadingVotes) return;
 
     setLoadingVotes(true);
     try {
-      const response = await _fetchVotes(filter);
+      const response = await _fetchVotes();
       setVotes(response);
     } catch (e) {
       console.error(e);
@@ -70,12 +73,12 @@ export function useProposalVotes(proposal: Proposal, loadBy = 6) {
   }
 
   // fetches more votes beyond the initially loaded set, appending them to the existing votes array.
-  async function loadMoreVotes(filter: Partial<VoteFilters> = {}) {
+  async function loadMoreVotes() {
     if (loadingMoreVotes || loadingVotes || loadBy > votes.length) return;
 
     setLoadingMoreVotes(true);
     try {
-      const response = await _fetchVotes(filter, votes.length);
+      const response = await _fetchVotes(votes.length);
       setVotes((prevVotes) => prevVotes.concat(response));
     } catch (e) {
       console.error(e);

@@ -1,33 +1,21 @@
 [
   {
     "voter": "0x1234567890abcdef1234567890abcdef12345678",
-    "choice": {
-      "id": "1a2b3c4d-5e6f-7g8h-9i10-111213141516",
-      "name": "Performer 1",
-      "avatar": null
-    },
+    "choice": 1,
     "scores": 10,
     "reason": "Great performance and energy!",
     "created": 1678945623
   },
   {
     "voter": "0xabcdef1234567890abcdef1234567890abcdef12",
-    "choice": {
-      "id": "2b3c4d5e-6f7g-8h9i-1011-121314151617",
-      "name": "Performer 2",
-      "avatar": null
-    },
+    "choice": 2,
     "scores": 8,
     "reason": "Loved the choreography.",
     "created": 1678947650
   },
   {
     "voter": "0x7890abcdef1234567890abcdef1234567890abcd",
-    "choice": {
-      "id": "3c4d5e6f-7g8h-9i10-1112-131415161718",
-      "name": "Performer 3",
-      "avatar": null
-    },
+    "choice": 1,
     "scores": 9,
     "reason": "Excellent stage presence!",
     "created": 1678949823

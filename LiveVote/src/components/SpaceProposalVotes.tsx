@@ -1,16 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { Proposal } from '../utils/interfaces';
 import {
-  BaseButtonIcon,
-  SpaceProposalVotesModalDownload,
+  SpaceProposalVotesItem,
+  SpaceProposalVotesModal,
   TuneBlock,
   TuneBlockHeader,
   TuneButton,
 } from '.';
 import { useProposalVotes } from '../hooks/useProposalVotes';
 import { t } from 'i18next';
-import Tippy from '@tippyjs/react';
-import { IHoDownload } from '../assets/icons';
+import { useMediaQuery } from 'react-responsive';
 
 interface Props {
   proposal: Proposal;
@@ -19,50 +18,42 @@ interface Props {
 const VOTES_LIMIT = 6;
 
 const SpaceProposalVotes: React.FC<Props> = ({ proposal }) => {
-  const isSmallScreen = useBreakpoints(SNAPSHOT_BREAKPOINTS).smaller('sm');
-  const { profiles, votes, loadingVotes, loadVotes } = useProposalVotes(
+  const breakpoints = {
+    xs: '420px',
+    sm: '544px',
+    md: '768px',
+    lg: '1012px',
+    xl: '1280px',
+    '2xl': '1536px',
+  };
+
+  // Use useMediaQuery to check if the screen size is at least 'sm'
+  const isSmallScreen = useMediaQuery({
+    query: `(min-width: ${breakpoints.sm}px)`,
+  });
+
+  const { votes, loadingVotes, loadVotes } = useProposalVotes(
     proposal,
     VOTES_LIMIT
   );
-  const { downloadVotes, isDownloadingVotes, errorCode } = useReportDownload();
-
   const [modalVotesOpen, setModalVotesOpen] = useState(false);
-  const [showModalDownloadMessage, setShowModalDownloadMessage] =
-    useState(false);
 
   const voteCount = proposal.votes;
-
-  const downloadReport = async (proposalId: string) => {
-    const response = await downloadVotes(proposalId);
-    if (!response) {
-      setShowModalDownloadMessage(true);
-    }
-  };
 
   useEffect(() => {
     const fetchVotes = async () => {
       await loadVotes();
     };
     fetchVotes();
-  }, [proposal, loadVotes]);
+  }, [proposal]);
 
   return (
     <>
-      {proposal.votes > 0 && (
-        <TuneBlock loading={loadingVotes} header={}>
-          <TuneBlockHeader title={t('votes')} counter={voteCount}>
-            {proposal.state === 'closed' && (
-              <Tippy content={t('proposal.downloadCsvVotes.title')} delay={100}>
-                <BaseButtonIcon
-                  onClick={() => downloadReport(proposal.id)}
-                  loading={isDownloadingVotes}
-                  className="!p-0 !pr-1"
-                >
-                  <IHoDownload />
-                </BaseButtonIcon>
-              </Tippy>
-            )}
-          </TuneBlockHeader>
+      {voteCount > 0 && (
+        <TuneBlock
+          loading={loadingVotes}
+          header={<TuneBlockHeader title={t('votes')} counter={voteCount} />}
+        >
           {votes.map((vote, i) => (
             <SpaceProposalVotesItem
               key={i}
@@ -82,13 +73,6 @@ const SpaceProposalVotes: React.FC<Props> = ({ proposal }) => {
                 View all
               </TuneButton>
             </div>
-          )}
-          {showModalDownloadMessage && (
-            <SpaceProposalVotesModalDownload
-              open={showModalDownloadMessage}
-              errorCode={errorCode}
-              onClose={() => setShowModalDownloadMessage(false)}
-            />
           )}
           <SpaceProposalVotesModal
             proposal={proposal}

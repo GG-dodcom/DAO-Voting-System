@@ -10,7 +10,7 @@ const API_PATHS = {
 
   fetchScores: `${API_BASE_URL}/scores`,
 
-  fetchTotalVoters: `${API_BASE_URL}/totalVoter`,
+  fetchTotalVoter: `${API_BASE_URL}/totalVoter`,
 
   fetchProposals: `${API_BASE_URL}/proposals`,
   //TODO: json look like, return array[]

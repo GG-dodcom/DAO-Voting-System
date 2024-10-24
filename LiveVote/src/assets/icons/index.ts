@@ -31,8 +31,10 @@ import IHoEyeOff from '~icons/heroicons-outline/eye-off';
 import IHoClock from '~icons/heroicons-outline/clock';
 import IHoExclamation from '~icons/heroicons-outline/exclamation';
 import IHoDownload from '~icons/heroicons-outline/download';
+import IHoAnnotation from '~icons/heroicons-outline/annotation';
 
 export {
+  IHoAnnotation,
   IHoDownload,
   IHoExclamation,
   IHoClock,
