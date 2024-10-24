@@ -196,6 +196,7 @@ const SpaceCreate: React.FC = () => {
     if (formattedForm.avatar?.file) {
       formData.append('avatar', formattedForm.avatar?.file);
     }
+    formData.append('symbol', '');
     formattedForm.choices.forEach((choice, index) => {
       formData.append(`choices[${index}].id`, choice.key.toString());
       formData.append(`choices[${index}].name`, choice.text);
@@ -219,10 +220,25 @@ const SpaceCreate: React.FC = () => {
     );
 
     console.log(formData);
-    const response: any = await fetch(API_PATHS.createProposal, {
-      method: 'POST',
-      body: formData,
-    });
+
+    try {
+      const response: any = await fetch(API_PATHS.createProposal, {
+        method: 'POST',
+        body: formData,
+      });
+
+      const result = await response.json();
+      console.log(result);
+
+      if (response.ok) {
+        alert('Proposal created successfully!');
+      } else {
+        alert(`Error: ${result.message}`);
+      }
+    } catch (error) {
+      console.error('Error', error);
+      alert('An error occurred while creating the proposal.');
+    }
 
     // resetForm();
     // const response: any = await postQuery(API_PATHS.createProposal, {
@@ -255,17 +271,17 @@ const SpaceCreate: React.FC = () => {
     //   create: parseInt((Date.now() / 1e3).toFixed()),
     // });
 
-    if (response.error) {
-      notify(['red', response.error]);
-      return;
-    }
+    // if (response.error) {
+    //   notify(['red', response.error]);
+    //   return;
+    // }
 
-    if (response.data.success) {
-      resetForm();
-      notify(['green', t('notify.proposalCreated')]);
-    } else {
-      notify(['red', response.result.message]);
-    }
+    // if (response.data.success) {
+    //   resetForm();
+    //   notify(['green', t('notify.proposalCreated')]);
+    // } else {
+    //   notify(['red', response.result.message]);
+    // }
     resetForm();
     navigate({ pathname: '/' });
   };
@@ -311,8 +327,6 @@ const SpaceCreate: React.FC = () => {
             <SpaceCreateVoting
               form={form}
               setForm={setForm}
-              formDraft={formDraft}
-              userSelectedDateEnd={userSelectedDateEnd}
               userSelectedDateStart={userSelectedDateStart}
               setUserSelectedDateStart={setUserSelectedDateStart}
               setUserSelectedDateEnd={setUserSelectedDateEnd}

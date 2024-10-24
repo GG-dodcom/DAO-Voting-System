@@ -59,9 +59,11 @@ const ModalVote: React.FC<Props> = ({
       notify(['red', result.result.message]);
     } else {
       await postQuery(API_PATHS.vote, {
+        voter: address,
         proposalId: proposal.id,
         choice: selectedChoices,
-        reason,
+        reason: reason,
+        // timestamp
       });
       console.log('save vote data');
     }

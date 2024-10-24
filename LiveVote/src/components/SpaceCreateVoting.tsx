@@ -33,8 +33,6 @@ import { IHoPlusSm } from '../assets/icons';
 interface Props {
   form: any;
   setForm: any;
-  formDraft: any;
-  userSelectedDateEnd: any;
   userSelectedDateStart: any;
   setUserSelectedDateStart: any;
   setUserSelectedDateEnd: any;
@@ -129,8 +127,6 @@ const SortableChoice = ({
 const SpaceCreateVoting: React.FC<Props> = ({
   form,
   setForm,
-  formDraft,
-  userSelectedDateEnd,
   userSelectedDateStart,
   setUserSelectedDateStart,
   setUserSelectedDateEnd,

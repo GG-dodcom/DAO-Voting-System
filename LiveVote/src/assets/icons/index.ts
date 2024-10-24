@@ -30,8 +30,10 @@ import IHoArrowSmDown from '~icons/heroicons-outline/arrow-sm-down';
 import IHoEyeOff from '~icons/heroicons-outline/eye-off';
 import IHoClock from '~icons/heroicons-outline/clock';
 import IHoExclamation from '~icons/heroicons-outline/exclamation';
+import IHoDownload from '~icons/heroicons-outline/download';
 
 export {
+  IHoDownload,
   IHoExclamation,
   IHoClock,
   IHoEyeOff,

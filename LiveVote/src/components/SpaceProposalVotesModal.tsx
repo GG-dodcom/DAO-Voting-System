@@ -1,7 +1,14 @@
 import React, { useEffect, useRef, useState, useMemo } from 'react';
 import { Proposal, VoteFilters } from '../utils/interfaces';
 import { useProposalVotes } from '../hooks/useProposalVotes';
-import { BaseCounter, TuneModal, TuneModalTitle } from '.';
+import {
+  BaseCounter,
+  BaseNoResults,
+  LoadingList,
+  LoadingSpinner,
+  TuneModal,
+  TuneModalTitle,
+} from '.';
 import { t } from 'i18next';
 
 const VOTES_FILTERS_DEFAULT: VoteFilters = {
@@ -64,7 +71,7 @@ const SpaceProposalVotesModal: React.FC<Props> = ({
 
   useEffect(() => {
     if (open) {
-      setFilterOptions(clone(VOTES_FILTERS_DEFAULT));
+      setFilterOptions(VOTES_FILTERS_DEFAULT);
       setSearchInput('');
     }
   }, [open]);
@@ -93,22 +100,6 @@ const SpaceProposalVotesModal: React.FC<Props> = ({
           <BaseCounter counter={proposal.votes} />
         </TuneModalTitle>
       </div>
-      <BaseSearch
-        value={searchInput}
-        onChange={(e) => setSearchInput(e.target.value)}
-        placeholder={t('searchPlaceholderVotes')}
-        modal
-        focusOnMount
-        className="max-h-[56px] w-full !px-3 pb-3"
-      >
-        {!searchInput && (
-          <SpaceProposalVotesFilters
-            filterOptions={filterOptions}
-            setFilterOptions={setFilterOptions}
-            proposal={proposal}
-          />
-        )}
-      </BaseSearch>
 
       <div className="max-h-[calc(100vh-130px)] md:max-h-[400px] overflow-y-auto">
         {loadingVotes ? (
@@ -123,8 +114,6 @@ const SpaceProposalVotesModal: React.FC<Props> = ({
               <SpaceProposalVotesItem
                 key={i}
                 vote={vote}
-                profiles={profiles}
-                space={space}
                 proposal={proposal}
                 isSmall
                 data-testid={`proposal-votes-list-item-${i}`}
