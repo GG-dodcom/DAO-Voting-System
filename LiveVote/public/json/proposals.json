@@ -17,7 +17,7 @@
       "type": "single-choice",
       "votes_num": 100
     },
-    "create": 1696935680000,
+    "timestamp": 1696935680000,
     "scores": [50, 30, 20],
     "scores_state": "final",
     "scores_total": 100

@@ -15,6 +15,8 @@ const SpaceProposal: React.FC = () => {
 
   // Load proposal details
   const loadProposal = async () => {
+    console.log('proposalId', proposalId);
+
     const fetchedProposal: any = await fetchQuery(
       API_PATHS.fetchProposalDetails
       // {

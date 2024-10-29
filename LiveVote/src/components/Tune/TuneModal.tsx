@@ -57,7 +57,7 @@ const TuneModal: React.FC<Props> = ({
 
   // Use useMediaQuery to check if the screen size is at least 'md'
   const isDesktop = useMediaQuery({
-    query: `(min-width: ${breakpoints.md}px)`,
+    query: `(max-width: ${breakpoints.md})`,
   });
 
   const panelTransitionClasses = React.useMemo(() => {

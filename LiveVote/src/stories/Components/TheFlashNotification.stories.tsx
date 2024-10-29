@@ -3,7 +3,7 @@ import React from 'react';
 import { Meta, StoryObj } from '@storybook/react';
 import { TheFlashNotification } from '../../components';
 import '../../assets/css/main.scss';
-import { useFlashNotification } from '../../hooks';
+import { useFlashNotification } from '../../context';
 
 // Create a decorator to mock the useFlashNotification hook
 const withMockedFlashNotification = (mockedHook: any) => (StoryFn: any) => {

@@ -167,12 +167,7 @@ const SpaceCreate: React.FC = () => {
       title: formattedForm.name,
       body: formattedForm.body,
       symbol: 'VOTE',
-      choices: formattedForm.choices.map(
-        async (choice: { key: number; text: string }) => ({
-          id: choice.key.toString(),
-          name: choice.text,
-        })
-      ),
+      choices: formattedForm.choices.map((choice) => ({ name: choice.text })),
       startDate: formattedForm.start,
       endDate: formattedForm.end,
       type: formattedForm.type,
@@ -202,7 +197,7 @@ const SpaceCreate: React.FC = () => {
       });
 
       const result = await response.json();
-      console.log(result);
+      console.log('result', result);
 
       if (response.ok) {
         resetForm();

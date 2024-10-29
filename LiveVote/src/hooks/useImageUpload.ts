@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from 'react';
-import { useFlashNotification } from './useFlashNotification';
 import { useTranslation } from 'react-i18next';
+import { useFlashNotification } from '../context';
 
 export function useImageUpload() {
   const [isUploadingImage, setIsUploadingImage] = useState(false);
