@@ -18,21 +18,21 @@ const SpaceProposal: React.FC = () => {
     console.log('proposalId', proposalId);
 
     const fetchedProposal: any = await fetchQuery(
-      API_PATHS.fetchProposalDetails
-      // {
-      //   id: proposalId.id,
-      // }
+      API_PATHS.fetchProposalDetails,
+      {
+        proposalId: proposalId.id,
+      }
     );
     if (!fetchedProposal) return navigate('/');
 
     // Initialize 'proposal.result' and set the proposal state
     const initializedProposal = {
       ...fetchedProposal,
-      result: {
-        scores_state: '',
-        scores: [],
-        scoresTotal: 0,
-      },
+      // result: {
+      //   scores_state: '',
+      //   scores: [],
+      //   scoresTotal: 0,
+      // },
     };
 
     setProposal(initializedProposal);
@@ -46,6 +46,10 @@ const SpaceProposal: React.FC = () => {
 
   return (
     <div>
+      <img
+      // src="http://localhost:8080/uploads/Screenshot%202023-03-02%20151606.png"
+      // alt="Avatar"
+      />
       {loadingProposal ? (
         <LoadingSpinner className="overlay big" />
       ) : (

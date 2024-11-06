@@ -46,18 +46,16 @@ const SpaceProposalResultsQuorum: React.FC<Props> = ({ proposal, results }) => {
         {queryLoading && <LoadingSpinner className="mr-1" />}
         {!queryLoading && (
           <div className="flex gap-2">
-            <Tippy
-              content={formatPercentNumber(voter / proposal.voting.votes_num)}
-            >
+            <Tippy content={formatPercentNumber(voter / proposal.votes_num)}>
               <span>
                 {formatCompactNumber(voter)} /{' '}
-                {formatCompactNumber(proposal.voting.votes_num)}
+                {formatCompactNumber(proposal.votes_num)}
               </span>
             </Tippy>
           </div>
         )}
       </div>
-      <BaseProgressBar value={(voter / proposal.voting.votes_num) * 100} />
+      <BaseProgressBar value={(voter / proposal.votes_num) * 100} />
     </div>
   );
 };

@@ -80,11 +80,11 @@ const SpaceProposalVote: React.FC<Props> = ({
   const buttonTooltip = useMemo(() => {
     if (!address) return 'Please connect wallet';
 
-    if (
-      proposal.voting.type === 'single-choice' &&
-      (modelValue == null || modelValue == 0)
-    )
-      return 'Please select one choices';
+    // if (
+    //   proposal.voting.type === 'single-choice' &&
+    //   (modelValue == null || modelValue == 0)
+    // )
+    return 'Please select one choices';
 
     return null;
   }, [modelValue]);
@@ -137,13 +137,13 @@ const SpaceProposalVote: React.FC<Props> = ({
           }
         >
           <div>
-            {!isEditing && proposal.scores_state !== 'final' && (
+            {/* {!isEditing && proposal.scores_state !== 'final' && (
               <div className="border px-3 py-[12px] rounded-xl bg-[--border-color-subtle]">
                 <IHoLockClosed className="inline-block text-sm" />
                 Your vote is encrypted until the proposal ends and the final
                 score is calculated. You can still change your vote until then.
               </div>
-            )}
+            )} */}
 
             {userVote && !validatedUserChoice && !isEditing && (
               <BaseMessage
@@ -156,14 +156,14 @@ const SpaceProposalVote: React.FC<Props> = ({
             )}
 
             <div>
-              {proposal.voting.type === 'single-choice' && (
-                <SpaceProposalVoteSingleChoice
-                  proposal={proposal}
-                  userChoice={validatedUserChoice}
-                  isEditing={isEditing || !userVote}
-                  onSelectChoice={handleChoiceChange}
-                />
-              )}
+              {/* {proposal.type === 'single-choice' && ( */}
+              <SpaceProposalVoteSingleChoice
+                proposal={proposal}
+                userChoice={validatedUserChoice}
+                isEditing={isEditing || !userVote}
+                onSelectChoice={handleChoiceChange}
+              />
+              {/* )} */}
             </div>
 
             {(!userVote || isEditing) && (

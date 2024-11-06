@@ -9,27 +9,24 @@
 
 //Performances
 export interface Proposal {
-  id: string;
+  proposalId: string;
   title: string;
   body: string;
-  avatar: File | null | string;
+  avatar: string;
   choices: Choices[];
   symbol?: string;
   state: string; //'pending', 'closed', 'active'
-  voting: {
-    start: number; //tooltip date
-    end: number; //tooltip date
-    type: string | null; //'single-choice'
-    votes_num: number; //for create how many QR
-  };
-  create?: number; //the spaces will show new to old
-
-  result?: Results;
-  votes: number; //total peopel vote.
+  startDate: number;
+  endDate: number;
+  createDate: number; //the spaces will show new to old
+  type: string | null; //'single-choice'
+  votes_num: number;
+  // result?: Results;
+  // votes_num: number; //total peopel vote.
   //maybe put on teams
-  scores?: number[];
-  scores_state?: string; //'final', 'invalid', 'pending'
-  scores_total?: number;
+  // scores?: number[];
+  // scores_state?: string; //'final', 'invalid', 'pending'
+  // scores_total?: number;
 }
 
 export interface Results {
@@ -42,7 +39,7 @@ export type Choice = number;
 
 export interface Choices {
   //Performers
-  id: string; //PK, UUID
+  // id: string; //PK, UUID
   name: string;
   avatar?: File | string | null;
   // score?: number; //toal votes has received

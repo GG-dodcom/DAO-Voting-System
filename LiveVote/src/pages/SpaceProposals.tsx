@@ -88,9 +88,9 @@ const SpaceProposals: React.FC = () => {
             <BaseBlock key={i} slim className="transition-colors">
               <ProposalsItem
                 proposal={proposal}
-                voted={userVotedProposalIds.includes(proposal.id)}
+                voted={userVotedProposalIds.includes(proposal.proposalId)}
                 to={{
-                  pathname: `/proposal/${proposal.id}`,
+                  pathname: `/proposal/${proposal.proposalId}`,
                 }}
               />
             </BaseBlock>
