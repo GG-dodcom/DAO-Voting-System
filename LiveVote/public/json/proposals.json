@@ -1,6 +1,6 @@
 [
   {
-    "id": "1",
+    "proposalId": "1",
     "title": "Proposal for Art Exhibition",
     "body": "This proposal outlines the details for the upcoming art exhibition, which aims to showcase local artists.",
     "avatar": "image/2.jpg",
@@ -12,18 +12,18 @@
     "symbol": "ART",
     "state": "active",
     "voting": {
-      "start": 1696935680000,
-      "end": 1697540480000,
+      "start": 1732880000,
+      "end": 1732966400,
       "type": "single-choice",
       "votes_num": 100
     },
-    "timestamp": 1696935680000,
+    "timestamp": 1732880000,
     "scores": [50, 30, 20],
     "scores_state": "final",
     "scores_total": 100
   },
   {
-    "id": "2",
+    "proposalId": "2",
     "title": "Community Clean-Up Day",
     "body": "A proposal for organizing a community clean-up day to enhance local parks.",
     "avatar": "image/1.jpg",
@@ -34,18 +34,18 @@
     "symbol": "CLEAN",
     "state": "pending",
     "voting": {
-      "start": 1696935680000,
-      "end": 1697130880000,
+      "start": 1732972800,
+      "end": 1733059200,
       "type": "single-choice",
       "votes_num": 50
     },
-    "create": 1696935680000,
+    "timestamp": 1732972800,
     "scores": [30, 70],
     "scores_state": "final",
     "scores_total": 100
   },
   {
-    "id": "3",
+    "proposalId": "3",
     "title": "New Park Construction",
     "body": "Proposal to construct a new park in the downtown area to provide more green space.",
     "avatar": "image/3.jpg",
@@ -57,18 +57,18 @@
     "symbol": "PARK",
     "state": "closed",
     "voting": {
-      "start": 1696343680000,
-      "end": 1696423680000,
+      "start": 1733059200,
+      "end": 1733145600,
       "type": "single-choice",
       "votes_num": 80
     },
-    "create": 1696343680000,
+    "timestamp": 1733059200,
     "scores": [10, 20, 70],
     "scores_state": "final",
     "scores_total": 100
   },
   {
-    "id": "4",
+    "proposalId": "4",
     "title": "Neighborhood Watch Program",
     "body": "Establishing a neighborhood watch program to enhance community safety.",
     "avatar": "image/azora.jpg",
@@ -79,18 +79,18 @@
     "symbol": "WATCH",
     "state": "active",
     "voting": {
-      "start": 1696935680000,
-      "end": 1697540480000,
+      "start": 1733145600,
+      "end": 1733232000,
       "type": "single-choice",
       "votes_num": 120
     },
-    "create": 1696935680000,
+    "timestamp": 1733145600,
     "scores": [60, 40],
     "scores_state": "final",
     "scores_total": 100
   },
   {
-    "id": "5",
+    "proposalId": "5",
     "title": "New Library Initiative",
     "body": "Proposal to initiate a new library program to enhance literacy in the community.",
     "avatar": "image/2.jpg",
@@ -102,12 +102,12 @@
     "symbol": "LIBRARY",
     "state": "pending",
     "voting": {
-      "start": 1696935680000,
-      "end": 1697129280000,
+      "start": 1733232000,
+      "end": 1733318400,
       "type": "single-choice",
       "votes_num": 150
     },
-    "create": 1696935680000,
+    "timestamp": 1733232000,
     "scores": [45, 35, 20],
     "scores_state": "final",
     "scores_total": 100

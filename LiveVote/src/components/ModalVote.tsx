@@ -61,7 +61,7 @@ const ModalVote: React.FC<Props> = ({
     } else {
       await postQuery(API_PATHS.vote, {
         voter: address,
-        proposalId: proposal.id,
+        proposalId: proposal.proposalId,
         choice: selectedChoices,
         reason: reason,
         timestamp: parseInt((Date.now() / 1e3).toFixed()),

@@ -1,7 +1,7 @@
-@import '../fonts/iconfont.css';
-@import 'viewerjs/dist/viewer.css';
-@import './tippy.scss';
-@import './tune.scss';
+@use '../fonts/iconfont.css';
+@use 'viewerjs/dist/viewer.css';
+@use './tippy.scss';
+@use './tune.scss';
 
 @tailwind base;
 @tailwind components;

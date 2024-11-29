@@ -1,44 +1,42 @@
+//api/proposals/view-proposal-details
 {
-  "id": "1",
+  "proposalId": "1",
   "title": "Proposal for Art Exhibition",
   "body": "# Art Exhibition Proposal\n\n## Overview\nThis proposal aims to organize a modern art exhibition featuring prominent artists from various genres and styles. The exhibition will showcase abstract, contemporary, and conceptual artworks, giving the audience a diverse visual and sensory experience. The goal is to foster appreciation for modern art and create a platform for both established and emerging artists.\n\n## Details\nThe exhibition will take place at the **City Art Gallery** from **December 10th** to **December 20th**. The venue is known for hosting international art events, ensuring a broad audience reach. The gallery has multiple floors, allowing the installation of large-scale sculptures, interactive installations, and video art, alongside paintings and drawings.\n\n### Participating Artists\n- **Artist A**: Known for abstract paintings that evoke deep emotions and thoughts.\n- **Artist B**: A conceptual artist whose works challenge societal norms.\n- **Artist C**: A sculptor with expertise in blending modern materials with traditional forms.\n\n## Curatorial Approach\nThe exhibition will follow a thematic approach titled **\"The Intersection of Thought and Form\"**, emphasizing how modern art acts as a conduit for translating complex thoughts into visual forms. The audience will be guided through different sections of the exhibition, each representing a unique interpretation of this theme.\n\n## Expected Impact\nWe expect the exhibition to attract a large number of visitors, including art collectors, critics, and art enthusiasts. The exhibition will also offer educational workshops, artist talks, and guided tours to engage the audience in deeper discussions about modern art.\n\n## Budget\nThe total estimated budget for the exhibition is **$150,000**, which will cover artist fees, transportation of artworks, venue costs, marketing, and operational expenses.\n\n## Conclusion\nThis art exhibition is a vital initiative for promoting the modern art movement and providing a platform for artists to showcase their work to a larger audience. By voting for this proposal, you are supporting art and culture in our community.\n\n**Vote for the Proposal and support the arts!**",
   "avatar": "../public/image/azora.jpg",
   "choices": [
     {
-      "id": "choice1",
+      "id": "1",
       "name": "Artist A",
       "avatar": "../public/image/2.jpg"
     },
     {
-      "id": "choice2",
+      "id": "2",
       "name": "Artist B",
       "avatar": "../public/image/1.jpg"
     },
     {
-      "id": "choice3",
+      "id": "3",
       "name": "Artist C",
       "avatar": "../public/image/3.jpg"
     },
     {
-      "id": "choice4",
+      "id": "4",
       "name": "Artist A",
       "avatar": "../public/image/2.jpg"
     },
     {
-      "id": "choice5",
+      "id": "5",
       "name": "Artist A sdfjlskdjf jfklejfks ",
       "avatar": "../public/image/2.jpg"
     }
   ],
   "symbol": "ART",
   "state": "closed",
-  "voting": {
-    "start": 1696935680000,
-    "end": 1697540480000,
-    "type": "single-choice",
-    "votes_num": 100
-  },
-  "timestamp": 1696935680000,
-
-  "votes": 100
+  "startDate": 1732880000,
+  "endDate": 1732966400,
+  "type": "single-choice",
+  "votes_num": 100,
+  "timestamp": 1732880000
 }
+//"_votes": 100

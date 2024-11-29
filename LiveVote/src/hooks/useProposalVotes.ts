@@ -38,7 +38,7 @@ export function useProposalVotes(proposal: Proposal, loadBy = 6) {
   // fetches a single vote based on the voter specified in queryParams
   async function _fetchVote(queryParams: QueryParams) {
     const response = await fetchQuery(API_PATHS.loadUserVote, {
-      id: proposal.id,
+      id: proposal.proposalId,
       voter: queryParams.voter,
     });
     return response;

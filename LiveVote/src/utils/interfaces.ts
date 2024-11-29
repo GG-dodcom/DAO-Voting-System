@@ -12,7 +12,7 @@ export interface Proposal {
   proposalId: string;
   title: string;
   body: string;
-  avatar: string;
+  avatar: string; //avatar: File | null | string
   choices: Choices[];
   symbol?: string;
   state: string; //'pending', 'closed', 'active'
@@ -20,17 +20,12 @@ export interface Proposal {
   endDate: number;
   createDate: number; //the spaces will show new to old
   type: string | null; //'single-choice'
-  votes_num: number;
-  // result?: Results;
-  // votes_num: number; //total peopel vote.
-  //maybe put on teams
-  // scores?: number[];
-  // scores_state?: string; //'final', 'invalid', 'pending'
-  // scores_total?: number;
+  votes_num: number; //total peopel vote.
 }
 
 export interface Results {
-  scores_state: string; //'final'
+  proposalId: string;
+  scores_state: string; //'final', 'invalid', 'pending'
   scores: number[];
   scoresTotal: number;
 }
@@ -38,7 +33,6 @@ export interface Results {
 export type Choice = number;
 
 export interface Choices {
-  //Performers
   // id: string; //PK, UUID
   name: string;
   avatar?: File | string | null;
@@ -52,6 +46,7 @@ export interface Choices {
   // votes: number; //toal votes the team has received
 }
 
+//---------------------------------------NOt Used-----------------------
 export interface SingleChoiceVote {
   choice: number;
   balance: number;
