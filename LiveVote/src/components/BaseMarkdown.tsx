@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Remarkable } from 'remarkable';
 import { linkify } from 'remarkable/linkify';
 import ModalLinkPreview from './ModalLinkPreview';
+import './../assets/css/markdown.scss';
 
 interface Props {
   body: string;

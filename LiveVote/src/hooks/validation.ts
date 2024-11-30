@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import snapshot from '@snapshot-labs/snapshot.js';
+import { validateSchema } from '../utils/utils';
 
 function getErrorMessage(errorObject: any): string {
   if (!errorObject.message) return 'Invalid field.';
@@ -28,13 +28,9 @@ function getErrorMessage(errorObject: any): string {
 export function validateForm(
   schema: Record<string, any>,
   form: Record<string, any>,
-  options = {
-    spaceType: 'default',
-  }
+  spaceType: string = 'default'
 ): Record<string, any> {
-  const valid = snapshot.utils.validateSchema(schema, form, {
-    spaceType: options.spaceType || 'default',
-  });
+  const valid = validateSchema(schema, form, spaceType);
   // console.log(form)
   // console.log('valid', valid);
   if (!Array.isArray(valid)) return {};

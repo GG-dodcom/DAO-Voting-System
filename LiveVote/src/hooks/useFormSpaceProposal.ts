@@ -79,9 +79,7 @@ export function useFormSpaceProposal(spaceType = 'default') {
   //   }
   // };
 
-  const validationErrors = validateForm(schemas.proposal, form, {
-    spaceType,
-  });
+  const validationErrors = validateForm(schemas.proposal, form, spaceType);
 
   const isValid = Object.keys(validationErrors).length === 0;
 

@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import {
   BaseBlock,
+  BaseButtonIcon,
   BaseLink,
   BaseNoResults,
   LoadingRow,
@@ -14,6 +15,7 @@ import { useRestfulAPI } from '../hooks';
 import API_PATHS from '../utils/queries';
 import { useAppKitAccount } from '@reown/appkit/react';
 import { useNavigate } from 'react-router-dom';
+import { ISScanqr } from '../assets/icons';
 
 const SpaceProposals: React.FC = () => {
   const isAdmin = localStorage.getItem('isAdmin') === 'true';
@@ -65,7 +67,12 @@ const SpaceProposals: React.FC = () => {
   return (
     <TheLayout>
       <div>
-        <h1 className="hidden lg:mb-3 lg:block">Proposals</h1>
+        <div className="flex">
+          <h1 className="hidden lg:mb-3 lg:block">Proposals</h1>
+          <BaseButtonIcon>
+            <ISScanqr h-8 w-8 />
+          </BaseButtonIcon>
+        </div>
 
         {isAdmin && (
           <div className="mb-4 flex flex-col justify-end gap-x-3 gap-y-[10px] px-[20px] sm:flex-row md:px-0">

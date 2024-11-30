@@ -9,15 +9,15 @@
           "type": "string",
           "title": "name",
           "minLength": 1,
-          "maxLength": 256
+          "maxLength": 255
         },
         "body": {
           "type": "string",
           "title": "body",
           "minLength": 0,
           "maxLengthWithSpaceType": {
-            "default": 10000,
-            "turbo": 40000
+            "default": 1500,
+            "turbo": 1500
           }
         },
         "choices": {
@@ -25,8 +25,8 @@
           "title": "choices",
           "minItems": 1,
           "maxLengthWithSpaceType": {
-            "default": 500,
-            "turbo": 1000
+            "default": 255,
+            "turbo": 255
           }
         },
         "labels": {

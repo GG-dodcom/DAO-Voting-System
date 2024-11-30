@@ -2,6 +2,9 @@
   font-size: 19px;
   line-height: 1.3;
   word-wrap: break-word;
+
+  // Apply custom font for Chinese tex
+  font-family: 'CustomChineseFont', sans-setrif; // Fall back to sans-serif
 }
 
 .markdown-body::before {

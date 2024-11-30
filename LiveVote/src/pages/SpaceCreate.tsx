@@ -16,7 +16,6 @@ import proposal from '../schemas/proposal.json';
 import API_PATHS from '../utils/queries';
 import Tippy from '@tippyjs/react';
 import { useFlashNotification } from '../context';
-import { useAppKitAccount } from '@reown/appkit/react';
 
 enum Step {
   CONTENT,
@@ -47,7 +46,6 @@ const SpaceCreate: React.FC = () => {
     setUserSelectedDateEnd,
     setUserSelectedDateStart,
   } = useFormSpaceProposal(spaceType);
-  const { isConnected } = useAppKitAccount();
   const { notify } = useFlashNotification();
 
   const [preview, setPreview] = useState(false);
@@ -292,11 +290,11 @@ const SpaceCreate: React.FC = () => {
               {t('create.publish')}
             </TuneButton>
           ) : (
-            <Tippy content={t('plsConnctWallet')} disabled={isConnected}>
+            <Tippy content={t('plsConnctWallet')}>
               <div>
                 <TuneButton
                   className="block w-full"
-                  disabled={!stepIsValid || !isConnected}
+                  disabled={!stepIsValid}
                   primary
                   onClick={() => nextStep()}
                 >
