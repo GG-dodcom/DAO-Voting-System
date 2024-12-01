@@ -4,8 +4,10 @@ import {
   BaseBlock,
   BaseButtonIcon,
   BaseLink,
+  BaseModal,
   BaseNoResults,
   LoadingRow,
+  QRCodeScanner,
   TheLayout,
   TuneButton,
 } from '../components';
@@ -16,6 +18,7 @@ import API_PATHS from '../utils/queries';
 import { useAppKitAccount } from '@reown/appkit/react';
 import { useNavigate } from 'react-router-dom';
 import { ISScanqr } from '../assets/icons';
+import { useFlashNotification } from '../context';
 
 const SpaceProposals: React.FC = () => {
   const isAdmin = localStorage.getItem('isAdmin') === 'true';
@@ -23,10 +26,31 @@ const SpaceProposals: React.FC = () => {
   const [userVotedProposalIds, setUserVotedProposalIds] = useState<string[]>(
     []
   );
+  const [isOpenQrModal, setOpenQrModal] = useState(false);
+  const [qrScannedText, setQrScannedText] = useState<string>('');
 
   const { fetchQuery, queryLoading } = useRestfulAPI();
+  const { notify } = useFlashNotification();
   const { address } = useAppKitAccount();
   const navigate = useNavigate();
+
+  const openQrModal = () => {
+    setOpenQrModal(!isOpenQrModal);
+  };
+
+  const closeQrModal = () => {
+    setOpenQrModal(false);
+  };
+
+  const checkTokenRedeem = () => {
+    if (qrScannedText != '') {
+      //TODO: check is scanned text able to get token or not
+      notify(['green', qrScannedText]);
+
+      notify(['red', 'cannot reddem ' + qrScannedText]);
+      closeQrModal();
+    }
+  };
 
   const getProposals = async () => {
     try {
@@ -67,25 +91,29 @@ const SpaceProposals: React.FC = () => {
   return (
     <TheLayout>
       <div>
-        <div className="flex">
-          <h1 className="hidden lg:mb-3 lg:block">Proposals</h1>
-          <BaseButtonIcon>
-            <ISScanqr h-8 w-8 />
-          </BaseButtonIcon>
-        </div>
-
-        {isAdmin && (
-          <div className="mb-4 flex flex-col justify-end gap-x-3 gap-y-[10px] px-[20px] sm:flex-row md:px-0">
-            <BaseLink
-              link={{ pathname: '/create' }}
-              hideExternalIcon
-              data-testid="create-proposal-button"
-            >
-              <TuneButton className="w-full sm:w-auto">New proposal</TuneButton>
-            </BaseLink>
-            <TuneButton onClick={signOut}>Sign Out</TuneButton>
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center">
+            <h1 className="lg:block">Proposals</h1>
+            <BaseButtonIcon onClick={openQrModal}>
+              <ISScanqr className="h-[46px] w-[46px]" />
+            </BaseButtonIcon>
           </div>
-        )}
+
+          {isAdmin && (
+            <div className="flex items-center gap-x-3">
+              <BaseLink
+                link={{ pathname: '/create' }}
+                hideExternalIcon
+                data-testid="create-proposal-button"
+              >
+                <TuneButton className="w-full sm:w-auto">
+                  New proposal
+                </TuneButton>
+              </BaseLink>
+              <TuneButton onClick={signOut}>Sign Out</TuneButton>
+            </div>
+          )}
+        </div>
 
         {queryLoading && <LoadingRow block />}
 
@@ -104,6 +132,21 @@ const SpaceProposals: React.FC = () => {
           ))}
         </div>
       </div>
+
+      <BaseModal open={isOpenQrModal} onClose={closeQrModal}>
+        {{
+          children: (
+            <div>
+              <QRCodeScanner
+                onScanned={(scanned: string) => {
+                  setQrScannedText(scanned);
+                  checkTokenRedeem();
+                }}
+              />
+            </div>
+          ),
+        }}
+      </BaseModal>
     </TheLayout>
   );
 };

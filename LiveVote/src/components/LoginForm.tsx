@@ -44,7 +44,7 @@ const LoginForm: React.FC<Props> = ({ open, onClose, onSuccess }) => {
   };
 
   return (
-    <BaseModal open={open} hideClose={true} onClose={onClose}>
+    <BaseModal open={open} hideClose={false} onClose={onClose}>
       {{
         header: (
           <div className="flex flex-row items-center justify-center">

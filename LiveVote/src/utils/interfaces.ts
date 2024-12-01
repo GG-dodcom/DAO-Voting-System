@@ -20,7 +20,7 @@ export interface Proposal {
   endDate: number;
   createDate: number; //the spaces will show new to old
   type: string | null; //'single-choice'
-  votes_num: number; //total peopel vote.
+  votes_num: number; //number of available qr for token redeem.
 }
 
 export interface Results {

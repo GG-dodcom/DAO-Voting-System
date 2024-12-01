@@ -32,6 +32,7 @@
     "eslint": "^8.57.0",
     "i18next": "^23.11.5",
     "js-sha256": "^0.11.0",
+    "qr-scanner": "^1.4.2",
     "qrcode.react": "^4.1.0",
     "react": "^18.3.1",
     "react-beautiful-dnd": "^13.1.1",

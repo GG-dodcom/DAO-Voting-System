@@ -1,69 +1,54 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { Html5QrcodeScanner } from 'html5-qrcode';
+/* eslint-disable react-hooks/exhaustive-deps */
+import { useEffect, useRef, useState } from 'react';
+import QrScanner from 'qr-scanner';
 
-const QrCodeScanner = () => {
-  const [decodedText, setDecodedText] = useState<string | null>(null);
-  const [error, setError] = useState<string | null>(null);
-  const scannerRef = useRef<HTMLDivElement | null>(null);
+interface Props {
+  onScanned: (scannedText: string) => void;
+}
+
+const QRCodeScanner: React.FC<Props> = ({ onScanned }) => {
+  const videoElementRef = useRef<HTMLVideoElement | null>(null);
+  const [scanned, setScannedText] = useState('');
 
   useEffect(() => {
-    if (!scannerRef.current) return;
+    const video = videoElementRef.current;
 
-    // Create Html5QrcodeScanner instance
-    const html5QrcodeScanner = new Html5QrcodeScanner(
-      'qr-reader', // Element ID for the scanner
-      {
-        fps: 20, // Frames per second
-        qrbox: { width: 250, height: 250 }, // Scanning box size
-      },
-      false
-    );
+    if (video) {
+      // Check if video is not null
+      const qrScanner = new QrScanner(
+        video,
+        (result) => {
+          console.log('decoded qr code:', result);
+          setScannedText(result.data);
+        },
+        {
+          returnDetailedScanResult: true,
+          highlightScanRegion: true,
+          highlightCodeOutline: true,
+        }
+      );
+      qrScanner.start();
+      console.log('start');
 
-    // Callback for successful scan
-    const onScanSuccess = (decodedText: string) => {
-      setDecodedText(decodedText);
-      setError(null);
-      html5QrcodeScanner.clear(); // Stop scanner after successful scan
-    };
-
-    // Callback for scan failure
-    const onScanFailure = (errorMessage: string) => {
-      setError(errorMessage);
-    };
-
-    // Start scanning
-    html5QrcodeScanner.render(onScanSuccess, onScanFailure);
-
-    // Cleanup on component unmount
-    return () => {
-      html5QrcodeScanner.clear();
-    };
+      return () => {
+        console.log(qrScanner);
+        qrScanner.stop();
+        qrScanner.destroy();
+      };
+    }
   }, []);
 
+  useEffect(() => {
+    if (scanned !== '') {
+      onScanned(scanned); // Send scanned text to the parent
+    }
+  }, [scanned, onScanned]);
+
   return (
-    <div style={{ textAlign: 'center', marginTop: '20px' }}>
-      <h1>QR Code Scanner</h1>
-      <div
-        id="qr-reader"
-        ref={scannerRef}
-        style={{ width: '300px', margin: 'auto' }}
-      ></div>
-
-      {decodedText && (
-        <div style={{ marginTop: '20px', color: 'green' }}>
-          <h3>Decoded Text:</h3>
-          <p>{decodedText}</p>
-        </div>
-      )}
-
-      {error && (
-        <div style={{ marginTop: '20px', color: 'red' }}>
-          <h3>Error:</h3>
-          <p>{error}</p>
-        </div>
-      )}
+    <div>
+      <video ref={videoElementRef} />
     </div>
   );
 };
 
-export default QrCodeScanner;
+export default QRCodeScanner;
