@@ -20,6 +20,9 @@ export interface Proposal {
   endDate: number;
   createDate: number; //the spaces will show new to old
   type: string | null; //'single-choice'
+  //num_ofqr: number; //number of available qr for token redeem.
+
+  //TODO: remove this
   votes_num: number; //number of available qr for token redeem.
 }
 

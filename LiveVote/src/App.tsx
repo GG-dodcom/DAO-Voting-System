@@ -65,21 +65,3 @@ const App: React.FC = () => {
 };
 
 export default App;
-
-// import React from 'react';
-// import QrCodeScanner from './components/QrCodeScanner';
-// import QRCodeGenerator from './components/QRCodeGenerator';
-
-// const App = () => {
-//   return (
-//     <div>
-//       <QrCodeScanner />
-
-//       <div>
-//         <QRCodeGenerator />
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default App;

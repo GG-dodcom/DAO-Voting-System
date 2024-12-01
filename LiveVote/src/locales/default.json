@@ -8,7 +8,6 @@
   "cancel": "Cancel",
   "failed": "Failed",
   "votingPower": "Your voting power",
-  "eligibleVoters": "Eligible Voters",
   "voterTurnout": "Voter Turnout",
   "linkPreview": "This link will take you to {url}.</br> Be careful, this link could be malicious. Are you sure you want to continue? ",
   "privacy": "All votes will be encrypted until the voting period has ended and the final score is calculated",
@@ -184,6 +183,8 @@
     "votingSystem": "Voting system",
     "privacy": "Privacy",
     "invalidChoice": "Invalid choice",
+    "tokenRedeemQR": "Token QR",
+    "downloadQR": "download QR folder",
     "postVoteModal": {
       "defaultTitle": "Your vote is in!",
       "gnosisSafeTitle": "Your vote is pending...",

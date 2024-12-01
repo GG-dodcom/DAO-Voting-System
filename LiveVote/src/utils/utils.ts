@@ -2,6 +2,9 @@
 import Ajv from 'ajv';
 import addFormats from 'ajv-formats';
 import addErrors from 'ajv-errors';
+import QRCode from 'qrcode';
+import JSZip from 'jszip';
+import { saveAs } from 'file-saver';
 import pkg from '../../package.json';
 import { Proposal } from './interfaces';
 
@@ -141,4 +144,28 @@ export function validateSchema(
   const ajvValidate = ajv.compile(schema);
   const valid = ajvValidate.call(spaceType, data);
   return valid ? valid : ajvValidate.errors;
+}
+
+//----------------------------------------------Generate QR Code PNG Folder----------------------------------------------
+export async function downloadQRCodes(qrStrings: string[]) {
+  const zip = new JSZip();
+  const qrFolder = zip.folder('qrcodes');
+
+  if (!qrFolder) return;
+
+  // Generate and add each QR code to the zip folder
+  for (let i = 0; i < qrStrings.length; i++) {
+    const qrString = qrStrings[i];
+    try {
+      const qrDataURL = await QRCode.toDataURL(qrString); // Generate QR code as Data URL
+      const base64Data = qrDataURL.replace(/^data:image\/png;base64,/, ''); // Strip Data URL prefix
+      qrFolder.file(`${i + 1}.png`, base64Data, { base64: true }); // Use index + 1 as file name
+    } catch (error) {
+      console.error(`Error generating QR code for ${qrString}:`, error);
+    }
+  }
+
+  // Generate zip file and trigger download
+  const content = await zip.generateAsync({ type: 'blob' }); // Await the zip file generation
+  saveAs(content, 'QRCodeFolder.zip'); // Trigger the download
 }

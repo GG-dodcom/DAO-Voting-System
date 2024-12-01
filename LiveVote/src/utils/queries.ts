@@ -1,4 +1,4 @@
- const API_BASE_URL = 'http://localhost:8080/api';
+const API_BASE_URL = 'http://localhost:8080/api';
 //const API_BASE_URL = 'http://localhost:3000/api';
 const API_CONTRACT_URL = 'http://localhost:3000/api';
 
@@ -35,6 +35,8 @@ const API_PATHS = {
   // body,
   // avatar,
   // choices: id, name, avatar,
+
+  fetchTokenQR: `${API_BASE_URL}/proposals/token-qr`,
 
   deleteProposal: `${API_BASE_URL}/deleteProposal`,
 
