@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect, useState } from 'react';
 import { LoadingSpinner, SpaceProposalPage } from '../components';
@@ -25,9 +26,11 @@ const SpaceProposal: React.FC = () => {
     );
     if (!fetchedProposal) return navigate('/');
 
+    //TODO: fetch scores
     // Initialize 'proposal.result' and set the proposal state
     const initializedProposal = {
       ...fetchedProposal,
+      type: 'single-choice',
       // result: {
       //   scores_state: '',
       //   scores: [],
@@ -46,10 +49,6 @@ const SpaceProposal: React.FC = () => {
 
   return (
     <div>
-      <img
-      // src="http://localhost:8080/uploads/Screenshot%202023-03-02%20151606.png"
-      // alt="Avatar"
-      />
       {loadingProposal ? (
         <LoadingSpinner className="overlay big" />
       ) : (

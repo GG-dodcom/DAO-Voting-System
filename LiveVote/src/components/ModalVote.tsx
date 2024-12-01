@@ -75,6 +75,7 @@ const ModalVote: React.FC<Props> = ({
   const loadVotingPower = async () => {
     setHasVotingPowerFailed(false);
 
+    //TODO:
     // send request to check token balance
     try {
       const powerRes: any = await fetchQuery(

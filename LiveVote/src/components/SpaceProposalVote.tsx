@@ -80,11 +80,11 @@ const SpaceProposalVote: React.FC<Props> = ({
   const buttonTooltip = useMemo(() => {
     if (!address) return 'Please connect wallet';
 
-    // if (
-    //   proposal.voting.type === 'single-choice' &&
-    //   (modelValue == null || modelValue == 0)
-    // )
-    return 'Please select one choices';
+    if (
+      proposal.type === 'single-choice' &&
+      (modelValue == null || modelValue == 0)
+    )
+      return 'Please select one choices';
 
     return null;
   }, [modelValue]);
@@ -137,6 +137,7 @@ const SpaceProposalVote: React.FC<Props> = ({
           }
         >
           <div>
+            {/* TODO: get the scores from blockchain */}
             {/* {!isEditing && proposal.scores_state !== 'final' && (
               <div className="border px-3 py-[12px] rounded-xl bg-[--border-color-subtle]">
                 <IHoLockClosed className="inline-block text-sm" />
@@ -144,7 +145,6 @@ const SpaceProposalVote: React.FC<Props> = ({
                 score is calculated. You can still change your vote until then.
               </div>
             )} */}
-
             {userVote && !validatedUserChoice && !isEditing && (
               <BaseMessage
                 level="info"
@@ -154,18 +154,16 @@ const SpaceProposalVote: React.FC<Props> = ({
                 again.
               </BaseMessage>
             )}
-
             <div>
-              {/* {proposal.type === 'single-choice' && ( */}
-              <SpaceProposalVoteSingleChoice
-                proposal={proposal}
-                userChoice={validatedUserChoice}
-                isEditing={isEditing || !userVote}
-                onSelectChoice={handleChoiceChange}
-              />
-              {/* )} */}
+              {proposal.type === 'single-choice' && (
+                <SpaceProposalVoteSingleChoice
+                  proposal={proposal}
+                  userChoice={validatedUserChoice}
+                  isEditing={isEditing || !userVote}
+                  onSelectChoice={handleChoiceChange}
+                />
+              )}
             </div>
-
             {(!userVote || isEditing) && (
               // (buttonTooltip ? (
               <Tippy content={buttonTooltip} disabled={!buttonTooltip}>
