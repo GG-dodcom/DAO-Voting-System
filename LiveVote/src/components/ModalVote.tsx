@@ -52,6 +52,9 @@ const ModalVote: React.FC<Props> = ({
   const handleSubmit = async () => {
     console.log('call smart contract');
 
+    //TODO: add smart contract to pass token
+
+    //TODO: there is where you smart contract logic end.
     const result: any = null;
 
     console.log('Result', result);
@@ -77,19 +80,14 @@ const ModalVote: React.FC<Props> = ({
 
     //TODO:
     // send request to check token balance
-    try {
-      const powerRes: any = await fetchQuery(
-        API_PATHS.fetchTokenBalance
-        //   {
-        //   voter: address,
-        //   proposalId: proposal.id,
-        // }
-      );
-      setVotingPower(powerRes.balance);
-    } catch (e) {
-      setHasVotingPowerFailed(true);
-      console.log(e);
-    }
+    const powerRes: any = await fetchQuery(
+      API_PATHS.fetchTokenBalance
+      //   {
+      //   voter: address,
+      //   proposalId: proposal.id,
+      // }
+    );
+    setVotingPower(powerRes.balance);
   };
 
   const loadValidationAndPower = async () => {

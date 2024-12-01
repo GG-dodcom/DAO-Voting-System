@@ -4,12 +4,14 @@ import {
   BaseBlock,
   BaseButtonIcon,
   BaseLink,
-  BaseModal,
+  BaseMessageBlock,
   BaseNoResults,
   LoadingRow,
   QRCodeScanner,
   TheLayout,
   TuneButton,
+  TuneModal,
+  TuneModalTitle,
 } from '../components';
 import { Proposal } from '../utils/interfaces';
 import ProposalsItem from '../components/ProposalsItem';
@@ -19,6 +21,7 @@ import { useAppKitAccount } from '@reown/appkit/react';
 import { useNavigate } from 'react-router-dom';
 import { ISScanqr } from '../assets/icons';
 import { useFlashNotification } from '../context';
+import { t } from 'i18next';
 
 const SpaceProposals: React.FC = () => {
   const isAdmin = localStorage.getItem('isAdmin') === 'true';
@@ -27,7 +30,7 @@ const SpaceProposals: React.FC = () => {
     []
   );
   const [isOpenQrModal, setOpenQrModal] = useState(false);
-  const [qrScannedText, setQrScannedText] = useState<string>('');
+  const [isProcessing, setIsProcessing] = useState(false);
 
   const { fetchQuery, queryLoading } = useRestfulAPI();
   const { notify } = useFlashNotification();
@@ -42,14 +45,19 @@ const SpaceProposals: React.FC = () => {
     setOpenQrModal(false);
   };
 
-  const checkTokenRedeem = () => {
-    if (qrScannedText != '') {
-      //TODO: check is scanned text able to get token or not
-      notify(['green', qrScannedText]);
+  const checkTokenRedeem = (scanned: string) => {
+    if (!scanned) return;
+    setIsProcessing(true);
 
-      notify(['red', 'cannot reddem ' + qrScannedText]);
-      closeQrModal();
+    //TODO: check is scanned text able to get token or not
+    const isRedeemable = true; // Replace with actual validation logic
+
+    if (isRedeemable) {
+      notify(['green', `Successfully redeemed: ${scanned}`]);
+    } else {
+      notify(['red', `Cannot redeem: ${scanned}`]);
     }
+    closeQrModal();
   };
 
   const getProposals = async () => {
@@ -133,20 +141,28 @@ const SpaceProposals: React.FC = () => {
         </div>
       </div>
 
-      <BaseModal open={isOpenQrModal} onClose={closeQrModal}>
-        {{
-          children: (
-            <div>
-              <QRCodeScanner
-                onScanned={(scanned: string) => {
-                  setQrScannedText(scanned);
-                  checkTokenRedeem();
-                }}
-              />
-            </div>
-          ),
-        }}
-      </BaseModal>
+      <TuneModal open={isOpenQrModal} onClose={closeQrModal}>
+        <div className="mx-3">
+          <TuneModalTitle className="mt-3 mx-1">
+            Scan Ticket to Vote
+            {/* {t('proposal.')} */}
+          </TuneModalTitle>
+
+          <div className="space-y-3 text-skin-link">
+            <BaseMessageBlock level={'info'}>
+              <span>{t('scanQrMessage')}</span>
+            </BaseMessageBlock>
+          </div>
+
+          <div className="h-[229.5px] mb-3 mt-3 flex gap-x-[12px]">
+            <QRCodeScanner
+              onScanned={(scanned: string) => {
+                if (!isProcessing) checkTokenRedeem(scanned);
+              }}
+            />
+          </div>
+        </div>
+      </TuneModal>
     </TheLayout>
   );
 };

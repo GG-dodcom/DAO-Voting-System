@@ -39,10 +39,11 @@
   "optional": "(optional)",
   "votingQRNum": "Total number available for vote",
   "votingPeriodNotAvailable": "Voting period not available",
-  "choice": "Choice {0}",
+  "choice": "Choice",
   "votes": "Votes",
   "votingPowerFailedMessage": "Your voting power could not be calculated. This is often due to a misconfigured strategy or an unresponsive RPC node involved in the strategy. If the problem persists, consider contacting our support team on {help}",
   "votingValidationFailedMessage": "We were not able to validate your eligibility to vote. This is often due to a misconfigured vote validation setting or an unresponsive RPC node. If the problem persists, consider contacting our support team on {help}",
+  "scanQrMessage": "Use the QR code on your ticket to verify your eligibility and retrieve your voting power. This step ensures secure and accurate participation in the voting process.",
   "comment": {
     "placeholder": "Share your reason (optional)"
   },
