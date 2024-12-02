@@ -13,7 +13,7 @@ import {
   ModalVote,
   SpaceProposalVotes,
 } from '.';
-import { Proposal, Results } from '../utils/interfaces';
+import { Proposal } from '../utils/interfaces';
 import { useRestfulAPI } from '../hooks';
 import API_PATHS from '../utils/queries';
 import { useAppKitAccount } from '@reown/appkit/react';
