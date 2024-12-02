@@ -93,3 +93,4 @@ export { default as SpaceProposalVotesListItemChoice } from './SpaceProposalVote
 export { default as SpaceProposalVotesItem } from './SpaceProposalVotesItem';
 export { default as SpaceProposalVotes } from './SpaceProposalVotes';
 export { default as SpaceProposalVotesModal } from './SpaceProposalVotesModal';
+export { default as QRCodeScanner } from './QRCodeScanner';

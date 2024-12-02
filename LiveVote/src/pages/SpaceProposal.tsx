@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect, useState } from 'react';
 import { LoadingSpinner, SpaceProposalPage } from '../components';
@@ -18,21 +19,23 @@ const SpaceProposal: React.FC = () => {
     console.log('proposalId', proposalId);
 
     const fetchedProposal: any = await fetchQuery(
-      API_PATHS.fetchProposalDetails
+      API_PATHS.fetchProposalDetails + '/' + proposalId.id
       // {
-      //   id: proposalId.id,
+      //   proposalId: proposalId.id,
       // }
     );
     if (!fetchedProposal) return navigate('/');
 
+    //TODO: fetch scores
     // Initialize 'proposal.result' and set the proposal state
     const initializedProposal = {
       ...fetchedProposal,
-      result: {
-        scores_state: '',
-        scores: [],
-        scoresTotal: 0,
-      },
+      type: 'single-choice',
+      // result: {
+      //   scores_state: '',
+      //   scores: [],
+      //   scoresTotal: 0,
+      // },
     };
 
     setProposal(initializedProposal);

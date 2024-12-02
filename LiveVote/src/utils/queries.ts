@@ -1,4 +1,5 @@
-const API_BASE_URL = 'http://localhost:3000/api';
+const API_BASE_URL = 'http://localhost:8080/api';
+//const API_BASE_URL = 'http://localhost:3000/api';
 const API_CONTRACT_URL = 'http://localhost:3000/api';
 
 const API_PATHS = {
@@ -8,11 +9,12 @@ const API_PATHS = {
   // data
   vote: `${API_BASE_URL}/vote`,
 
-  fetchScores: `${API_BASE_URL}/scores`,
+  //fetchScores: `${API_BASE_URL}/scores`,
+  fetchScores: `http://localhost:3000/api/scores`,
 
   fetchTotalVoter: `${API_BASE_URL}/totalVoter`,
 
-  fetchProposals: `${API_BASE_URL}/proposals`,
+  fetchProposals: `${API_BASE_URL}/proposals/view-all-proposals`,
   //TODO: json look like, return array[]
   // id
   // title
@@ -26,7 +28,7 @@ const API_PATHS = {
   // scores_state,
   // scores_total
 
-  fetchProposalDetails: `${API_BASE_URL}/proposalDetails`, //api/proposalDetails/:id
+  fetchProposalDetails: `${API_BASE_URL}/proposals/view-proposal-details`, //api/proposalDetails/:id
   //return only one
   // id,
 

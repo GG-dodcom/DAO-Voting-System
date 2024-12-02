@@ -9,32 +9,28 @@
 
 //Performances
 export interface Proposal {
-  id: string;
+  proposalId: string;
   title: string;
   body: string;
-  avatar: File | null | string;
+  avatar: string; //avatar: File | null | string
   choices: Choices[];
   symbol?: string;
   state: string; //'pending', 'closed', 'active'
-  voting: {
-    start: number; //tooltip date
-    end: number; //tooltip date
-    type: string | null; //'single-choice'
-    votes_num: number; //for create how many QR
-  };
-  create?: number; //the spaces will show new to old
+  startDate: number;
+  endDate: number;
+  createDate: number; //the spaces will show new to old
+  type: string | null; //'single-choice'
+  //num_ofqr: number; //number of available qr for token redeem.
 
-  num_ofqr: number;
-  result?: Results;
-  votes: number; //total peopel vote.
-  //maybe put on teams
-  scores?: number[];
-  scores_state?: string; //'final', 'invalid', 'pending'
-  scores_total?: number;
+  //TODO: remove this
+  votes_num: number; //number of available qr for token redeem.
+
+  result?: Result;
 }
 
-export interface Results {
-  scores_state: string; //'final'
+export interface Result {
+  proposalId: string;
+  scores_state: string; //'final', 'invalid', 'pending'
   scores: number[];
   scoresTotal: number;
 }
@@ -42,8 +38,7 @@ export interface Results {
 export type Choice = number;
 
 export interface Choices {
-  //Performers
-  id: string; //PK, UUID
+  // id: string; //PK, UUID
   name: string;
   avatar?: File | string | null;
   // score?: number; //toal votes has received
@@ -56,6 +51,7 @@ export interface Choices {
   // votes: number; //toal votes the team has received
 }
 
+//---------------------------------------NOt Used-----------------------
 export interface SingleChoiceVote {
   choice: number;
   balance: number;

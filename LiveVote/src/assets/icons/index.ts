@@ -1,6 +1,7 @@
 import ISSpinner from '~icons/s/spinner';
 import ISVoted from '~icons/s/voted';
 import ISShutter from '~icons/s/shutter';
+import ISScanqr from '~icons/s/scanqr';
 
 import IHoCheck from '~icons/heroicons-outline/check';
 import IHoChevronUp from '~icons/heroicons-outline/chevron-up';
@@ -44,6 +45,7 @@ export {
   IHoTrash,
   ISSpinner,
   ISVoted,
+  ISScanqr,
   IHoCheck,
   IHoChevronUp,
   IHoEmojiSad,
