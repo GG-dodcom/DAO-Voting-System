@@ -80,7 +80,7 @@ const SpaceProposalInformation: React.FC<Props> = ({ proposal }) => {
           <div className="flex justify-between items-center">
             <b>{t('proposal.tokenRedeemQR')}</b>
             <span className="flex items-center text-skin-link">
-              {`${proposal.votes_num} Redeemable`}
+              {`${proposal.numOfQR} Redeemable`}
               <Tippy content={t('proposal.downloadQR')}>
                 <span>
                   <BaseButtonIcon

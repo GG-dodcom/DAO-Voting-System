@@ -15,7 +15,7 @@ export interface ProposalForm {
   start: number;
   end: number;
   type: string;
-  votes_num: number;
+  numOfQR: number;
   avatar: { file: File | null; url: string };
 }
 
@@ -29,7 +29,7 @@ const EMPTY_PROPOSAL: ProposalForm = {
   start: parseInt((Date.now() / 1e3).toFixed()),
   end: 0,
   type: 'single-choice',
-  votes_num: 0,
+  numOfQR: 0,
   avatar: { file: null, url: '' },
 };
 
@@ -57,7 +57,7 @@ export function useFormSpaceProposal(spaceType = 'default') {
           start: EMPTY_PROPOSAL.start,
           end: EMPTY_PROPOSAL.end,
           type: EMPTY_PROPOSAL.type,
-          votes_num: EMPTY_PROPOSAL.votes_num,
+          numOfQR: EMPTY_PROPOSAL.numOfQR,
         }
       : structuredClone(EMPTY_PROPOSAL)
   );

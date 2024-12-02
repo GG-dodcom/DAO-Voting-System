@@ -169,7 +169,7 @@ const SpaceCreate: React.FC = () => {
       startDate: formattedForm.start,
       endDate: formattedForm.end,
       type: formattedForm.type,
-      numOfQR: formattedForm.votes_num,
+      numOfQR: formattedForm.numOfQR,
       timestamp: parseInt((Date.now() / 1e3).toFixed()),
     };
 

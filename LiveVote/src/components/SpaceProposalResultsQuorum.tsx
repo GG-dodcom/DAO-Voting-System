@@ -1,6 +1,7 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect, useState } from 'react';
-import { Proposal, Results } from '../utils/interfaces';
+import { Proposal, Result } from '../utils/interfaces';
 import { useIntl } from '../hooks/useIntl';
 import { useRestfulAPI } from '../hooks';
 import { BaseProgressBar, LoadingSpinner } from '.';
@@ -10,7 +11,7 @@ import API_PATHS from '../utils/queries';
 
 interface Props {
   proposal: Proposal;
-  results: Results;
+  results: Result;
 }
 
 const SpaceProposalResultsQuorum: React.FC<Props> = ({ proposal, results }) => {
@@ -46,18 +47,16 @@ const SpaceProposalResultsQuorum: React.FC<Props> = ({ proposal, results }) => {
         {queryLoading && <LoadingSpinner className="mr-1" />}
         {!queryLoading && (
           <div className="flex gap-2">
-            <Tippy
-              content={formatPercentNumber(voter / proposal.voting.votes_num)}
-            >
+            <Tippy content={formatPercentNumber(voter / proposal.numOfQR)}>
               <span>
                 {formatCompactNumber(voter)} /{' '}
-                {formatCompactNumber(proposal.voting.votes_num)}
+                {formatCompactNumber(proposal.numOfQR)}
               </span>
             </Tippy>
           </div>
         )}
       </div>
-      <BaseProgressBar value={(voter / proposal.voting.votes_num) * 100} />
+      <BaseProgressBar value={(voter / proposal.numOfQR) * 100} />
     </div>
   );
 };
