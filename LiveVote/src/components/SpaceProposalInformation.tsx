@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Proposal } from '../utils/interfaces';
 import { BaseButtonIcon, TuneBlock, TuneBlockHeader } from '.';
 import { t } from 'i18next';
@@ -46,31 +46,28 @@ const SpaceProposalInformation: React.FC<Props> = ({ proposal }) => {
         <div>
           <b>{t('proposal.votingSystem')}</b>
           <span className="float-right text-skin-link">
-            {t(`voting.${proposal.voting.type}.label`)}
+            {t(`voting.${proposal.type}.label`)}
           </span>
         </div>
 
         <div>
           <b>{t('proposal.startDate')}</b>
-          <Tippy content={formatRelativeTime(proposal.voting.start)}>
+          <Tippy content={formatRelativeTime(proposal.startDate)}>
             <span className="float-right text-skin-link">
-              {new Date(proposal.voting.start * 1e3).toLocaleDateString(
-                'en-US',
-                {
-                  year: 'numeric',
-                  month: 'short',
-                  day: 'numeric',
-                }
-              )}
+              {new Date(proposal.startDate * 1e3).toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric',
+              })}
             </span>
           </Tippy>
         </div>
 
         <div>
           <b>{t('proposal.endDate')}</b>
-          <Tippy content={formatRelativeTime(proposal.voting.end)}>
+          <Tippy content={formatRelativeTime(proposal.endDate)}>
             <span className="float-right text-skin-link">
-              {new Date(proposal.voting.end * 1e3).toLocaleDateString('en-US', {
+              {new Date(proposal.endDate * 1e3).toLocaleDateString('en-US', {
                 year: 'numeric',
                 month: 'short',
                 day: 'numeric',
@@ -83,7 +80,7 @@ const SpaceProposalInformation: React.FC<Props> = ({ proposal }) => {
           <div className="flex justify-between items-center">
             <b>{t('proposal.tokenRedeemQR')}</b>
             <span className="flex items-center text-skin-link">
-              {`${proposal.num_ofqr} Redeemable`}
+              {`${proposal.votes_num} Redeemable`}
               <Tippy content={t('proposal.downloadQR')}>
                 <span>
                   <BaseButtonIcon

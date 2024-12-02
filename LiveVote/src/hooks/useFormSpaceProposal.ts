@@ -1,7 +1,6 @@
 // src/hooks/useFormSpaceProposal.ts
 import { useState } from 'react';
 import { useLocalStorage } from 'react-use';
-import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 import schemas from '../schemas';
 import { validateForm } from './validation';
 
@@ -47,7 +46,7 @@ export function useFormSpaceProposal(spaceType = 'default') {
     body: string;
     isBodySet: boolean;
     avatar: { file: File | null; url: string };
-  }>(`proposal.draft`, clone(EMPTY_PROPOSAL_DRAFT));
+  }>(`proposal.draft`, structuredClone(EMPTY_PROPOSAL_DRAFT));
   const [form, setForm] = useState<ProposalForm>(
     formDraft
       ? {
@@ -60,15 +59,15 @@ export function useFormSpaceProposal(spaceType = 'default') {
           type: EMPTY_PROPOSAL.type,
           votes_num: EMPTY_PROPOSAL.votes_num,
         }
-      : clone(EMPTY_PROPOSAL)
+      : structuredClone(EMPTY_PROPOSAL)
   );
 
   const [userSelectedDateStart, setUserSelectedDateStart] = useState(false);
   const [userSelectedDateEnd, setUserSelectedDateEnd] = useState(false);
 
   const resetForm = () => {
-    setForm(clone(EMPTY_PROPOSAL));
-    setFormDraft(clone(EMPTY_PROPOSAL_DRAFT));
+    setForm(structuredClone(EMPTY_PROPOSAL));
+    setFormDraft(structuredClone(EMPTY_PROPOSAL_DRAFT));
     setUserSelectedDateEnd(false);
     setUserSelectedDateStart(false);
   };
@@ -80,9 +79,7 @@ export function useFormSpaceProposal(spaceType = 'default') {
   //   }
   // };
 
-  const validationErrors = validateForm(schemas.proposal, form, {
-    spaceType,
-  });
+  const validationErrors = validateForm(schemas.proposal, form, spaceType);
 
   const isValid = Object.keys(validationErrors).length === 0;
 
