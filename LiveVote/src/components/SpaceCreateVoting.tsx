@@ -248,11 +248,11 @@ const SpaceCreateVoting: React.FC<Props> = ({
       <BaseBlock title={t('create.votingQR')}>
         <TuneInput
           type={'number'}
-          value={form.votes_num}
+          value={form.numOfQR}
           onChange={(value) => {
             setForm((prev: any) => ({
               ...prev,
-              votes_num: value,
+              numOfQR: value,
             }));
           }}
           label={t('create.votes_num')}

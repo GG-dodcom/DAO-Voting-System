@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import { useAppKitAccount, useAppKit, createAppKit } from '@reown/appkit/react';
 import { useAccount } from 'wagmi';
-import { mainnet, polygon, bsc, hardhat } from 'viem/chains';
+import { hardhat } from 'viem/chains';
 import { WagmiAdapter } from '@reown/appkit-adapter-wagmi';
 import { projectId } from '../utils/web3';
 

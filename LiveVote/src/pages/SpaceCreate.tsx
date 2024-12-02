@@ -173,6 +173,7 @@ const SpaceCreate: React.FC = () => {
       timestamp: parseInt((Date.now() / 1e3).toFixed()),
     };
 
+    console.log('send json:', jsonData);
     // Manually set the JSON part with a Blob and specify Content-Type as 'application/json'
     formData.append(
       'proposalData',

@@ -18,11 +18,11 @@ const ProposalsItemFooter: React.FC<ProposalsItemFooterProps> = ({
     <div className="mt-3">
       <Tippy
         content={
-          proposal.voting?.start || proposal.voting?.end
+          proposal.startDate || proposal.endDate
             ? new Date(
                 (proposal.state === 'pending'
-                  ? proposal.voting?.start
-                  : proposal.voting?.end) * 1000
+                  ? proposal.startDate
+                  : proposal.endDate) * 1000
               ).toUTCString()
             : t('votingPeriodNotAvailable') // Default message if no voting data
         }
@@ -31,8 +31,8 @@ const ProposalsItemFooter: React.FC<ProposalsItemFooterProps> = ({
           {capitalize(
             getRelativeProposalPeriod(
               proposal.state,
-              proposal.voting?.start,
-              proposal.voting?.end
+              proposal.startDate,
+              proposal.endDate
             )
           )}
         </span>
