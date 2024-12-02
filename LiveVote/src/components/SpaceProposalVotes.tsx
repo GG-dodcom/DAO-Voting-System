@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
-import { Proposal } from '../utils/interfaces';
+import { Proposal, Result } from '../utils/interfaces';
 import {
   SpaceProposalVotesItem,
   SpaceProposalVotesModal,
@@ -14,11 +14,12 @@ import { useMediaQuery } from 'react-responsive';
 
 interface Props {
   proposal: Proposal;
+  results: Result;
 }
 
 const VOTES_LIMIT = 6;
 
-const SpaceProposalVotes: React.FC<Props> = ({ proposal }) => {
+const SpaceProposalVotes: React.FC<Props> = ({ proposal, results }) => {
   const breakpoints = {
     xs: '420px',
     sm: '544px',
@@ -39,7 +40,7 @@ const SpaceProposalVotes: React.FC<Props> = ({ proposal }) => {
   );
   const [modalVotesOpen, setModalVotesOpen] = useState(false);
 
-  const voteCount = proposal.votes;
+  const voteCount = results.scoresTotal;
 
   useEffect(() => {
     const fetchVotes = async () => {
@@ -65,7 +66,7 @@ const SpaceProposalVotes: React.FC<Props> = ({ proposal }) => {
               className="last:pb-0"
             />
           ))}
-          {proposal.votes > VOTES_LIMIT && (
+          {voteCount > VOTES_LIMIT && (
             <div className="pt-3">
               <TuneButton
                 className="w-full"

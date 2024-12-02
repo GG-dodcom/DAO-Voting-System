@@ -28,11 +28,6 @@ const SpaceProposalPage: React.FC<Props> = ({ proposal, onReload }) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedChoices, setSelectedChoices] = useState<any>(null);
   const [loadedResults, setLoadedResults] = useState(false);
-  const [results, setResults] = useState<Results>({
-    scores_state: '',
-    scores: [],
-    scoresTotal: 0,
-  });
 
   const { address } = useAppKitAccount();
   const { fetchQuery } = useRestfulAPI();
@@ -41,25 +36,28 @@ const SpaceProposalPage: React.FC<Props> = ({ proposal, onReload }) => {
     onReload();
   };
 
+  //TODO:
   const loadResults = async () => {
-    if (proposal.state == 'active') {
-      const result: any = await fetchQuery(
-        API_PATHS.fetchScores
-        //   {
-        //   proposalId: proposal.id,
-        // }
-      );
+    //TODO: remove commend
+    //if (proposal.state == 'active') return;
 
-      if (proposal.result?.scores.length === 0) {
-        proposal.result.scores_state = result.scores_state;
-        proposal.result.scores = result.scores;
-        proposal.result.scoresTotal = result.scoresTotal;
-      }
+    const result: any = await fetchQuery(
+      API_PATHS.fetchScores
+      //   {
+      //   proposalId: proposal.id,
+      // }
+    );
 
-      setResults(result);
-
-      console.log('proposal.result', proposal.result);
+    if (!proposal.result) {
+      proposal.result = {
+        proposalId: result.proposalId,
+        scores_state: result.scores_state,
+        scores: result.scores,
+        scoresTotal: result.scoresTotal,
+      };
     }
+
+    console.log('proposal.result', proposal.result);
     setLoadedResults(true);
   };
 
@@ -83,7 +81,9 @@ const SpaceProposalPage: React.FC<Props> = ({ proposal, onReload }) => {
   }, [address]);
 
   useEffect(() => {
-    if (proposal.state != 'active') loadResults();
+    //TODO: remove commend
+    //if (proposal.state != 'active')
+    loadResults();
   }, [proposal]);
 
   return (
@@ -118,12 +118,19 @@ const SpaceProposalPage: React.FC<Props> = ({ proposal, onReload }) => {
           <div>
             <div className="mt-[20px] lg:space-y-3 space-y-[20px] lg:mt-0 px-[20px] md:px-0">
               <SpaceProposalInformation proposal={proposal} />
-              <SpaceProposalResults
-                loaded={loadedResults}
-                proposal={proposal}
-                results={results}
-              />
-              <SpaceProposalVotes proposal={proposal} />
+
+              {proposal.result && (
+                  <SpaceProposalResults
+                    loaded={loadedResults}
+                    proposal={proposal}
+                    results={proposal.result}
+                  />
+                ) && (
+                  <SpaceProposalVotes
+                    proposal={proposal}
+                    results={proposal.result}
+                  />
+                )}
             </div>
           </div>
         }
