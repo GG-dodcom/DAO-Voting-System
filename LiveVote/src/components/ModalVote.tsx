@@ -61,7 +61,7 @@ const ModalVote: React.FC<Props> = ({
     } else {
       await postQuery(API_PATHS.vote, {
         voter: address,
-        proposalId: proposal.id,
+        proposalId: proposal.proposalId,
         choice: selectedChoices,
         reason: reason,
         timestamp: parseInt((Date.now() / 1e3).toFixed()),
@@ -75,19 +75,18 @@ const ModalVote: React.FC<Props> = ({
   const loadVotingPower = async () => {
     setHasVotingPowerFailed(false);
 
+    //TODO:
     // send request to check token balance
-    try {
-      const powerRes: any = await fetchQuery(
-        API_PATHS.fetchTokenBalance
-        //   {
-        //   voter: address,
-        //   proposalId: proposal.id,
-        // }
-      );
-      setVotingPower(powerRes.balance);
-    } catch (e) {
-      setHasVotingPowerFailed(true);
-      console.log(e);
+    const powerRes: any = await fetchQuery(
+      API_PATHS.fetchTokenBalance,
+         {
+          roomId: proposal.proposalId,
+          userAddress: address,
+       }
+    );
+    if (powerRes.balance) {
+      const votingPower = Number(powerRes.balance); 
+      setVotingPower(votingPower);
     }
   };
 
