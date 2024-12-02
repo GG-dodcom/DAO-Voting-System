@@ -105,9 +105,11 @@ const SpaceProposals: React.FC = () => {
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center">
             <h1 className="lg:block">Proposals</h1>
-            <BaseButtonIcon onClick={openQrModal}>
-              <ISScanqr className="h-[46px] w-[46px]" />
-            </BaseButtonIcon>
+            {!isAdmin && (
+              <BaseButtonIcon onClick={openQrModal}>
+                <ISScanqr className="h-[46px] w-[46px]" />
+              </BaseButtonIcon>
+            )}
           </div>
 
           {isAdmin && (

@@ -30,6 +30,7 @@ const SpaceProposalVote: React.FC<Props> = ({
   onUpdateModelValue,
   onClickVote,
 }) => {
+  const isAdmin = localStorage.getItem('isAdmin') === 'true';
   const { address, isConnected } = useAppKitAccount();
   const { userVote, loadUserVote, loadingUserVote } =
     useProposalVotes(proposal);
@@ -78,6 +79,8 @@ const SpaceProposalVote: React.FC<Props> = ({
 
   // Tooltip for button
   const buttonTooltip = useMemo(() => {
+    if (isAdmin) return 'Admin unable to vote';
+
     if (!address) return 'Please connect wallet';
 
     if (

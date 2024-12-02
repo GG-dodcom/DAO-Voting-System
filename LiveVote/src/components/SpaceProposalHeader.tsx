@@ -39,7 +39,7 @@ const SpaceProposalHeader: React.FC<Props> = ({ proposal, isAdmin }) => {
 
   const deleteProposal = async () => {
     const result: any = await postQuery(API_PATHS.deleteProposal, {
-      id: proposal.id,
+      id: proposal.proposalId,
     });
     console.log('Result', result);
     if (result.id) {
@@ -55,7 +55,7 @@ const SpaceProposalHeader: React.FC<Props> = ({ proposal, isAdmin }) => {
       resetForm();
       navigate(`/spaceCreate`, {
         state: {
-          key: proposal.id,
+          key: proposal.proposalId,
           editing: e === 'edit' ? 'true' : undefined,
         },
       });
@@ -67,7 +67,7 @@ const SpaceProposalHeader: React.FC<Props> = ({ proposal, isAdmin }) => {
       <div className="flex items-center space-x-1">
         <div className="flex items-center">
           <BaseAvatar
-            src={typeof proposal.avatar === 'string' ? proposal.avatar : ''}
+            src={`http://localhost:8080/${proposal.avatar}`}
             size={'48'}
           />
           <h1

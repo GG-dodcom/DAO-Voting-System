@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
 import {
   BaseAvatar,
@@ -44,6 +45,7 @@ const SpaceProposalVoteSingleChoice: React.FC<Props> = ({
   };
 
   useEffect(() => {
+    console.log(proposal);
     if (!selectedChoice) {
       setSelectedChoice(userChoice);
     }
@@ -82,11 +84,7 @@ const SpaceProposalVoteSingleChoice: React.FC<Props> = ({
                         <div className="mb-1">
                           <BaseAvatar
                             size="150"
-                            src={
-                              typeof choice.avatar === 'string'
-                                ? choice.avatar
-                                : ''
-                            }
+                            src={`http://localhost:8080/${choice.avatar}`}
                           />
                         </div>
                       </div>

@@ -2,6 +2,8 @@ import { Link } from 'react-router-dom';
 import { NavbarAccount } from '.';
 
 const TheNavbar = () => {
+  const isAdmin = localStorage.getItem('isAdmin') === 'true';
+
   return (
     <div>
       <div className="px-3 sm:px-4">
@@ -16,9 +18,11 @@ const TheNavbar = () => {
             </Link>
           </div>
 
-          <div className="flex space-x-2">
-            <NavbarAccount />
-          </div>
+          {!isAdmin && (
+            <div className="flex space-x-2">
+              <NavbarAccount />
+            </div>
+          )}
         </div>
       </div>
     </div>

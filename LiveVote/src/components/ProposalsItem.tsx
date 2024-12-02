@@ -31,10 +31,8 @@ const ProposalsItem: React.FC<Props> = ({ proposal, voted, to }) => {
             <div className="flex items-start justify-between items-center">
               <div className="flex items-center gap-1">
                 <BaseAvatar
-                  size={'45'}
-                  src={
-                    typeof proposal.avatar === 'string' ? proposal.avatar : ''
-                  }
+                  size={'50'}
+                  src={`http://localhost:8080/${proposal.avatar}`}
                 />
                 <ProposalsItemTitle
                   proposal={proposal}
@@ -47,11 +45,11 @@ const ProposalsItem: React.FC<Props> = ({ proposal, voted, to }) => {
 
             {body && <ProposalsItemBody>{body}</ProposalsItemBody>}
 
-            {proposal.scores_total &&
+            {/* {proposal.scores_total &&
               proposal.scores_state === 'final' &&
               proposal.scores_total > 0 && (
                 <ProposalsItemResults proposal={proposal} />
-              )}
+              )} */}
           </Link>
 
           <ProposalsItemFooter proposal={proposal} />
