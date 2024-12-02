@@ -26,7 +26,7 @@ export interface Proposal {
 }
 
 export interface Result {
-  proposalId: string;
+  proposalId?: string;
   scores_state: string; //'final', 'invalid', 'pending'
   scores: number[];
   scoresTotal: number;

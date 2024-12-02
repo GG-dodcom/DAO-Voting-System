@@ -26,16 +26,9 @@ const SpaceProposal: React.FC = () => {
     );
     if (!fetchedProposal) return navigate('/');
 
-    //TODO: fetch scores
-    // Initialize 'proposal.result' and set the proposal state
     const initializedProposal = {
       ...fetchedProposal,
       type: 'single-choice',
-      // result: {
-      //   scores_state: '',
-      //   scores: [],
-      //   scoresTotal: 0,
-      // },
     };
 
     setProposal(initializedProposal);

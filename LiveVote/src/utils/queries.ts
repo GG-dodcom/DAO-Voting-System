@@ -9,8 +9,11 @@ const API_PATHS = {
   // data
   vote: `${API_BASE_URL}/vote`,
 
-  //fetchScores: `${API_BASE_URL}/scores`,
+  //fetchScores: `${API_BASE_URL}/scores`, //?proposalId=...
   fetchScores: `http://localhost:3000/api/scores`,
+
+  //fetchAllScores: `${API_BASE_URL}/all-scores`,
+  fetchAllScores: `http://localhost:3000/api/all-scores`,
 
   fetchTotalVoter: `${API_BASE_URL}/totalVoter`,
 
@@ -41,8 +44,11 @@ const API_PATHS = {
 
   deleteProposal: `${API_BASE_URL}/deleteProposal`,
 
-  fetchUserVotedProposalIds: `${API_BASE_URL}/userVotedProposalIds`,
-  //list of id
+  fetchUserVotedProposalIds: `${API_BASE_URL}/userVotedProposalIds`, //?address=...
+  //list of proposal id
+
+  //checkTokenRedeem: `${API_BASE_URL}/checkTokenRedeem`, //?qrcode=...
+  checkTokenRedeem: `http://localhost:3000/api/checkTokenRedeem`, //?qrcode=...
 
   fetchAudiences: `${API_BASE_URL}/audiences`,
   fetchPerformance: `${API_BASE_URL}/performance`,

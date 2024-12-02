@@ -1,6 +1,6 @@
 [
   {
-    "id": "1",
+    "proposalId": "PRP_0001",
     "title": "Proposal for Art Exhibition",
     "body": "This proposal outlines the details for the upcoming art exhibition, which aims to showcase local artists.",
     "avatar": "image/2.jpg",
@@ -23,7 +23,7 @@
     "scores_total": 100
   },
   {
-    "id": "2",
+    "proposalId": "PRP_0002",
     "title": "Community Clean-Up Day",
     "body": "A proposal for organizing a community clean-up day to enhance local parks.",
     "avatar": "image/1.jpg",
@@ -45,7 +45,7 @@
     "scores_total": 100
   },
   {
-    "id": "3",
+    "proposalId": "PRP_0003",
     "title": "New Park Construction",
     "body": "Proposal to construct a new park in the downtown area to provide more green space.",
     "avatar": "image/3.jpg",
@@ -68,7 +68,7 @@
     "scores_total": 100
   },
   {
-    "id": "4",
+    "proposalId": "PRP_0004",
     "title": "Neighborhood Watch Program",
     "body": "Establishing a neighborhood watch program to enhance community safety.",
     "avatar": "image/azora.jpg",
@@ -90,7 +90,7 @@
     "scores_total": 100
   },
   {
-    "id": "5",
+    "proposalId": "PRP_0005",
     "title": "New Library Initiative",
     "body": "Proposal to initiate a new library program to enhance literacy in the community.",
     "avatar": "image/2.jpg",

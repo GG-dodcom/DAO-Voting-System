@@ -13,7 +13,7 @@ import {
   TuneModal,
   TuneModalTitle,
 } from '../components';
-import { Proposal } from '../utils/interfaces';
+import { Proposal, Result } from '../utils/interfaces';
 import ProposalsItem from '../components/ProposalsItem';
 import { useRestfulAPI } from '../hooks';
 import API_PATHS from '../utils/queries';
@@ -45,25 +45,47 @@ const SpaceProposals: React.FC = () => {
     setOpenQrModal(false);
   };
 
-  const checkTokenRedeem = (scanned: string) => {
+  const checkTokenRedeem = async (scanned: string) => {
     if (!scanned) return;
     setIsProcessing(true);
 
     //TODO: check is scanned text able to get token or not
-    const isRedeemable = true; // Replace with actual validation logic
+    const isRedeemable: any = await fetchQuery(
+      API_PATHS.checkTokenRedeem
+      //   {
+      //   qrcode: scanned,
+      // }
+    );
 
-    if (isRedeemable) {
-      notify(['green', `Successfully redeemed: ${scanned}`]);
+    if (isRedeemable.success) {
+      notify(['green', isRedeemable.message]);
     } else {
-      notify(['red', `Cannot redeem: ${scanned}`]);
+      notify(['red', isRedeemable.message]);
     }
     closeQrModal();
   };
 
   const getProposals = async () => {
     try {
-      const response = await fetchQuery(API_PATHS.fetchProposals);
-      setProposals(response);
+      // Fetch proposals and results data
+      const proposalsResponse = await fetchQuery(API_PATHS.fetchProposals);
+      const resultsResponse = await fetchQuery(API_PATHS.fetchAllScores);
+
+      // Match results with proposals based on proposalId
+      const mergedProposals = proposalsResponse.map((proposal: Proposal) => {
+        // Find the matching result by proposalId
+        const matchingResult = resultsResponse.find(
+          (result: Result) => result.proposalId === proposal.proposalId
+        );
+
+        // Return the proposal with the matched result
+        return { ...proposal, result: matchingResult || undefined };
+      });
+
+      // Update the proposals state
+      setProposals(mergedProposals);
+
+      console.log('mergedProposals: ', proposals);
     } catch (error) {
       console.error('Error fetching proposals:', error);
     }
@@ -72,6 +94,7 @@ const SpaceProposals: React.FC = () => {
   const getUserVotedProposalIds = async (voter: string) => {
     if (!voter) return;
 
+    //TODO:
     const votes = await fetchQuery(
       API_PATHS.fetchUserVotedProposalIds
       //   {

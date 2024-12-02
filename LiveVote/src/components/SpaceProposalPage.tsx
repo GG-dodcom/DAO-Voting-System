@@ -28,6 +28,7 @@ const SpaceProposalPage: React.FC<Props> = ({ proposal, onReload }) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedChoices, setSelectedChoices] = useState<any>(null);
   const [loadedResults, setLoadedResults] = useState(false);
+  const [currentProposal, setCurrentProposal] = useState(proposal);
 
   const { address } = useAppKitAccount();
   const { fetchQuery } = useRestfulAPI();
@@ -38,8 +39,7 @@ const SpaceProposalPage: React.FC<Props> = ({ proposal, onReload }) => {
 
   //TODO:
   const loadResults = async () => {
-    //TODO: remove commend
-    //if (proposal.state == 'active') return;
+    if (proposal.state == 'active') return;
 
     const result: any = await fetchQuery(
       API_PATHS.fetchScores
@@ -48,16 +48,18 @@ const SpaceProposalPage: React.FC<Props> = ({ proposal, onReload }) => {
       // }
     );
 
-    if (!proposal.result) {
-      proposal.result = {
-        proposalId: result.proposalId,
-        scores_state: result.scores_state,
-        scores: result.scores,
-        scoresTotal: result.scoresTotal,
-      };
+    if (!currentProposal.result) {
+      setCurrentProposal({
+        ...currentProposal,
+        result: {
+          scores_state: result.scores_state,
+          scores: result.scores,
+          scoresTotal: result.scoresTotal,
+        },
+      });
     }
 
-    console.log('proposal.result', proposal.result);
+    console.log('currentProposal.result', currentProposal.result);
     setLoadedResults(true);
   };
 
@@ -81,8 +83,6 @@ const SpaceProposalPage: React.FC<Props> = ({ proposal, onReload }) => {
   }, [address]);
 
   useEffect(() => {
-    //TODO: remove commend
-    //if (proposal.state != 'active')
     loadResults();
   }, [proposal]);
 
@@ -119,18 +119,19 @@ const SpaceProposalPage: React.FC<Props> = ({ proposal, onReload }) => {
             <div className="mt-[20px] lg:space-y-3 space-y-[20px] lg:mt-0 px-[20px] md:px-0">
               <SpaceProposalInformation proposal={proposal} />
 
-              {proposal.result && (
+              {currentProposal.result && (
+                <>
                   <SpaceProposalResults
                     loaded={loadedResults}
-                    proposal={proposal}
-                    results={proposal.result}
+                    proposal={currentProposal}
+                    results={currentProposal.result}
                   />
-                ) && (
                   <SpaceProposalVotes
-                    proposal={proposal}
-                    results={proposal.result}
+                    proposal={currentProposal}
+                    results={currentProposal.result}
                   />
-                )}
+                </>
+              )}
             </div>
           </div>
         }
