@@ -172,8 +172,7 @@ const SpaceProposals: React.FC = () => {
       <TuneModal open={isOpenQrModal} onClose={closeQrModal}>
         <div className="mx-3">
           <TuneModalTitle className="mt-3 mx-1">
-            Scan Ticket to Vote
-            {/* {t('proposal.')} */}
+            {t('scanQrLabel.')} 
           </TuneModalTitle>
 
           <div className="space-y-3 text-skin-link">

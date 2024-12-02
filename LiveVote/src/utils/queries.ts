@@ -5,7 +5,6 @@ const API_CONTRACT_URL = 'http://localhost:8080/api/voting';
 const API_PATHS = {
   // Blockchain
   fetchTokenBalance: `${API_CONTRACT_URL}/getUserTokenBalance`,
-
   // data
   vote: `${API_BASE_URL}/vote`,
 
@@ -15,32 +14,10 @@ const API_PATHS = {
   //fetchAllScores: `${API_BASE_URL}/all-scores`,
   fetchAllScores: `http://localhost:3000/api/all-scores`,
 
-  fetchTotalVoter: `${API_BASE_URL}/totalVoter`,
-
   fetchProposals: `${API_BASE_URL}/proposals/view-all-proposals`,
-  //TODO: json look like, return array[]
-  // id
-  // title
-  // body,
-  // avatar,
-  // choices: id, name,
-  // state,
-  // voting: start, end, type,
-  // create,
-  // scores,
-  // scores_state,
-  // scores_total
+  fetchProposalDetails: `${API_BASE_URL}/proposals/view-proposal-details`,
 
-  fetchProposalDetails: `${API_BASE_URL}/proposals/view-proposal-details`, //api/proposalDetails/:id
-  //return only one
-  // id,
-
-  // title,
-  // body,
-  // avatar,
-  // choices: id, name, avatar,
-
-  fetchTokenQR: `${API_BASE_URL}/proposals/token-qr`,
+  fetchTokenQR: `${API_BASE_URL}/proposals/token-qr`, //?proposalId=...
 
   deleteProposal: `${API_BASE_URL}/deleteProposal`,
 
