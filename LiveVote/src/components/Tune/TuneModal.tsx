@@ -108,7 +108,7 @@ const TuneModal: React.FC<Props> = ({
         </TransitionChild>
 
         <div className="fixed inset-0 overflow-y-auto">
-          <div className="flex h-full items-end md:items-center justify-center md:p-4">
+          <div className="flex h-full md:items-center justify-center md:p-4">
             <TransitionChild
               as={Fragment}
               enter={panelTransitionClasses.enter}

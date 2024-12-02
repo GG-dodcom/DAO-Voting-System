@@ -81,7 +81,7 @@ const SpaceProposalVote: React.FC<Props> = ({
     if (!address) return 'Please connect wallet';
 
     if (
-      proposal.voting.type === 'single-choice' &&
+      proposal.type === 'single-choice' &&
       (modelValue == null || modelValue == 0)
     )
       return 'Please select one choices';
@@ -110,17 +110,24 @@ const SpaceProposalVote: React.FC<Props> = ({
 
   return (
     <>
-      {!loadingUserVote && (userVote || proposal.state === 'active') && (
+      {/* {!loadingUserVote && (userVote || proposal.state === 'active') && ( */}
+      {!loadingUserVote && (
         <TuneBlock
           className={''}
           header={
             <TuneBlockHeader
               title={
-                isEditing
+                proposal.state == 'active' && isEditing
                   ? 'Change your vote'
-                  : userVote
+                  : proposal.state == 'active' && userVote
                   ? 'Your vote'
-                  : 'Cast your vote'
+                  : proposal.state == 'active'
+                  ? 'Cast your vote'
+                  : proposal.state == 'pending'
+                  ? 'Voting Pending'
+                  : proposal.state == 'closed'
+                  ? 'Voting Closed'
+                  : 'Unknown State'
               }
             >
               {!isEditing && userVote && proposal.state === 'active' && (
@@ -137,14 +144,17 @@ const SpaceProposalVote: React.FC<Props> = ({
           }
         >
           <div>
-            {!isEditing && proposal.scores_state !== 'final' && (
-              <div className="border px-3 py-[12px] rounded-xl bg-[--border-color-subtle]">
-                <IHoLockClosed className="inline-block text-sm" />
-                Your vote is encrypted until the proposal ends and the final
-                score is calculated. You can still change your vote until then.
-              </div>
-            )}
-
+            {/* TODO: get the scores from blockchain */}
+            {!isEditing &&
+              userVote &&
+              proposal.result?.scores_state != 'final' && (
+                <div className="border px-3 py-[12px] rounded-xl bg-[--border-color-subtle]">
+                  <IHoLockClosed className="inline-block text-sm" />
+                  Your vote is encrypted until the proposal ends and the final
+                  score is calculated. You can still change your vote until
+                  then.
+                </div>
+              )}
             {userVote && !validatedUserChoice && !isEditing && (
               <BaseMessage
                 level="info"
@@ -154,9 +164,8 @@ const SpaceProposalVote: React.FC<Props> = ({
                 again.
               </BaseMessage>
             )}
-
             <div>
-              {proposal.voting.type === 'single-choice' && (
+              {proposal.type === 'single-choice' && (
                 <SpaceProposalVoteSingleChoice
                   proposal={proposal}
                   userChoice={validatedUserChoice}
@@ -165,8 +174,7 @@ const SpaceProposalVote: React.FC<Props> = ({
                 />
               )}
             </div>
-
-            {(!userVote || isEditing) && (
+            {(!userVote || isEditing) && proposal.state == 'active' && (
               // (buttonTooltip ? (
               <Tippy content={buttonTooltip} disabled={!buttonTooltip}>
                 <div className="pt-4">
