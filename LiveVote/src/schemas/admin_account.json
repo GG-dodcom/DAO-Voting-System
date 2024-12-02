@@ -1,0 +1,23 @@
+{
+  "$ref": "#/definitions/Profile",
+  "definitions": {
+    "AdminAccount": {
+      "title": "Admin Account",
+      "type": "object",
+      "properties": {
+        "username": {
+          "type": "string",
+          "title": "username",
+          "maxLength": 32
+        },
+        "password": {
+          "type": "string",
+          "password": "password",
+          "maxLength": 256
+        }
+      },
+      "required": [],
+      "additionalProperties": false
+    }
+  }
+}

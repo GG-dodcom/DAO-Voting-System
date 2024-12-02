@@ -1,0 +1,244 @@
+{
+  "livevote": "LiveVote",
+  "next": "Next",
+  "select": "Select",
+  "back": "Back",
+  "confirm": "Confirm",
+  "confirmAction": "Confirm action",
+  "cancel": "Cancel",
+  "failed": "Failed",
+  "votingPower": "Your voting power",
+  "eligibleVoters": "Eligible Voters",
+  "voterTurnout": "Voter Turnout",
+  "linkPreview": "This link will take you to {url}.</br> Be careful, this link could be malicious. Are you sure you want to continue? ",
+  "privacy": "All votes will be encrypted until the voting period has ended and the final score is calculated",
+  "resultsError": "Results could not be calculated. This is often due to a misconfigured strategy or an unresponsive RPC node involved in the strategy.",
+  "resultsCalculating": "Final results are being calculated. If you still see this message after a few minutes contact the space admin.",
+  "results": "Results",
+  "currentResults": "Current results",
+  "information": "Information",
+  "plsConnctWallet": "Please connect wallet",
+  "reason": "Reason",
+  "noVotingPower": "Oops, it seems you don't have any voting power at performance {performanceName}.",
+  "proposalBy": "by {0}",
+  "voted": "Voted",
+  "startIn": "start {0}",
+  "endIn": "ends {0}",
+  "proposalTimeLeft": "{0} left",
+  "endedAgo": "ended {0}",
+  "warningFlaggedProposal": "This proposal might contain scams, offensive material, or be malicious in nature. Please proceed with caution.",
+  "warningFlaggedSpace": "This space might contain scams, offensive material, or be malicious in nature. Please proceed with caution.",
+  "connectWallet": "Connect wallet",
+  "submit": "Submit",
+  "edit": "Edit",
+  "upload": "Upload",
+  "homeLoadmore": "Load more",
+  "teams": "No teams | {count} team | {count} teams",
+  "verifiedSpace": "Verified space",
+  "choicesCount": "{0} choice(s)",
+  "noResultsFound": "Oops, we can't find any results",
+  "optional": "(optional)",
+  "votingQRNum": "Total number available for vote",
+  "votingPeriodNotAvailable": "Voting period not available",
+  "choice": "Choice {0}",
+  "votes": "Votes",
+  "votingPowerFailedMessage": "Your voting power could not be calculated. This is often due to a misconfigured strategy or an unresponsive RPC node involved in the strategy. If the problem persists, consider contacting our support team on {help}",
+  "votingValidationFailedMessage": "We were not able to validate your eligibility to vote. This is often due to a misconfigured vote validation setting or an unresponsive RPC node. If the problem persists, consider contacting our support team on {help}",
+  "comment": {
+    "placeholder": "Share your reason (optional)"
+  },
+  "votingValidation": {
+    "label": "Validation"
+  },
+  "modalNotifications": {
+    "wrong timestamp": {
+      "title": "Wrong timestamp",
+      "message": "The message timestamp is not valid. Please check the clock on your device, make sure it is set to the correct date and time and try again."
+    },
+    "space with ticket requires voting validation": {
+      "title": "Missing voting validation",
+      "message": "Your proposal cannot be submitted due to a missing voting validation rule required with the 'ticket' strategy. Please adjust your settings by either using another strategy or adding the required validation."
+    },
+    "space missing proposal validation": {
+      "title": "Missing proposal validation",
+      "message": "Your proposal cannot be submitted due to a missing proposal validation rule. To prevent unauthorized proposals and spam, add a validation rule in your space settings."
+    }
+  },
+  "settings": {
+    "anyType": "Any",
+    "type": {
+      "label": "Type",
+      "information": "The type of voting system used for this space. (Enforced on all future proposals)"
+    }
+  },
+  "create": {
+    "avatar": "Avatar",
+    "votingQR": "Voting QR",
+    "votes_num": "Number Of Voting QR",
+    "proposalTitle": "Title",
+    "proposalDescription": "Description (optional)",
+    "preview": "Preview",
+    "choices": "Choices",
+    "addChoice": "Add choice",
+    "startDate": "Select start date",
+    "endDate": "Select end date",
+    "startTime": "Select start time",
+    "endTime": "Select end time",
+    "publish": "Publish",
+    "untitled": "Untitled",
+    "snapshotBlock": "Snapshot block number",
+    "voting": "Voting",
+    "votingSystem": "Voting system",
+    "choice": "Choice {0}",
+    "period": "Voting period",
+    "start": "Start",
+    "end": "End",
+    "days": "Days",
+    "hours": "Hours",
+    "minutes": "Minutes",
+    "schedule": "Schedule proposal",
+    "delayEnforced": "The space enforces a delay until voting can start",
+    "periodEnforced": "The space enforces the duration of the voting period",
+    "typeEnforced": "{type} is enforced by the space",
+    "privacyEnforced": "{type} is enforced by the space",
+    "edit": "Edit",
+    "continue": "Continue",
+    "now": "Now",
+    "votingPeriodExplainer": "This is the time period in which users will be able to vote. The proposal will be visible and pending before the start of the voting period.",
+    "uploadImageExplainer": "Attach images by dragging & dropping, selecting or pasting them.",
+    "uploading": "Uploading image",
+    "markdown": "Styling with Markdown is supported",
+    "errorGettingSnapshot": "We encountered an error while fetching the snapshot block number which is needed to calculate your voting power. Please try again later.",
+    "errorTimeInPast": "Entered time is in the past. Please select a future time.",
+    "errorSpaceHibernatedAdmin": "Admins your attention is required. This space has been hibernated due to a lack of activity, and as a result, proposal creation is currently disabled. To re-enable your space, please go to the settings page and click \"Reactivate\".",
+    "errorSpaceHibernatedUsers": "This space has been hibernated due to a lack of activity. As a result, the creation of proposals has been temporarily disabled. To resume your ability to create proposals, the space needs to be reactivated by an admin. Please check back later or contact your space admin for further information."
+  },
+  "voting": {
+    "selectVoting": "Select voting system",
+    "single-choice": {
+      "label": "Single choice voting",
+      "description": "Each voter may select only one choice."
+    },
+    "approval": {
+      "label": "Approval voting",
+      "description": "Each voter may select any number of choices."
+    },
+    "quadratic": {
+      "label": "Quadratic voting",
+      "description": "Each voter may spread voting power across any number of choices. Results are calculated quadratically."
+    },
+    "ranked-choice": {
+      "label": "Ranked choice voting",
+      "description": "Each voter may select and rank any number of choices. Results are calculated by instant-runoff counting method."
+    },
+    "weighted": {
+      "label": "Weighted voting",
+      "description": "Each voter may spread voting power across any number of choices."
+    },
+    "basic": {
+      "label": "Basic voting",
+      "description": "Single choice voting with three choices: For, Against or Abstain"
+    }
+  },
+  "metaInfo": {
+    "default": {
+      "name": "LiveVote",
+      "description": "LiveVote",
+      "url": "https://localhost:5173",
+      "icons": "https://ibb.co/4pr9C9p"
+    },
+    "home": {
+      "title": "Snapshot - Where decisions get made",
+      "description": "Snapshot is an off-chain voting platform that allows DAOs, DeFi protocols, or NFT communities to participate in the decentralized governance easily and without gas fees."
+    }
+  },
+  "login": {
+    "login": "Sign In",
+    "header": "Admin Login",
+    "username": "Username",
+    "usernamePlaceholder": "Enter username",
+    "password": "Password",
+    "passwordPlaceholder": "Enter password"
+  },
+  "proposals": {
+    "header": "Proposals",
+    "new": "New proposal",
+    "noProposals": "There aren't any proposals here yet!",
+    "createProposal": "Create proposal",
+    "showMore": "Show more",
+    "showLess": "Show less",
+    "states": {
+      "all": "All",
+      "core": "Core",
+      "community": "Community",
+      "active": "Active",
+      "pending": "Pending",
+      "closed": "Closed"
+    }
+  },
+  "proposal": {
+    "castVote": "Cast your vote",
+    "vote": "Vote",
+    "startDate": "Start date",
+    "endDate": "End date",
+    "tokenRedeemQR": "Token QR",
+    "votingSystem": "Voting system",
+    "privacy": "Privacy",
+    "invalidChoice": "Invalid choice",
+    "downloadQR": "download QR folder",
+    "postVoteModal": {
+      "defaultTitle": "Your vote is in!",
+      "gnosisSafeTitle": "Your vote is pending...",
+      "gnosisSafeDescription": " Votes with a Safe require additional signers and will be visible once the transaction is confirmed",
+      "seeQueue": "See queued transactions",
+      "tips": {
+        "1": "Votes can be changed while the proposal is active"
+      },
+      "subscribe": "Subscribe with email"
+    },
+    "downloadCsvVotes": {
+      "title": "Download as CSV",
+      "postDownloadModal": {
+        "title": "Generating votes report",
+        "message": {
+          "pendingGeneration": {
+            "title": "Your report is currently being generated",
+            "description": "It may take a few minutes. Please check back shortly."
+          },
+          "unsupportedEnv": {
+            "title": "Unsupported environment",
+            "description": "Votes report are not available on demo."
+          },
+          "unknownError": {
+            "title": "We're having trouble connecting to the server responsible for downloads",
+            "description": "Please try again in a few moments. If the problem persists, consider contacting our support team."
+          }
+        }
+      }
+    },
+    "votesModal": {
+      "title": "Votes",
+      "filtersPopover": {
+        "title": "Filters",
+        "votingPower": "Voting power",
+        "onlyVotesWithReason": "Only show votes with a reason",
+        "more": "More"
+      }
+    }
+  },
+  "errors": {
+    "fileTooBig": "File size should be smaller than 1MB",
+    "unsupportedImageType": "File type not supported, Supported formats are jpeg, jpg and png"
+  },
+  "notify": {
+    "somethingWentWrong": "Oops, something went wrong!",
+    "proposalDeleted": "Proposal deleted",
+    "proposalCreated": "Proposal created"
+  },
+  "footerView": {
+    "resources": "Resources",
+    "about": "About",
+    "github": "GitHub",
+    "docs": "Docs"
+  }
+}
