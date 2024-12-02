@@ -1,10 +1,10 @@
 import React, { useMemo } from 'react';
-import { Proposal, Results } from '../utils/interfaces';
+import { Proposal, Result } from '../utils/interfaces';
 import { SpaceProposalResultsListItem, SpaceProposalResultsQuorum } from '.';
 
 interface Props {
   proposal: Proposal;
-  results: Results;
+  results: Result;
 }
 
 const SpaceProposalResultsList: React.FC<Props> = ({ proposal, results }) => {

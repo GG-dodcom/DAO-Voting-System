@@ -72,9 +72,12 @@ const SpaceProposals: React.FC = () => {
   const getUserVotedProposalIds = async (voter: string) => {
     if (!voter) return;
 
-    const votes = await fetchQuery(API_PATHS.fetchUserVotedProposalIds, {
-      address: voter,
-    });
+    const votes = await fetchQuery(
+      API_PATHS.fetchUserVotedProposalIds
+      //   {
+      //   address: voter,
+      // }
+    );
 
     const proposalIds = votes ?? [];
     setUserVotedProposalIds((prevIds) => [

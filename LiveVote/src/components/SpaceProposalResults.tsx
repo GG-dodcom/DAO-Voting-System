@@ -1,13 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React from 'react';
 import { SpaceProposalResultsList, TuneBlock, TuneBlockHeader } from '.';
-import { Proposal, Results } from '../utils/interfaces';
+import { Proposal, Result } from '../utils/interfaces';
 import { t } from 'i18next';
 
 interface Props {
   proposal: Proposal;
   loaded: boolean;
-  results: Results;
+  results: Result;
 }
 
 const SpaceProposalResults: React.FC<Props> = ({

@@ -24,9 +24,11 @@ export interface Proposal {
 
   //TODO: remove this
   votes_num: number; //number of available qr for token redeem.
+
+  result?: Result;
 }
 
-export interface Results {
+export interface Result {
   proposalId: string;
   scores_state: string; //'final', 'invalid', 'pending'
   scores: number[];

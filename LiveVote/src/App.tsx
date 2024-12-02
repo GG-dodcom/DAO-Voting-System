@@ -41,8 +41,8 @@ const App: React.FC = () => {
               >
                 <TheNavbar />
               </div>
-              {/* <p>domain: {domain}</p>
-          <WagmiHooks /> */}
+              <p>domain: {domain}</p>
+              <WagmiHooks />
 
               <div id="content" className="pb-6 pt-4">
                 <AppRoutes />

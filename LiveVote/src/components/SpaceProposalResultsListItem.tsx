@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Proposal, Results } from '../utils/interfaces';
+import { Proposal, Result } from '../utils/interfaces';
 import Tippy from '@tippyjs/react';
 import { IHoLockClosed } from '../assets/icons';
 import { t } from 'i18next';
@@ -10,7 +10,7 @@ import { shorten } from '../utils/utils';
 interface Props {
   choice: { i: number; choice: string };
   proposal: Proposal;
-  results: Results;
+  results: Result;
 }
 
 const SpaceProposalResultsListItem: React.FC<Props> = ({

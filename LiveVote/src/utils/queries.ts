@@ -9,7 +9,8 @@ const API_PATHS = {
   // data
   vote: `${API_BASE_URL}/vote`,
 
-  fetchScores: `${API_BASE_URL}/scores`,
+  //fetchScores: `${API_BASE_URL}/scores`,
+  fetchScores: `http://localhost:3000/api/scores`,
 
   fetchTotalVoter: `${API_BASE_URL}/totalVoter`,
 
