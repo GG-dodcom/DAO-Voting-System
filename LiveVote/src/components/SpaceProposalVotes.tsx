@@ -17,7 +17,7 @@ interface Props {
 	results: Result;
 }
 
-const VOTES_LIMIT = 6;
+const VOTES_LIMIT = 3;
 
 const SpaceProposalVotes: React.FC<Props> = ({ proposal, results }) => {
 	const breakpoints = {
