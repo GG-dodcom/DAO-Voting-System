@@ -26,7 +26,9 @@ const SpaceProposalInformation: React.FC<Props> = ({ proposal }) => {
 
     //TODO: get all qrcode string
 
-    const response: any = await fetchQuery(API_PATHS.fetchTokenQR, {propo});
+    const response: any = await fetchQuery(API_PATHS.fetchTokenQR, 
+      // {proposalID: proposal.proposalId}
+    );
     
     await downloadQRCodes(response.tokenQR); 
 

@@ -8,12 +8,13 @@ interface ProposalsItemResultsProps {
   proposal: Proposal;
 }
 
+//TODO: FIX ERROR
 const ProposalsItemResults: React.FC<ProposalsItemResultsProps> = ({
   proposal,
 }) => {
   const { formatCompactNumber, formatPercentNumber } = useIntl();
   // Calculate the winning choice
-  const winningChoice = proposal.scores?.indexOf(Math.max(...proposal.scores));
+  const winningChoice = proposal.result?.scores.indexOf(Math.max(...proposal.result?.scores));
 
   return (
     <div className={`${!proposal.body ? 'mt-3' : ''}`}>
@@ -28,23 +29,23 @@ const ProposalsItemResults: React.FC<ProposalsItemResultsProps> = ({
                   )}
                   {shorten(choice.name, 32)}
                   <span className="ml-1 text-skin-text">
-                    {proposal.scores && formatCompactNumber(proposal.scores[i])}
+                    {proposal.result?.scores && formatCompactNumber(proposal.result?.scores[i])}
                     {proposal.symbol}
                   </span>
                 </div>
                 <div className="absolute right-0 mr-3 leading-[40px] text-skin-link">
-                  {proposal.scores &&
-                    proposal.scores_total &&
+                  {proposal.result?.scores &&
+                    proposal.result?.scoresTotal &&
                     formatPercentNumber(
-                      (1 / proposal.scores_total) * proposal.scores[i]
+                      (1 / proposal.result?.scoresTotal) * proposal.result?.scores[i]
                     )}
                 </div>
                 <div
                   style={{
                     width: `${
-                      proposal.scores &&
-                      proposal.scores_total &&
-                      (100 / proposal.scores_total) * proposal.scores[i]
+                      proposal.result?.scores &&
+                      proposal.result?.scoresTotal &&
+                      (100 / proposal.result?.scoresTotal) * proposal.result?.scores[i]
                     }%`,
                   }}
                   className="h-[40px] rounded-md bg-skin-border"

@@ -6,13 +6,11 @@ import {
   BaseCounter,
   BaseNoResults,
   LoadingList,
-  LoadingSpinner,
   SpaceProposalVotesItem,
   TuneModal,
   TuneModalTitle,
 } from '.';
 import { t } from 'i18next';
-import { useIntersection } from 'react-use';
 
 interface Props {
   proposal: Proposal;
@@ -26,25 +24,13 @@ const SpaceProposalVotesModal: React.FC<Props> = ({
   onClose,
 }) => {
   const votesEndEl = useRef<HTMLDivElement | null>(null);
-  const { votes, loadingVotes, loadingMoreVotes, loadVotes, loadMoreVotes } =
+  const { votes, loadingVotes, loadVotes } =
     useProposalVotes(proposal, 20);
-
-  const intersection = useIntersection(votesEndEl, {
-    threshold: 1,
-  });
 
   const showNoResults = useMemo(
     () => !loadingVotes && votes.length === 0,
     [loadingVotes, votes]
   );
-
-  const hasMoreVotes = proposal.votes > votes.length;
-
-  useEffect(() => {
-    if (open && intersection?.isIntersecting && hasMoreVotes) {
-      loadMoreVotes();
-    }
-  }, [intersection, open, hasMoreVotes]);
 
   useEffect(() => {
     if (open) loadVotes();
@@ -78,11 +64,6 @@ const SpaceProposalVotesModal: React.FC<Props> = ({
               />
             ))}
             <div ref={votesEndEl} />
-            {loadingMoreVotes && (
-              <div className="block min-h-[34px] text-center">
-                <LoadingSpinner />
-              </div>
-            )}
           </div>
         ) : null}
       </div>
