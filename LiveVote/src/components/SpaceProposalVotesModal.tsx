@@ -25,7 +25,7 @@ const SpaceProposalVotesModal: React.FC<Props> = ({
 }) => {
   const votesEndEl = useRef<HTMLDivElement | null>(null);
   const { votes, loadingVotes, loadVotes } =
-    useProposalVotes(proposal, 20);
+    useProposalVotes(proposal);
 
   const showNoResults = useMemo(
     () => !loadingVotes && votes.length === 0,
@@ -41,7 +41,7 @@ const SpaceProposalVotesModal: React.FC<Props> = ({
       <div className="px-3 pb-3">
         <TuneModalTitle as="h4" className="mt-3 flex items-center gap-1">
           {t('proposal.votesModal.title')}
-          <BaseCounter counter={proposal.votes} />
+          <BaseCounter counter={proposal.result?.scoresTotal} />
         </TuneModalTitle>
       </div>
 

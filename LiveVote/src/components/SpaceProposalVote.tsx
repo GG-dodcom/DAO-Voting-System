@@ -147,7 +147,6 @@ const SpaceProposalVote: React.FC<Props> = ({
           }
         >
           <div>
-            {/* TODO: get the scores from blockchain */}
             {!isEditing &&
               userVote &&
               proposal.result?.scores_state != 'final' && (

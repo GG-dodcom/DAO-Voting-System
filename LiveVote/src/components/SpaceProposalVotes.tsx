@@ -6,7 +6,6 @@ import {
   SpaceProposalVotesModal,
   TuneBlock,
   TuneBlockHeader,
-  TuneButton,
 } from '.';
 import { useProposalVotes } from '../hooks/useProposalVotes';
 import { t } from 'i18next';
@@ -17,7 +16,6 @@ interface Props {
   results: Result;
 }
 
-const VOTES_LIMIT = 6;
 
 const SpaceProposalVotes: React.FC<Props> = ({ proposal, results }) => {
   const breakpoints = {
@@ -34,10 +32,7 @@ const SpaceProposalVotes: React.FC<Props> = ({ proposal, results }) => {
     query: `(max-width: ${breakpoints.sm})`,
   });
 
-  const { votes, loadingVotes, loadVotes } = useProposalVotes(
-    proposal,
-    VOTES_LIMIT
-  );
+  const { votes, loadingVotes, loadVotes } = useProposalVotes(proposal);
   const [modalVotesOpen, setModalVotesOpen] = useState(false);
 
   const voteCount = results.scoresTotal;
@@ -66,16 +61,6 @@ const SpaceProposalVotes: React.FC<Props> = ({ proposal, results }) => {
               className="last:pb-0"
             />
           ))}
-          {voteCount > VOTES_LIMIT && (
-            <div className="pt-3">
-              <TuneButton
-                className="w-full"
-                onClick={() => setModalVotesOpen(true)}
-              >
-                View all
-              </TuneButton>
-            </div>
-          )}
           <SpaceProposalVotesModal
             proposal={proposal}
             open={modalVotesOpen}

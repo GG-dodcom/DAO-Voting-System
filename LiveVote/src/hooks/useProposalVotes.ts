@@ -5,11 +5,8 @@ import { Proposal, Vote } from '../utils/interfaces';
 import { useRestfulAPI } from './useRestfulAPI';
 import API_PATHS from '../utils/queries';
 
-type QueryParams = {
-  voter?: string;
-};
 
-export function useProposalVotes(proposal: Proposal, loadBy = 6) {
+export function useProposalVotes(proposal: Proposal) {
   const { fetchQuery } = useRestfulAPI();
 
   const [loadingVotes, setLoadingVotes] = useState(false);
@@ -18,49 +15,17 @@ export function useProposalVotes(proposal: Proposal, loadBy = 6) {
   const [userVote, setUserVote] = useState<Vote | null>(null);
 
   // fetch votes based on the proposal and queryParams
-  async function _fetchVotes() {
-    const response = await fetchQuery(
-      API_PATHS.loadUserVotes
-      //   {
-      //   id: proposal.id,
-      //   orderBy: 'timestamp',
-      //   voter: queryParams.voter || undefined,
-      // }
-    );
-
-    console.log(response);
-    return response;
-  }
-
-  // fetches a single vote based on the voter specified in queryParams
-  async function _fetchVote(queryParams: QueryParams) {
-    const response = await fetchQuery(API_PATHS.loadUserVote, {
-      id: proposal.proposalId,
-      voter: queryParams.voter,
-    });
-    return response;
-  }
-
-  // fetches votes for the given proposal based on the provided filter.
-  async function loadVotes() {
+  // send to me orderBy: 'timestamp',
+  async function loadVotes(voter?: String) {
     if (loadingVotes) return;
 
     setLoadingVotes(true);
     try {
-      const response = await _fetchVotes();
-      setVotes(response);
-    } catch (e) {
-      console.error(e);
-    } finally {
-      setLoadingVotes(false);
-    }
-  }
-
-  // loads a specific vote by a user's address.
-  async function loadSingleVote(voter: string) {
-    setLoadingVotes(true);
-    try {
-      const response = await _fetchVote({ voter });            
+      const response = await fetchQuery(
+        API_PATHS.loadUserVotes, {
+          // proposalId: proposal.proposalId,
+          // voter: voter || undefined,
+        });
       setVotes(response);
     } catch (e) {
       console.error(e);
@@ -76,7 +41,10 @@ export function useProposalVotes(proposal: Proposal, loadBy = 6) {
 
     setLoadingUserVote(true);
     try {
-      const response = await _fetchVote({ voter });
+      const response = await fetchQuery(API_PATHS.loadUserVote, {
+        // id: proposal.proposalId,
+        // voter: voter,
+      });
       setUserVote(response[0] || null);
     } catch (e) {
       console.error(e);
@@ -91,7 +59,6 @@ export function useProposalVotes(proposal: Proposal, loadBy = 6) {
     loadingUserVote,
     userVote,
     loadVotes,
-    loadSingleVote,
     loadUserVote,
   };
 }
