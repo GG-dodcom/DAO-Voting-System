@@ -170,7 +170,7 @@ const SpaceCreate: React.FC = () => {
       endDate: formattedForm.end,
       type: formattedForm.type,
       numOfQR: formattedForm.numOfQR,
-      timestamp: parseInt((Date.now() / 1e3).toFixed()),
+      createDate: parseInt((Date.now() / 1e3).toFixed()),
     };
 
     console.log('send json:', jsonData);

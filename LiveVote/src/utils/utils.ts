@@ -1,24 +1,24 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import Ajv from 'ajv';
-import addFormats from 'ajv-formats';
-import addErrors from 'ajv-errors';
-import QRCode from 'qrcode';
-import JSZip from 'jszip';
-import { saveAs } from 'file-saver';
-import pkg from '../../package.json';
-import { Proposal } from './interfaces';
+import Ajv from "ajv";
+import addFormats from "ajv-formats";
+import addErrors from "ajv-errors";
+import QRCode from "qrcode";
+import JSZip from "jszip";
+import { saveAs } from "file-saver";
+import pkg from "../../package.json";
+import { Proposal } from "./interfaces";
 
-export function shortenAddress(str = '') {
+export function shortenAddress(str = "") {
   return `${str.slice(0, 6)}...${str.slice(str.length - 4)}`;
 }
 
 export function shorten(str: string, key?: any): string {
   if (!str) return str;
   let limit;
-  if (typeof key === 'number') limit = key;
-  if (key === 'symbol') limit = 6;
-  if (key === 'name') limit = 64;
-  if (key === 'choice') limit = 12;
+  if (typeof key === "number") limit = key;
+  if (key === "symbol") limit = 6;
+  if (key === "name") limit = 64;
+  if (key === "choice") limit = 12;
   if (limit)
     return str.length > limit ? `${str.slice(0, limit).trim()}...` : str;
   return shortenAddress(str);
@@ -34,7 +34,7 @@ export function lsGet(key: string, fallback?: any) {
 }
 
 export function jsonParse(input: any, fallback?: any) {
-  if (typeof input !== 'string') {
+  if (typeof input !== "string") {
     return fallback || {};
   }
   try {
@@ -54,7 +54,7 @@ export function fileToBase64(file: File): Promise<string> {
       if (reader.result) {
         resolve(reader.result.toString()); // Base64 string
       } else {
-        reject('Could not convert file to Base64');
+        reject("Could not convert file to Base64");
       }
     };
 
@@ -75,15 +75,15 @@ const ajv = new Ajv({
 addFormats(ajv);
 addErrors(ajv);
 
-ajv.addFormat('long', {
+ajv.addFormat("long", {
   validate: () => true,
 });
 
-ajv.addFormat('lowercase', {
+ajv.addFormat("lowercase", {
   validate: (value: string) => value === value.toLowerCase(),
 });
 
-ajv.addFormat('color', {
+ajv.addFormat("color", {
   validate: (value: string) => {
     if (!value) return false;
     return !!value.match(/^#[0-9A-F]{6}$/);
@@ -91,16 +91,16 @@ ajv.addFormat('color', {
 });
 
 ajv.addKeyword({
-  keyword: 'maxLengthWithSpaceType',
+  keyword: "maxLengthWithSpaceType",
   validate: function validate(schema: any, data: any) {
     // @ts-ignore
-    const spaceType = this.spaceType || 'default';
+    const spaceType = this.spaceType || "default";
     const isValid = data.length <= schema[spaceType];
     if (!isValid) {
       // @ts-ignore
       validate.errors = [
         {
-          keyword: 'maxLengthWithSpaceType',
+          keyword: "maxLengthWithSpaceType",
           message: `must not have more than ${schema[spaceType]}`,
           params: { limit: schema[spaceType] },
         },
@@ -112,16 +112,16 @@ ajv.addKeyword({
 });
 
 ajv.addKeyword({
-  keyword: 'maxItemsWithSpaceType',
+  keyword: "maxItemsWithSpaceType",
   validate: function validate(schema: any, data: any) {
     // @ts-ignore
-    const spaceType = this.spaceType || 'default';
+    const spaceType = this.spaceType || "default";
     const isValid = data.length <= schema[spaceType];
     if (!isValid) {
       // @ts-ignore
       validate.errors = [
         {
-          keyword: 'maxItemsWithSpaceType',
+          keyword: "maxItemsWithSpaceType",
           message: `must NOT have more than ${schema[spaceType]} items`,
           params: { limit: schema[spaceType] },
         },
@@ -132,14 +132,19 @@ ajv.addKeyword({
   errors: true,
 });
 
-export function getChoiceString(proposal: Proposal, selected: number) {
-  return proposal.choices[selected - 1].name;
+
+export function getChoiceString(proposal: Proposal, choiceId: string) {
+  // Find the choice with the matching choiceId
+  const choice = proposal.choices.find((c) => c.choiceId === choiceId);
+
+  // Return the name if the choice is found, otherwise return a fallback
+  return choice ? choice.name : "Unknown Choice";
 }
 
 export function validateSchema(
   schema: any,
   data: any,
-  spaceType: string = 'default'
+  spaceType: string = "default"
 ) {
   const ajvValidate = ajv.compile(schema);
   const valid = ajvValidate.call(spaceType, data);
@@ -149,7 +154,7 @@ export function validateSchema(
 //----------------------------------------------Generate QR Code PNG Folder----------------------------------------------
 export async function downloadQRCodes(qrStrings: string[]) {
   const zip = new JSZip();
-  const qrFolder = zip.folder('qrcodes');
+  const qrFolder = zip.folder("qrcodes");
 
   if (!qrFolder) return;
 
@@ -158,7 +163,7 @@ export async function downloadQRCodes(qrStrings: string[]) {
     const qrString = qrStrings[i];
     try {
       const qrDataURL = await QRCode.toDataURL(qrString); // Generate QR code as Data URL
-      const base64Data = qrDataURL.replace(/^data:image\/png;base64,/, ''); // Strip Data URL prefix
+      const base64Data = qrDataURL.replace(/^data:image\/png;base64,/, ""); // Strip Data URL prefix
       qrFolder.file(`${i + 1}.png`, base64Data, { base64: true }); // Use index + 1 as file name
     } catch (error) {
       console.error(`Error generating QR code for ${qrString}:`, error);
@@ -166,6 +171,6 @@ export async function downloadQRCodes(qrStrings: string[]) {
   }
 
   // Generate zip file and trigger download
-  const content = await zip.generateAsync({ type: 'blob' }); // Await the zip file generation
-  saveAs(content, 'QRCodeFolder.zip'); // Trigger the download
+  const content = await zip.generateAsync({ type: "blob" }); // Await the zip file generation
+  saveAs(content, "QRCodeFolder.zip"); // Trigger the download
 }
