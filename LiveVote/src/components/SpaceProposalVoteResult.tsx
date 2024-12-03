@@ -46,12 +46,8 @@ const SpaceProposalVoteResult: React.FC<Props> = ({ proposal, results }) => {
   previous user (e.g., votes result) and load the votes specific to the newly 
   connected user. */
 	useEffect(() => {
-		// if (!address) return;
-		const address = "rtetr";
+		if (!address) return;
 		loadUserVote(address);
-		console.log("userVote", userVote);
-
-		console.log("select choice", userVote?.choice);
 	}, [address, isConnected]);
 
 	useEffect(() => {
