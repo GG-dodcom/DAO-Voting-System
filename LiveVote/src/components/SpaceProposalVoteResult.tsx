@@ -9,14 +9,12 @@ import {
 	ExploreSkeletonLoading,
 	SpaceProposalResultsListItem,
 	SpaceProposalResultsQuorum,
-	SpaceProposalVoteSingleChoice,
 	TuneBlock,
 	TuneBlockHeader,
 } from ".";
 import { Proposal, Result } from "../utils/interfaces";
 import { useProposalVotes } from "../hooks/useProposalVotes";
 import { useAppKitAccount } from "@reown/appkit/react";
-import SingleChoiceVoting from "../hooks/singleChoice";
 import Tippy from "@tippyjs/react";
 import { TransitionGroup, CSSTransition } from "react-transition-group";
 import { IHoCheck } from "../assets/icons";
