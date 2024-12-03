@@ -30,9 +30,13 @@ const SpaceProposalVotes: React.FC<Props> = ({ proposal, results }) => {
 	};
 
 	// Use useMediaQuery to check if the screen size is at least 'sm'
-	const isSmallScreen = useMediaQuery({
+	const isSmallScreenLarge = useMediaQuery({
+		query: `(min-width: ${breakpoints.lg})`,
+	});
+	const isSmallScreenSmall = useMediaQuery({
 		query: `(max-width: ${breakpoints.sm})`,
 	});
+	const isSmallScreen = isSmallScreenLarge || isSmallScreenSmall;
 
 	const { votes, loadingVotes, loadVotes } = useProposalVotes(proposal);
 	const [modalVotesOpen, setModalVotesOpen] = useState(false);

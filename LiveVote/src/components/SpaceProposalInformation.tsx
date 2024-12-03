@@ -11,87 +11,85 @@ import { useRestfulAPI } from "../hooks";
 import { downloadQRCodes } from "../utils/utils";
 
 interface Props {
-  proposal: Proposal;
+	proposal: Proposal;
 }
 
 const SpaceProposalInformation: React.FC<Props> = ({ proposal }) => {
-  const isAdmin = localStorage.getItem("isAdmin") === "true";
-  const { formatRelativeTime } = useIntl();
-  const { fetchQuery } = useRestfulAPI();
+	const isAdmin = localStorage.getItem("isAdmin") === "true";
+	const { formatRelativeTime } = useIntl();
+	const { fetchQuery } = useRestfulAPI();
 
-  const [downloadLoading, setDownloadLoading] = useState(false);
+	const [downloadLoading, setDownloadLoading] = useState(false);
 
-  const downloadQRFolder = async () => {
-    setDownloadLoading(true);
+	const downloadQRFolder = async () => {
+		setDownloadLoading(true);
 
-    //TODO: get all qrcode string
+		const response: any = await fetchQuery(API_PATHS.fetchTokenQR, {
+			proposalId: proposal.proposalId,
+		});
 
-    const response: any = await fetchQuery(API_PATHS.fetchTokenQR, 
-      // {proposalID: proposal.proposalId}
-    );
-    
-    await downloadQRCodes(response.tokenQR); 
+		await downloadQRCodes(response);
 
-    setDownloadLoading(false);
-  };
+		setDownloadLoading(false);
+	};
 
-  return (
-    <TuneBlock header={<TuneBlockHeader title={t("information")} />}>
-      <div className="space-y-1">
-        <div>
-          <b>{t("proposal.votingSystem")}</b>
-          <span className="float-right text-skin-link">
-            {t(`voting.${proposal.type}.label`)}
-          </span>
-        </div>
+	return (
+		<TuneBlock header={<TuneBlockHeader title={t("information")} />}>
+			<div className="space-y-1">
+				<div>
+					<b>{t("proposal.votingSystem")}</b>
+					<span className="float-right text-skin-link">
+						{t(`voting.${proposal.type}.label`)}
+					</span>
+				</div>
 
-        <div>
-          <b>{t("proposal.startDate")}</b>
-          <Tippy content={formatRelativeTime(proposal.startDate)}>
-            <span className="float-right text-skin-link">
-              {new Date(proposal.startDate * 1e3).toLocaleDateString("en-US", {
-                year: "numeric",
-                month: "short",
-                day: "numeric",
-              })}
-            </span>
-          </Tippy>
-        </div>
+				<div>
+					<b>{t("proposal.startDate")}</b>
+					<Tippy content={formatRelativeTime(proposal.startDate)}>
+						<span className="float-right text-skin-link">
+							{new Date(proposal.startDate * 1e3).toLocaleDateString("en-US", {
+								year: "numeric",
+								month: "short",
+								day: "numeric",
+							})}
+						</span>
+					</Tippy>
+				</div>
 
-        <div>
-          <b>{t("proposal.endDate")}</b>
-          <Tippy content={formatRelativeTime(proposal.endDate)}>
-            <span className="float-right text-skin-link">
-              {new Date(proposal.endDate * 1e3).toLocaleDateString("en-US", {
-                year: "numeric",
-                month: "short",
-                day: "numeric",
-              })}
-            </span>
-          </Tippy>
-        </div>
+				<div>
+					<b>{t("proposal.endDate")}</b>
+					<Tippy content={formatRelativeTime(proposal.endDate)}>
+						<span className="float-right text-skin-link">
+							{new Date(proposal.endDate * 1e3).toLocaleDateString("en-US", {
+								year: "numeric",
+								month: "short",
+								day: "numeric",
+							})}
+						</span>
+					</Tippy>
+				</div>
 
-        {isAdmin && (
-          <div className="flex justify-between items-center">
-            <b>{t("proposal.tokenRedeemQR")}</b>
-            <span className="flex items-center text-skin-link">
-              {`${proposal.numOfQR} Redeemable`}
-              <Tippy content={t("proposal.downloadQR")}>
-                <span>
-                  <BaseButtonIcon
-                    onClick={downloadQRFolder}
-                    loading={downloadLoading}
-                  >
-                    <IHoDownloadFolder />
-                  </BaseButtonIcon>
-                </span>
-              </Tippy>
-            </span>
-          </div>
-        )}
-      </div>
-    </TuneBlock>
-  );
+				{isAdmin && (
+					<div className="flex justify-between items-center">
+						<b>{t("proposal.tokenRedeemQR")}</b>
+						<span className="flex items-center text-skin-link">
+							{`${proposal.numOfQR} Redeemable`}
+							<Tippy content={t("proposal.downloadQR")}>
+								<span>
+									<BaseButtonIcon
+										onClick={downloadQRFolder}
+										loading={downloadLoading}
+									>
+										<IHoDownloadFolder />
+									</BaseButtonIcon>
+								</span>
+							</Tippy>
+						</span>
+					</div>
+				)}
+			</div>
+		</TuneBlock>
+	);
 };
 
 export default SpaceProposalInformation;
