@@ -77,15 +77,12 @@ const ModalVote: React.FC<Props> = ({
 
     //TODO:
     // send request to check token balance
-    const powerRes: any = await fetchQuery(
-      API_PATHS.fetchTokenBalance,
-         {
-          roomId: proposal.proposalId,
-          userAddress: address,
-       }
-    );
+    const powerRes: any = await fetchQuery(API_PATHS.fetchTokenBalance, {
+      roomId: proposal.proposalId,
+      userAddress: address,
+    });
     if (powerRes.balance) {
-      const votingPower = Number(powerRes.balance); 
+      const votingPower = Number(powerRes.balance);
       setVotingPower(votingPower);
     }
   };
@@ -106,6 +103,11 @@ const ModalVote: React.FC<Props> = ({
     if (!open) return;
     loadValidationAndPower();
   }, [open, address]);
+
+  useEffect(() => {
+    const choiceId = proposal.choices[selectedChoices].choiceId;
+    console.log('choiceId', choiceId);
+  }, [selectedChoices]);
 
   return (
     <TuneModal open={open} hideClose onClose={onClose}>
