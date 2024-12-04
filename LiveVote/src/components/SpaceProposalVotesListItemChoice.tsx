@@ -1,6 +1,6 @@
 import React from "react";
 import Tippy from "@tippyjs/react";
-import { IHoAnnotation } from "../assets/icons";
+// import { IHoAnnotation } from "../assets/icons";
 import { Proposal, Vote } from "../utils/interfaces";
 import { getChoiceString } from "../utils/utils";
 
