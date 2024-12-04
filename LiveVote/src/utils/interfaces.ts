@@ -34,7 +34,7 @@ export interface Vote {
 	voter: string; //wallet address
 	choice: string; //Choices.choiceId
 	scores: number;
-	reason: string;
+	// reason: string;
 	created: number;
 }
 

@@ -8,7 +8,7 @@ import { Proposal } from "../utils/interfaces";
 import {
 	BaseMessageBlock,
 	LoadingSpinner,
-	TextareaAutosize,
+	// TextareaAutosize,
 	TuneButton,
 	TuneModal,
 	TuneModalTitle,
@@ -38,7 +38,7 @@ const ModalVote: React.FC<Props> = ({
 	onClose,
 }) => {
 	const [votingPower, setVotingPower] = useState(0);
-	const [reason, setReason] = useState<any>("");
+	// const [reason, setReason] = useState<any>("");
 	const [hasVotingPowerFailed, setHasVotingPowerFailed] = useState(false);
 	const [isValidationAndPowerLoading, setIsValidationAndPowerLoading] =
 		useState(false);
@@ -48,7 +48,7 @@ const ModalVote: React.FC<Props> = ({
 
 	const { address } = useAppKitAccount();
 	const { formatCompactNumber } = useIntl();
-	const { fetchQuery, postQuery, queryLoading } = useRestfulAPI();
+	const { fetchQuery, queryLoading } = useRestfulAPI();
 	const { notify } = useFlashNotification();
 	const { writeContract } = useWriteContract();
 	const choiceId = proposal.choices[selectedChoices].choiceId;
@@ -88,7 +88,6 @@ const ModalVote: React.FC<Props> = ({
 	const loadVotingPower = async () => {
 		setHasVotingPowerFailed(false);
 
-		//TODO:
 		// send request to check token balance
 		const powerRes: any = await fetchQuery(API_PATHS.fetchTokenBalance, {
 			roomId: proposal.proposalId,
@@ -184,13 +183,13 @@ const ModalVote: React.FC<Props> = ({
 								) : (
 									/* Reason field */
 									<div>
-										<TextareaAutosize
+										{/* <TextareaAutosize
 											value={reason}
 											maxLength={140}
 											className="s-input !rounded-xl"
 											placeholder={t("comment.placeholder")}
 											onChange={(value) => setReason(value)}
-										/>
+										/> */}
 									</div>
 								)
 							}

@@ -25,7 +25,7 @@ const SpaceProposalVotesListItemChoice: React.FC<Props> = ({
 						{format(proposal, vote.choice)}
 					</div>
 				</Tippy>
-				{vote.reason !== "" && (
+				{/* {vote.reason !== "" && (
 					<Tippy
 						content={`Reason: ${vote.reason}`}
 						interactive={true}
@@ -40,7 +40,7 @@ const SpaceProposalVotesListItemChoice: React.FC<Props> = ({
 							</button>
 						</div>
 					</Tippy>
-				)}
+				)} */}
 			</div>
 		</div>
 	);

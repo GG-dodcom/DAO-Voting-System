@@ -6,8 +6,6 @@ const API_PATHS = {
 	// Blockchain
 	fetchTokenBalance: `${API_CONTRACT_URL}/getUserTokenBalance`,
 
-	vote: `${API_BASE_URL}/vote`,
-
 	//fetchScores: `${API_BASE_URL}/scores`, //?proposalId=...
 	fetchScores: `http://localhost:3000/api/scores`,
 

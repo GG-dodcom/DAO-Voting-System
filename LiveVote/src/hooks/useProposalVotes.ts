@@ -21,10 +21,16 @@ export function useProposalVotes(proposal: Proposal) {
 
 		setLoadingVotes(true);
 		try {
-			const response = await fetchQuery(API_PATHS.loadUserVotes, {
+			const response: any[] = await fetchQuery(API_PATHS.loadUserVotes, {
 				// proposalId: proposal.proposalId,
 				// voter: voter || undefined,
 			});
+
+			// Set all response.scores to 1
+			response.forEach((item) => {
+				item.scores = 1;
+			});
+
 			setVotes(response);
 		} catch (e) {
 			console.error(e);
@@ -46,6 +52,8 @@ export function useProposalVotes(proposal: Proposal) {
 				// voter: voter,
 			});
 			console.log("respons", response);
+
+			response.scores = 1;
 			setUserVote(response);
 		} catch (e) {
 			console.error(e);

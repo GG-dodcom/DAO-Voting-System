@@ -126,7 +126,7 @@ const SpaceProposalVote: React.FC<Props> = ({
 									: "Cast your vote"
 							}
 						>
-							{!isEditing && userVote && proposal.state === "active" && (
+							{/* {!isEditing && userVote && proposal.state === "active" && (
 								<Tippy content={"Change your vote"} delay={100}>
 									<BaseButtonIcon
 										className="!p-0 !pr-1"
@@ -135,7 +135,7 @@ const SpaceProposalVote: React.FC<Props> = ({
 										<IHoPencil className="text-sm" />
 									</BaseButtonIcon>
 								</Tippy>
-							)}
+							)} */}
 						</TuneBlockHeader>
 					}
 				>
