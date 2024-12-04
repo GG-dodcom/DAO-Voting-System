@@ -19,6 +19,8 @@ import { shorten } from '../utils/utils';
 import { useRestfulAPI } from '../hooks';
 import API_PATHS from '../utils/queries';
 import { useFlashNotification } from '../context';
+import { useWriteContract } from 'wagmi';
+import VotingRoomsABI from '../smart_contract/VotingRoomsAbi.json';
 
 interface Props {
   open: boolean;
@@ -48,29 +50,41 @@ const ModalVote: React.FC<Props> = ({
   const { formatCompactNumber } = useIntl();
   const { fetchQuery, postQuery, queryLoading } = useRestfulAPI();
   const { notify } = useFlashNotification();
+  const { writeContract } = useWriteContract();
+  const choiceId = proposal.choices[selectedChoices].choiceId;
+
 
   const handleSubmit = async () => {
-    console.log('call smart contract');
 
-    const result: any = null;
+    const extractNumber = (str: string): number | null => {
+      const match = str.match(/\d+/);
+      return match ? parseInt(match[0], 10) : null;
+    };
+  
+    const roomNumber = extractNumber(proposal.proposalId);
+    const choiceNumber = extractNumber(choiceId);
 
-    console.log('Result', result);
-
-    if (!result.success) {
-      notify(['red', result.result.message]);
-    } else {
-      await postQuery(API_PATHS.vote, {
-        voter: address,
-        proposalId: proposal.proposalId,
-        choice: selectedChoices,
-        reason: reason,
-        timestamp: parseInt((Date.now() / 1e3).toFixed()),
+    try {
+      const tx = await writeContract({
+        abi: VotingRoomsABI,
+        address: '0x5FbDB2315678afecb367f032d93F642f64180aa3', 
+        functionName: 'vote', 
+        args: [roomNumber, choiceNumber], 
       });
-      console.log('save vote data');
+
+      console.log('Transaction response:', tx);
+      console.log('Transaction sent:', tx);
+      
+      console.log('Vote cast successfully');
+    } catch (error: any) {
+      console.error('Error sending vote:', error);
+      notify(['red', 'Failed to cast vote: ' + error.message]);
     }
+
     onClose();
     onReload();
   };
+
 
   const loadVotingPower = async () => {
     setHasVotingPowerFailed(false);
