@@ -8,7 +8,6 @@ import {
 	SpaceProposalHeader,
 	SpaceProposalContent,
 	SpaceProposalInformation,
-	SpaceProposalResults,
 	SpaceProposalVote,
 	ModalVote,
 	SpaceProposalVotes,
