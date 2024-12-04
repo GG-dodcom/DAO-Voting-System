@@ -75,15 +75,6 @@ const ModalVote: React.FC<Props> = ({
 
 			console.log("Vote cast successfully");
 
-			//TODO:
-			await postQuery(API_PATHS.vote, {
-				voter: address,
-				proposalId: proposal.proposalId,
-				choice: selectedChoices,
-				reason: reason,
-				timestamp: parseInt((Date.now() / 1e3).toFixed()),
-			});
-
 			notify(["green", "Vote Succesfully"]);
 		} catch (error: any) {
 			console.error("Error sending vote:", error);
