@@ -69,7 +69,7 @@ const SpaceProposals: React.FC = () => {
 
 		//TODO:
 		const votes = await fetchQuery(API_PATHS.fetchUserVotedProposalIds, {
-			address: voter,
+			userWalletAddress: voter,
 		});
 
 		console.error("votes", votes);

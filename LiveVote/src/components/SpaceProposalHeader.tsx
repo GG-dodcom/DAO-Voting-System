@@ -73,6 +73,7 @@ const SpaceProposalHeader: React.FC<Props> = ({ proposal, isAdmin }) => {
 			userAddress: address,
 		});
 
+		//{200 no error}, {500 error}
 		//TODO: check is scanned text able to get token or not
 		const isRedeemable: any = await fetchQuery(API_PATHS.updateQrStatus, {
 			roomId: proposal.proposalId,

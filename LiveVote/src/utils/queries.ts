@@ -7,10 +7,8 @@ const API_PATHS = {
 	fetchTokenBalance: `${API_CONTRACT_URL}/getUserTokenBalance`,
 
 	fetchScores: `${API_BASE_URL}/voting/getRoomResults`, //?proposalId=...
-	//fetchScores: `http://localhost:3000/api/scores`,
 
 	fetchAllScores: `${API_BASE_URL}/voting/getClosedRoomDetails`,
-	//fetchAllScores: `http://localhost:3000/api/all-scores`,
 
 	fetchProposals: `${API_BASE_URL}/proposals/view-all-proposals`,
 
@@ -19,7 +17,6 @@ const API_PATHS = {
 	fetchTokenQR: `${API_BASE_URL}/proposals/get-token-qr`, //?proposalId=...
 
 	fetchUserVotedProposalIds: `${API_BASE_URL}/get-user-voted-proposal`, //?address=...
-	//list of proposal id
 
 	validQrStatus: `${API_BASE_URL}/validate-qr-status`,
 
@@ -31,13 +28,8 @@ const API_PATHS = {
 
 	createProposal: `${API_BASE_URL}/proposals/create-proposal`,
 
-	//loadUserVotes: `${API_BASE_URL}/loadUserVotes`,
-	loadUserVotes: `http://localhost:3000/api/loadUserVotes`,
+	loadUserVotes: `${API_BASE_URL}/proposals/get-voting-result`,
 
-	//loadUserVote: `${API_BASE_URL}/loadUserVote`,
-	loadUserVote: `http://localhost:3000/api/loadUserVote`,
-
-	//TODO: not used
-	deleteProposal: `${API_BASE_URL}/deleteProposal`,
+	// deleteProposal: `${API_BASE_URL}/deleteProposal`,
 };
 export default API_PATHS;

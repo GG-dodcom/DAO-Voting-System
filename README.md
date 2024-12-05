@@ -11,4 +11,9 @@ npm install --legacy-peer-deps
 
 ```
 
-git push --force origin main_v2:main
+command to run hardhat
+
+```
+npx hardhat node
+npx hardhat run scripts/deploy.ts --network localhost
+```

@@ -22,16 +22,21 @@ export function useProposalVotes(proposal: Proposal) {
 		setLoadingVotes(true);
 		try {
 			const response: any[] = await fetchQuery(API_PATHS.loadUserVotes, {
-				// proposalId: proposal.proposalId,
-				// voter: voter || undefined,
+				proposalId: proposal.proposalId,
 			});
 
-			// Set all response.scores to 1
-			response.forEach((item) => {
-				item.scores = 1;
-			});
+			// Map response to the desired format for UserVote
+			const mappedVotes: Vote[] = response.map((vote) => ({
+				voter: vote.userWalletAddress,
+				choice: vote.choiceId,
+				scores: 1, // Assuming scores is a constant value; adjust as needed
+				created: vote.voteTimestamp,
+			}));
 
-			setVotes(response);
+			// Update UserVote state
+			setVotes(mappedVotes);
+
+			console.error("mappedVotes", mappedVotes);
 		} catch (e) {
 			console.error(e);
 		} finally {
@@ -47,14 +52,19 @@ export function useProposalVotes(proposal: Proposal) {
 
 		setLoadingUserVote(true);
 		try {
-			const response: any = await fetchQuery(API_PATHS.loadUserVote, {
-				// id: proposal.proposalId,
-				// voter: voter,
+			const response: any[] = await fetchQuery(API_PATHS.loadUserVotes, {
+				proposalId: proposal.proposalId,
+				userWalletAddress: voter,
 			});
-			console.log("respons", response);
 
-			response.scores = 1;
-			setUserVote(response);
+			setUserVote({
+				voter: response[0].userWalletAddress,
+				choice: response[0].choiceId,
+				scores: 1,
+				created: response[0].voteTimestamp,
+			});
+
+			console.error("single user vote", response);
 		} catch (e) {
 			console.error(e);
 		} finally {
