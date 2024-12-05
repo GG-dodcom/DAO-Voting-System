@@ -27,6 +27,11 @@ interface Props {
   selectedChoices: number;
   onReload: () => void;
   onClose: () => void;
+  open: boolean;
+  proposal: Proposal;
+  selectedChoices: number;
+  onReload: () => void;
+  onClose: () => void;
 }
 
 const ModalVote: React.FC<Props> = ({
@@ -35,7 +40,20 @@ const ModalVote: React.FC<Props> = ({
   selectedChoices,
   onReload,
   onClose,
+  open,
+  proposal,
+  selectedChoices,
+  onReload,
+  onClose,
 }) => {
+  const [votingPower, setVotingPower] = useState(0);
+  // const [reason, setReason] = useState<any>("");
+  const [hasVotingPowerFailed, setHasVotingPowerFailed] = useState(false);
+  const [isValidationAndPowerLoading, setIsValidationAndPowerLoading] =
+    useState(false);
+  const [isValidationAndPowerLoaded, setIsValidationAndPowerLoaded] =
+    useState(false);
+  const symbol = proposal.symbol || '';
   const [votingPower, setVotingPower] = useState(0);
   // const [reason, setReason] = useState<any>("");
   const [hasVotingPowerFailed, setHasVotingPowerFailed] = useState(false);
@@ -56,7 +74,14 @@ const ModalVote: React.FC<Props> = ({
       const match = str.match(/\d+/);
       return match ? parseInt(match[0], 10) : null;
     };
+  const handleSubmit = async () => {
+    const extractNumber = (str: string): number | null => {
+      const match = str.match(/\d+/);
+      return match ? parseInt(match[0], 10) : null;
+    };
 
+    const roomNumber = extractNumber(proposal.proposalId);
+    const choiceNumber = extractNumber(choiceId);
     const roomNumber = extractNumber(proposal.proposalId);
     const choiceNumber = extractNumber(choiceId);
 
@@ -95,10 +120,25 @@ const ModalVote: React.FC<Props> = ({
     onClose();
     onReload();
   };
+    onClose();
+    onReload();
+  };
 
   const loadVotingPower = async () => {
     setHasVotingPowerFailed(false);
+  const loadVotingPower = async () => {
+    setHasVotingPowerFailed(false);
 
+    // send request to check token balance
+    const powerRes: any = await fetchQuery(API_PATHS.fetchTokenBalance, {
+      roomId: proposal.proposalId,
+      userAddress: address,
+    });
+    if (powerRes.balance) {
+      const votingPower = Number(powerRes.balance);
+      setVotingPower(votingPower);
+    }
+  };
     // send request to check token balance
     const powerRes: any = await fetchQuery(API_PATHS.fetchTokenBalance, {
       roomId: proposal.proposalId,
@@ -121,7 +161,22 @@ const ModalVote: React.FC<Props> = ({
       setIsValidationAndPowerLoaded(true);
     }
   };
+  const loadValidationAndPower = async () => {
+    setIsValidationAndPowerLoading(true);
+    try {
+      await Promise.all([loadVotingPower()]);
+    } catch (e) {
+      console.log(e);
+    } finally {
+      setIsValidationAndPowerLoading(false);
+      setIsValidationAndPowerLoaded(true);
+    }
+  };
 
+  useEffect(() => {
+    if (!open) return;
+    loadValidationAndPower();
+  }, [open, address]);
   useEffect(() => {
     if (!open) return;
     loadValidationAndPower();
@@ -131,7 +186,17 @@ const ModalVote: React.FC<Props> = ({
     const choiceId = proposal.choices[selectedChoices].choiceId;
     console.log('choiceId', choiceId);
   }, [selectedChoices]);
+  useEffect(() => {
+    const choiceId = proposal.choices[selectedChoices].choiceId;
+    console.log('choiceId', choiceId);
+  }, [selectedChoices]);
 
+  return (
+    <TuneModal open={open} hideClose onClose={onClose}>
+      <div className="mx-3">
+        <TuneModalTitle className="mt-3 mx-1">
+          {t('proposal.castVote')}
+        </TuneModalTitle>
   return (
     <TuneModal open={open} hideClose onClose={onClose}>
       <div className="mx-3">
@@ -154,7 +219,45 @@ const ModalVote: React.FC<Props> = ({
                 </span>
               </Tippy>
             </div>
+        <div className="space-y-3 text-skin-link">
+          <div className="mx-1">
+            <div className="flex">
+              <span className="mr-1 flex-auto text-skin-text">
+                {t('choice')}
+              </span>
+              <Tippy
+                content={proposal.choices[selectedChoices].name}
+                disabled={proposal.choices[selectedChoices].name.length < 30}
+              >
+                <span className="ml-4 truncate text-right">
+                  {proposal.choices[selectedChoices].name}
+                </span>
+              </Tippy>
+            </div>
 
+            <div className="flex">
+              <span className="mr-1 flex-auto text-skin-text">
+                {t('votingPower')}
+              </span>
+              {hasVotingPowerFailed ? (
+                <span className="flex items-center gap-1">
+                  <IHoExclamationCircle className="text-sm text-red" />
+                  {t('failed')}
+                </span>
+              ) : isValidationAndPowerLoaded && !isValidationAndPowerLoading ? (
+                <Tippy
+                  content={`${formatCompactNumber(votingPower)} ${symbol}`}
+                >
+                  <span>
+                    {formatCompactNumber(votingPower)}{' '}
+                    {shorten(symbol || '', 'symbol')}
+                  </span>
+                </Tippy>
+              ) : (
+                <LoadingSpinner />
+              )}
+            </div>
+          </div>
             <div className="flex">
               <span className="mr-1 flex-auto text-skin-text">
                 {t('votingPower')}
@@ -195,6 +298,22 @@ const ModalVote: React.FC<Props> = ({
                   /* Reason field */
                   <div>
                     {/* <TextareaAutosize
+          {isValidationAndPowerLoaded && !isValidationAndPowerLoading && (
+            <>
+              {
+                /* No voting power */
+                votingPower === 0 ? (
+                  <BaseMessageBlock level={'warning'}>
+                    <span>
+                      {t('noVotingPower', {
+                        performanceName: proposal.title,
+                      })}
+                    </span>
+                  </BaseMessageBlock>
+                ) : (
+                  /* Reason field */
+                  <div>
+                    {/* <TextareaAutosize
 											value={reason}
 											maxLength={140}
 											className="s-input !rounded-xl"
@@ -207,7 +326,33 @@ const ModalVote: React.FC<Props> = ({
             </>
           )}
         </div>
+                  </div>
+                )
+              }
+            </>
+          )}
+        </div>
 
+        <div className="mb-3 mt-5 flex gap-x-[12px]">
+          <TuneButton type="button" className="w-full" onClick={onClose}>
+            {t('cancel')}
+          </TuneButton>
+          <TuneButton
+            onClick={handleSubmit}
+            disabled={
+              votingPower === 0 || queryLoading || isValidationAndPowerLoading
+            }
+            loading={queryLoading}
+            className="w-full"
+            primary
+            data-testid="confirm-vote-button"
+          >
+            {t('confirm')}
+          </TuneButton>
+        </div>
+      </div>
+    </TuneModal>
+  );
         <div className="mb-3 mt-5 flex gap-x-[12px]">
           <TuneButton type="button" className="w-full" onClick={onClose}>
             {t('cancel')}
