@@ -64,10 +64,20 @@ const SpaceProposalHeader: React.FC<Props> = ({ proposal, isAdmin }) => {
 		if (!scanned) return;
 		setIsProcessing(true);
 
-		//TODO: check is scanned text able to get token or not
-		const isRedeemable: any = await fetchQuery(API_PATHS.checkTokenRedeem, {
+		const validate: any = await fetchQuery(API_PATHS.validQrStatus, {
+			qrcode: scanned,
+		});
+
+		const redeemToken: any = await fetchQuery(API_PATHS.redeemToken, {
 			roomId: proposal.proposalId,
 			userAddress: address,
+		});
+
+		//TODO: check is scanned text able to get token or not
+		const isRedeemable: any = await fetchQuery(API_PATHS.updateQrStatus, {
+			roomId: proposal.proposalId,
+			userAddress: address,
+			qrcode: scanned,
 		});
 
 		if (isRedeemable.success) {

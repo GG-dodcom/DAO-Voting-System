@@ -6,11 +6,11 @@ const API_PATHS = {
 	// Blockchain
 	fetchTokenBalance: `${API_CONTRACT_URL}/getUserTokenBalance`,
 
-	//fetchScores: `${API_BASE_URL}/scores`, //?proposalId=...
-	fetchScores: `http://localhost:3000/api/scores`,
+	fetchScores: `${API_BASE_URL}/voting/getRoomResults`, //?proposalId=...
+	//fetchScores: `http://localhost:3000/api/scores`,
 
-	//fetchAllScores: `${API_BASE_URL}/all-scores`,
-	fetchAllScores: `http://localhost:3000/api/all-scores`,
+	fetchAllScores: `${API_BASE_URL}/voting/getClosedRoomDetails`,
+	//fetchAllScores: `http://localhost:3000/api/all-scores`,
 
 	fetchProposals: `${API_BASE_URL}/proposals/view-all-proposals`,
 
@@ -18,10 +18,14 @@ const API_PATHS = {
 
 	fetchTokenQR: `${API_BASE_URL}/proposals/get-token-qr`, //?proposalId=...
 
-	fetchUserVotedProposalIds: `${API_BASE_URL}/userVotedProposalIds`, //?address=...
+	fetchUserVotedProposalIds: `${API_BASE_URL}/get-user-voted-proposal`, //?address=...
 	//list of proposal id
 
-	checkTokenRedeem: `${API_BASE_URL}/voting/distributeTokens`, //?qrcode=...
+	validQrStatus: `${API_BASE_URL}/validate-qr-status`,
+
+	updateQrStatus: `${API_BASE_URL}/update-qr-status`,
+
+	redeemToken: `${API_BASE_URL}/voting/distributeTokens`, //?qrcode=...
 
 	adminlogin: `${API_BASE_URL}/auth/login`,
 

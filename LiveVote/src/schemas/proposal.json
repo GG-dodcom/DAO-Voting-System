@@ -20,6 +20,24 @@
 						"turbo": 3000
 					}
 				},
+				"avatar": {
+					"type": "object",
+					"title": "Avatar",
+					"properties": {
+						"file": {
+							"type": "object",
+							"isFile": true,
+							"title": "file",
+							"nullable": false
+						},
+						"url": {
+							"type": "string",
+							"title": "URL",
+							"format": "uri",
+							"minLength": 1
+						}
+					}
+				},
 				"choices": {
 					"type": "array",
 					"title": "choices",
@@ -66,7 +84,7 @@
 					"maximum": 2000000000
 				}
 			},
-			"required": ["name", "body", "choices", "start", "end"],
+			"required": ["name", "avatar", "body", "choices", "start", "end"],
 			"additionalProperties": false
 		}
 	}

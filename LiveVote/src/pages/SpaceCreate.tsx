@@ -14,7 +14,6 @@ import { t } from "i18next";
 import { useFormSpaceProposal } from "../hooks/useFormSpaceProposal";
 import proposal from "../schemas/proposal.json";
 import API_PATHS from "../utils/queries";
-import Tippy from "@tippyjs/react";
 import { useFlashNotification } from "../context";
 
 enum Step {
@@ -99,6 +98,7 @@ const SpaceCreate: React.FC = () => {
 		if (
 			currentStep === 0 &&
 			form.name &&
+			form.avatar.file &&
 			form.body.length <= bodyCharactersLimit &&
 			!validationErrors.name &&
 			!validationErrors.body
@@ -112,7 +112,12 @@ const SpaceCreate: React.FC = () => {
 			dateEnd &&
 			dateStart &&
 			dateEnd > dateStart &&
-			!form.choices.some((choice, index) => choice.text === "" && index === 0)
+			!form.choices.some(
+				(choice, index) => choice.text === "" && index === 0
+			) &&
+			!form.choices.find(
+				(choice: any) => choice.text.trim() !== "" && !choice.avatar?.file
+			)
 		) {
 			return true;
 		}
@@ -120,7 +125,9 @@ const SpaceCreate: React.FC = () => {
 		return false;
 	}, [
 		currentStep,
+		form,
 		form.name,
+		form.avatar.file,
 		form.body.length,
 		form.choices,
 		bodyCharactersLimit,
@@ -129,6 +136,18 @@ const SpaceCreate: React.FC = () => {
 		dateEnd,
 		dateStart,
 	]);
+
+	// &&
+	// // !form.choices.find((choice: any) => {
+	// // 	// If choice text is not empty, ensure it has an avatar
+	// // 	if (choice.text !== "" && !choice.avatar?.file) {
+	// // 		return true; // Avatar is missing for non-empty choice text
+	// // 	}
+	// // 	return false; // No issue if avatar exists or choice text is empty
+	// // }),
+	// !form.choices.find(
+	// 	(choice: any) => choice.text.trim() !== "" && !choice.avatar?.file
+	// )
 
 	const getFormattedForm = () => {
 		const clonedForm = { ...form }; // Cloning the form using spread operator
@@ -291,18 +310,16 @@ const SpaceCreate: React.FC = () => {
 							{t("create.publish")}
 						</TuneButton>
 					) : (
-						<Tippy content={t("plsConnctWallet")}>
-							<div>
-								<TuneButton
-									className="block w-full"
-									disabled={!stepIsValid}
-									primary
-									onClick={() => nextStep()}
-								>
-									{t("create.continue")}
-								</TuneButton>
-							</div>
-						</Tippy>
+						<div>
+							<TuneButton
+								className="block w-full"
+								disabled={!stepIsValid}
+								primary
+								onClick={() => nextStep()}
+							>
+								{t("create.continue")}
+							</TuneButton>
+						</div>
 					)}
 				</BaseBlock>
 			}
