@@ -7,6 +7,7 @@ import {
   BaseButtonIcon,
   BaseMenu,
   BaseMessageBlock,
+  LoadingSpinner,
   QRCodeScanner,
   TuneModal,
   TuneModalTitle,
@@ -86,7 +87,7 @@ const SpaceProposalHeader: React.FC<Props> = ({ proposal, isAdmin }) => {
       }
 
       // Step 2: Redeem Token
-      const redeemToken: any = await postQuery(API_PATHS.redeemToken, {
+      const redeemToken: any = await fetchQuery(API_PATHS.redeemToken, {
         roomId: proposal.proposalId,
         userAddress: address,
       });
@@ -106,12 +107,12 @@ const SpaceProposalHeader: React.FC<Props> = ({ proposal, isAdmin }) => {
 
       console.log('updateQrStatus', updateQrStatus);
 
-      if (updateQrStatus.status === 500) {
+      if (updateQrStatus.status === 200) {
+        notify(['green', 'Successfully get token.']);
+      } else {
         notify(['red', updateQrStatus.message]);
         return;
       }
-
-      notify(['green', updateQrStatus.message]);
     } finally {
       closeQrModal();
       setIsProcessing(false);
@@ -199,25 +200,32 @@ const SpaceProposalHeader: React.FC<Props> = ({ proposal, isAdmin }) => {
       </div>
 
       <TuneModal open={isOpenQrModal} onClose={closeQrModal}>
-        <div className="mx-3">
-          <TuneModalTitle className="mt-3 mx-1">
-            {t('scanQrLabel')}
-          </TuneModalTitle>
+        {!isProcessing ? (
+          <div className="mx-3">
+            <TuneModalTitle className="mt-3 mx-1">
+              {t('scanQrLabel')}
+            </TuneModalTitle>
 
-          <div className="space-y-3 text-skin-link">
-            <BaseMessageBlock level={'info'}>
-              <span>{t('scanQrMessage')}</span>
-            </BaseMessageBlock>
-          </div>
+            <div className="space-y-3 text-skin-link">
+              <BaseMessageBlock level={'info'}>
+                <span>{t('scanQrMessage')}</span>
+              </BaseMessageBlock>
+            </div>
 
-          <div className="h-[229.5px] mb-3 mt-3 flex gap-x-[12px]">
-            <QRCodeScanner
-              onScanned={(scanned: string) => {
-                if (!isProcessing) checkTokenRedeem(scanned);
-              }}
-            />
+            <div className="h-[229.5px] mb-3 mt-3 flex gap-x-[12px]">
+              <QRCodeScanner
+                onScanned={(scanned: string) => {
+                  if (!isProcessing) {
+                    setIsProcessing(true); // Block further actions
+                    checkTokenRedeem(scanned);
+                  }
+                }}
+              />
+            </div>
           </div>
-        </div>
+        ) : (
+          <LoadingSpinner />
+        )}
       </TuneModal>
     </div>
   );
