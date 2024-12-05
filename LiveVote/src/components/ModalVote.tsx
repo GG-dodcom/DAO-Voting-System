@@ -5,6 +5,8 @@ import { useAppKitAccount } from '@reown/appkit/react';
 import { t } from 'i18next';
 import Tippy from '@tippyjs/react';
 import { Proposal } from '../utils/interfaces';
+import { voteForCandidate } from '../utils/contractService';
+
 import {
   BaseMessageBlock,
   LoadingSpinner,
@@ -19,8 +21,6 @@ import { shorten } from '../utils/utils';
 import { useRestfulAPI } from '../hooks';
 import API_PATHS from '../utils/queries';
 import { useFlashNotification } from '../context';
-import { useWriteContract } from 'wagmi';
-import VotingRoomsABI from '../smart_contract/VotingRoomsAbi.json';
 
 interface Props {
   open: boolean;
@@ -49,34 +49,54 @@ const ModalVote: React.FC<Props> = ({
   const { formatCompactNumber } = useIntl();
   const { fetchQuery, queryLoading } = useRestfulAPI();
   const { notify } = useFlashNotification();
-  const { writeContract } = useWriteContract();
   const choiceId = proposal.choices[selectedChoices].choiceId;
+
   const handleSubmit = async () => {
     const extractNumber = (str: string): number | null => {
       const match = str.match(/\d+/);
       return match ? parseInt(match[0], 10) : null;
     };
+
     const roomNumber = extractNumber(proposal.proposalId);
     const choiceNumber = extractNumber(choiceId);
+
     try {
-      const tx = await writeContract({
-        abi: VotingRoomsABI,
-        address: '0x5FbDB2315678afecb367f032d93F642f64180aa3',
-        functionName: 'vote',
-        args: [roomNumber, choiceNumber],
-      });
-      console.log('Transaction response:', tx);
-      console.log('Transaction sent:', tx);
-      console.log('Vote cast successfully');
+      if (roomNumber !== null && choiceNumber !== null) {
+        await voteForCandidate(roomNumber.toString(), choiceNumber.toString());
+        console.log('Vote cast successfully');
+        notify(['green', 'Vote Successfully']);
+
+        const saveVotingResultResponse = await fetchQuery(
+          API_PATHS.saveUserVotes,
+          {
+            proposalId: proposal.proposalId,
+            userWalletAddress: address,
+            choiceId: choiceId,
+          }
+        );
+
+        const response = saveVotingResultResponse[0]; 
+        if (response?.statusCode === 'successful') {
+          console.log('Voting result saved:', response.message);
+        } else {
+          console.error(
+            'Error saving voting result:',
+            response?.message || 'Unknown error'
+          );
+        }
+      } else {
+        console.error('Invalid proposal ID, choice ID, or user wallet address');
+      }
     } catch (error: any) {
-      console.error('Error sending vote:', error);
-      notify(['red', 'Failed to cast vote: ' + error.message]);
-    } finally {
-      notify(['green', 'Vote Succesfully']);
+      console.error('Error sending vote or saving result:', error);
+      notify(['red', 'Failed to cast vote or save result: ' + error.message]);
     }
+
     onClose();
     onReload();
   };
+
+
   const loadVotingPower = async () => {
     setHasVotingPowerFailed(false);
     // send request to check token balance
