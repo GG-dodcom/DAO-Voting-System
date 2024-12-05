@@ -99,19 +99,25 @@ const SpaceProposalHeader: React.FC<Props> = ({ proposal, isAdmin }) => {
         return;
       }
 
-      const updateQrStatus: any = await postQuery(API_PATHS.updateQrStatus, {
-        proposalId: proposal.proposalId,
-        userWalletAddress: address,
-        qrCode: scanned,
-      });
+      const updateQrStatus: any = await postQueryWithQueryParams(
+        API_PATHS.updateQrStatus,
+        {
+          proposalId: proposal.proposalId,
+          userWalletAddress: address,
+          qrCode: scanned,
+        }
+      );
 
-      console.log('updateQrStatus', updateQrStatus);
+      if (updateQrStatus) {
+        console.log('updateQrStatus', updateQrStatus);
 
-      if (updateQrStatus.status === 200) {
-        notify(['green', 'Successfully get token.']);
+        if (updateQrStatus.status === 500) {
+          notify(['red', updateQrStatus.message]);
+        } else {
+          notify(['green', updateQrStatus.message]);
+        }
       } else {
-        notify(['red', updateQrStatus.message]);
-        return;
+        notify(['red', 'Failed to update QR status.']);
       }
     } finally {
       closeQrModal();
@@ -232,3 +238,13 @@ const SpaceProposalHeader: React.FC<Props> = ({ proposal, isAdmin }) => {
 };
 
 export default SpaceProposalHeader;
+function postQueryWithQueryParams(
+  updateQrStatus: string,
+  arg1: {
+    proposalId: string;
+    userWalletAddress: string | undefined;
+    qrCode: string;
+  }
+): any {
+  throw new Error('Function not implemented.');
+}
