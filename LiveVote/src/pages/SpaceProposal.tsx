@@ -20,9 +20,6 @@ const SpaceProposal: React.FC = () => {
 
     const fetchedProposal: any = await fetchQuery(
       API_PATHS.fetchProposalDetails + '/' + proposalId.id
-      // {
-      //   proposalId: proposalId.id,
-      // }
     );
     if (!fetchedProposal) return navigate('/');
 

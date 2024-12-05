@@ -18,7 +18,7 @@ const QRCodeScanner: React.FC<Props> = ({ onScanned }) => {
       const qrScanner = new QrScanner(
         video,
         (result) => {
-          console.log('decoded qr code:', result);
+          // console.log('decoded qr code:', result);
           setScannedText(result.data);
         },
         {

@@ -40,7 +40,7 @@ export const FlashNotificationProvider: React.FC<{
         setItems((prevItems) => prevItems.filter((i) => i.id !== item.id));
       },
     };
-    console.log('new items:', item);
+    // console.log('new items:', item);
     setItems((prevItems) => [...prevItems, item]);
 
     setTimeout(() => item.remove(), duration);

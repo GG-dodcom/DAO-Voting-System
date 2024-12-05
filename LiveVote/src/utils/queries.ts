@@ -1,35 +1,35 @@
-const API_BASE_URL = "http://localhost:8080/api";
-//const API_BASE_URL = 'http://localhost:3000/api';
-const API_CONTRACT_URL = "http://localhost:8080/api/voting";
+const API_BASE_URL = 'http://localhost:8080/api';
+// const API_CONTRACT_URL = 'http://localhost:8080/api/voting';
 
 const API_PATHS = {
-	// Blockchain
-	fetchTokenBalance: `${API_CONTRACT_URL}/getUserTokenBalance`,
+  // Blockchain
+  fetchTokenBalance: `${API_BASE_URL}/voting/getUserTokenBalance`,
 
-	fetchScores: `${API_BASE_URL}/voting/getRoomResults`, //?proposalId=...
+  fetchScores: `${API_BASE_URL}/voting/getRoomResults`, //?proposalId=...
 
-	fetchAllScores: `${API_BASE_URL}/voting/getClosedRoomDetails`,
+  fetchAllScores: `${API_BASE_URL}/voting/getClosedRoomDetails`,
 
-	fetchProposals: `${API_BASE_URL}/proposals/view-all-proposals`,
+  redeemToken: `${API_BASE_URL}/voting/distributeTokens`, //?qrcode=...
 
-	fetchProposalDetails: `${API_BASE_URL}/proposals/view-proposal-details`,
+  // Backend
+  adminlogin: `${API_BASE_URL}/auth/login`,
 
-	fetchTokenQR: `${API_BASE_URL}/proposals/get-token-qr`, //?proposalId=...
+  fetchProposals: `${API_BASE_URL}/proposals/view-all-proposals`,
 
-	fetchUserVotedProposalIds: `${API_BASE_URL}/get-user-voted-proposal`, //?address=...
+  fetchProposalDetails: `${API_BASE_URL}/proposals/view-proposal-details`,
 
-	validQrStatus: `${API_BASE_URL}/validate-qr-status`,
+  fetchTokenQR: `${API_BASE_URL}/proposals/get-token-qr`, //?proposalId=...
 
-	updateQrStatus: `${API_BASE_URL}/update-qr-status`,
+  fetchUserVotedProposalIds: `${API_BASE_URL}/proposals/get-user-voted-proposal`, //?address=...
 
-	redeemToken: `${API_BASE_URL}/voting/distributeTokens`, //?qrcode=...
+  validQrStatus: `${API_BASE_URL}/proposals/validate-qr-status`,
 
-	adminlogin: `${API_BASE_URL}/auth/login`,
+  updateQrStatus: `${API_BASE_URL}/proposals/update-qr-status`,
 
-	createProposal: `${API_BASE_URL}/proposals/create-proposal`,
+  createProposal: `${API_BASE_URL}/proposals/create-proposal`,
 
-	loadUserVotes: `${API_BASE_URL}/proposals/get-voting-result`,
+  loadUserVotes: `${API_BASE_URL}/proposals/get-voting-result`,
 
-	// deleteProposal: `${API_BASE_URL}/deleteProposal`,
+  // deleteProposal: `${API_BASE_URL}/deleteProposal`,
 };
 export default API_PATHS;
