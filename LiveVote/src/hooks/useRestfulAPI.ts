@@ -40,6 +40,8 @@ export function useRestfulAPI() {
           error.response?.data.path === '/api/proposals/validate-qr-status'
         ) {
           if (error.response?.status === 404) notify(['red', error.message]);
+          if (error.response?.status === 400)
+            notify(['red', 'Invalid QR Code']);
         } else {
           // General error handling
           errorMessage =

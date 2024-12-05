@@ -17,6 +17,7 @@ export function useProposalVotes(proposal: Proposal) {
   // fetch votes based on the proposal and queryParams
   // send to me orderBy: 'timestamp',
   async function loadVotes() {
+    if (proposal.state === 'active') return;
     if (loadingVotes) return;
 
     setLoadingVotes(true);
@@ -57,6 +58,7 @@ export function useProposalVotes(proposal: Proposal) {
         userWalletAddress: voter,
       });
 
+      if (response[0].choiceId == undefined) return;
       if (response.length > 0)
         setUserVote({
           voter: response[0].userWalletAddress,

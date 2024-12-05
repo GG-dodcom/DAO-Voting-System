@@ -62,6 +62,17 @@ const SpaceProposalHeader: React.FC<Props> = ({ proposal, isAdmin }) => {
     setOpenQrModal(false);
   };
 
+  function postQueryWithQueryParams(
+    updateQrStatus: string,
+    arg1: {
+      proposalId: string;
+      userWalletAddress: string | undefined;
+      qrCode: string;
+    }
+  ): any {
+    throw new Error('Function not implemented.');
+  }
+
   //TODO:
   const checkTokenRedeem = async (scanned: string) => {
     if (!scanned) return;
@@ -70,6 +81,7 @@ const SpaceProposalHeader: React.FC<Props> = ({ proposal, isAdmin }) => {
     try {
       // Step 1: Validate QR Code
       const validate: any = await fetchQuery(API_PATHS.validQrStatus, {
+        proposalId: proposal.proposalId,
         qrCode: scanned,
       });
 
@@ -99,29 +111,62 @@ const SpaceProposalHeader: React.FC<Props> = ({ proposal, isAdmin }) => {
         return;
       }
 
-      const updateQrStatus: any = await postQueryWithQueryParams(
-        API_PATHS.updateQrStatus,
-        {
-          proposalId: proposal.proposalId,
-          userWalletAddress: address,
-          qrCode: scanned,
-        }
-      );
+      if (address && isConnected) {
+        const updateQrStatus: any = await updateQrStatusHandler(
+          API_PATHS.updateQrStatus,
+          proposal.proposalId,
+          address,
+          scanned
+        );
 
-      if (updateQrStatus) {
-        console.log('updateQrStatus', updateQrStatus);
+        if (updateQrStatus) {
+          console.log('updateQrStatus', updateQrStatus);
 
-        if (updateQrStatus.status === 500) {
-          notify(['red', updateQrStatus.message]);
+          if (updateQrStatus.status === 500) {
+            notify(['red', updateQrStatus.message]);
+          } else {
+            notify(['green', updateQrStatus.message]);
+          }
         } else {
-          notify(['green', updateQrStatus.message]);
+          notify(['red', 'Failed to update QR status.']);
         }
-      } else {
-        notify(['red', 'Failed to update QR status.']);
       }
     } finally {
       closeQrModal();
       setIsProcessing(false);
+    }
+  };
+
+  const updateQrStatusHandler = async (
+    api_path: string,
+    proposalId: string,
+    userWalletAddress: string,
+    qrCode: string
+  ) => {
+    if (!proposalId || !userWalletAddress || !qrCode) {
+      notify(['red', 'Missing required fields for updating QR Code status.']);
+      return;
+    }
+
+    try {
+      // Construct the query string for the RequestParam API
+      const queryParams = new URLSearchParams({
+        proposalId,
+        userWalletAddress,
+        qrCode,
+      });
+
+      // Call the API with query parameters
+      const response = await fetch(`${api_path}?${queryParams}`, {
+        method: 'POST',
+      });
+
+      const updateQrStatus: any = await response.json();
+
+      return updateQrStatus;
+    } catch (error) {
+      console.error('Error during API call:', error);
+      notify(['red', 'Failed to update QR Code status.']);
     }
   };
 
@@ -238,13 +283,3 @@ const SpaceProposalHeader: React.FC<Props> = ({ proposal, isAdmin }) => {
 };
 
 export default SpaceProposalHeader;
-function postQueryWithQueryParams(
-  updateQrStatus: string,
-  arg1: {
-    proposalId: string;
-    userWalletAddress: string | undefined;
-    qrCode: string;
-  }
-): any {
-  throw new Error('Function not implemented.');
-}
