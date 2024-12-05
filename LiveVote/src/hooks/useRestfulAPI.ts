@@ -94,9 +94,43 @@ export function useRestfulAPI() {
     }
   }
 
+  async function postQueryWithQueryParams(
+    path: string,
+    params: Record<string, any>
+  ): Promise<any> {
+    try {
+      setLoading(true);
+
+      const response = await axios.post(path, null, { params });
+
+      console.info('response', response);
+
+      return response.data; // Return only the data part of the response
+    } catch (error: any) {
+      let errorMessage: string;
+
+      console.error(error);
+
+      if (axios.isAxiosError(error)) {
+        errorMessage =
+          error.response?.data?.message ||
+          error.message ||
+          'An error occurred while processing the request.';
+        notify(['red', errorMessage]);
+      } else {
+        notify(['red', 'An unexpected error occurred.']);
+      }
+
+      return null; // Return null in case of error
+    } finally {
+      setLoading(false);
+    }
+  }
+
   return {
     fetchQuery,
     postQuery,
+    postQueryWithQueryParams,
     queryLoading: loading,
   };
 }
