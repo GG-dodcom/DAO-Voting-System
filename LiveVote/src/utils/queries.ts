@@ -30,6 +30,8 @@ const API_PATHS = {
 
   loadUserVotes: `${API_BASE_URL}/proposals/get-voting-result`,
 
+  saveUserVotes: `${API_BASE_URL}/proposals/save-voting-result`,
+
   // deleteProposal: `${API_BASE_URL}/deleteProposal`,
 };
 export default API_PATHS;
