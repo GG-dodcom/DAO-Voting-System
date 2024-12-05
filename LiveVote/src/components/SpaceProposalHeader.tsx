@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Proposal } from '../utils/interfaces';
 import {
   BaseAvatar,
@@ -117,6 +117,11 @@ const SpaceProposalHeader: React.FC<Props> = ({ proposal, isAdmin }) => {
       setIsProcessing(false);
     }
   };
+
+  useEffect(() => {
+    if (isOpenQrModal == true) return;
+    // setIsProcessing(false);
+  }, [isOpenQrModal, isProcessing]);
 
   const deleteProposal = async () => {
     // const result: any = await postQuery(API_PATHS.deleteProposal, {
