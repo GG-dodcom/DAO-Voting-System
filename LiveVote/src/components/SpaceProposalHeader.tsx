@@ -67,52 +67,55 @@ const SpaceProposalHeader: React.FC<Props> = ({ proposal, isAdmin }) => {
     setIsProcessing(true);
 
     try {
-      const validate: any = await axios.get(API_PATHS.validQrStatus, {
-        params: { qrCode: scanned },
+      // Step 1: Validate QR Code
+      const validate: any = await fetchQuery(API_PATHS.validQrStatus, {
+        qrCode: scanned,
       });
 
       console.log('validate', validate);
 
       if (validate.statusCode === 404) {
-        notify(['red', validate.message]);
+        notify(['red', validate.message]); //QR not found
         return;
       }
 
-      return;
-    } catch (err) {
-      notify(['red', 'error']);
+      // Step 2: Redeem Token
+      if (validate.statusCode === 200 && validate.message === 'true') {
+        notify(['red', 'Token already redeemed.']);
+        return;
+      }
+
+      // Step 2: Redeem Token
+      const redeemToken: any = await postQuery(API_PATHS.redeemToken, {
+        roomId: proposal.proposalId,
+        userAddress: address,
+      });
+
+      console.log('redeemToken', redeemToken);
+
+      if (redeemToken.status === 500) {
+        notify(['red', redeemToken.message]);
+        return;
+      }
+
+      const updateQrStatus: any = await postQuery(API_PATHS.updateQrStatus, {
+        proposalId: proposal.proposalId,
+        userWalletAddress: address,
+        qrCode: scanned,
+      });
+
+      console.log('updateQrStatus', updateQrStatus);
+
+      if (updateQrStatus.status === 500) {
+        notify(['red', updateQrStatus.message]);
+        return;
+      }
+
+      notify(['green', updateQrStatus.message]);
+    } finally {
+      closeQrModal();
+      setIsProcessing(false);
     }
-
-    return;
-
-    const redeemToken: any = await postQuery(API_PATHS.redeemToken, {
-      roomId: proposal.proposalId,
-      userAddress: address,
-    });
-
-    console.log('redeemToken', redeemToken);
-
-    if (redeemToken.status === 500) {
-      notify(['red', redeemToken.message]);
-      return;
-    }
-
-    const updateQrStatus: any = await postQuery(API_PATHS.updateQrStatus, {
-      proposalId: proposal.proposalId,
-      userWalletAddress: address,
-      qrCode: scanned,
-    });
-
-    console.log('updateQrStatus', updateQrStatus);
-
-    if (updateQrStatus.status === 500) {
-      notify(['red', updateQrStatus.message]);
-      return;
-    }
-
-    notify(['green', updateQrStatus.message]);
-
-    closeQrModal();
   };
 
   const deleteProposal = async () => {

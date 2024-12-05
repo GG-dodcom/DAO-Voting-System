@@ -57,12 +57,13 @@ export function useProposalVotes(proposal: Proposal) {
         userWalletAddress: voter,
       });
 
-      setUserVote({
-        voter: response[0].userWalletAddress,
-        choice: response[0].choiceId,
-        scores: 1,
-        created: response[0].voteTimestamp,
-      });
+      if (response.length > 0)
+        setUserVote({
+          voter: response[0].userWalletAddress,
+          choice: response[0].choiceId,
+          scores: 1,
+          created: response[0].voteTimestamp,
+        });
 
       console.error('single user vote', response);
     } catch (e) {
