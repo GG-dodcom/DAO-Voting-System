@@ -37,41 +37,30 @@ const SpaceProposalVote: React.FC<Props> = ({
 
   // Validate user choice
   const validatedUserChoice = useMemo(() => {
-    console.log('valid selected choices: ', modelValue);
-    console.log(
-      'model value valid: ',
-      SingleChoiceVoting.isValidChoice(
-        modelValue,
-        proposal.choices.map((choice) => choice.name)
-      )
-    );
-    console.log('!userVote?.choice: ', userVote, !userVote?.choice);
-    console.log(
-      'userVote isvalid: ',
-      SingleChoiceVoting.isValidChoice(
-        userVote?.choice,
-        proposal.choices.map((choice) => choice.name)
-      )
-    );
-
     // Check if there are selected choices
-    if (modelValue)
+    if (modelValue && typeof modelValue === 'number') {
       return SingleChoiceVoting.isValidChoice(
         modelValue,
         proposal.choices.map((choice) => choice.name)
       )
         ? modelValue
         : null;
+    }
 
     // Check userVote and validate it
     if (!userVote?.choice) return null;
+    const userVoteChoice =
+      proposal.choices.findIndex(
+        (choice) => choice.choiceId === userVote.choice
+      ) + 1;
+
     if (
       SingleChoiceVoting.isValidChoice(
-        userVote.choice,
+        userVoteChoice,
         proposal.choices.map((choice) => choice.name)
       )
     )
-      return userVote.choice as any;
+      return userVoteChoice as any;
 
     return null;
   }, [modelValue, userVote]);
@@ -139,15 +128,13 @@ const SpaceProposalVote: React.FC<Props> = ({
           }
         >
           <div>
-            {!isEditing &&
-              userVote &&
-              proposal.result?.scores_state != 'final' && (
-                <div className="border px-3 py-[12px] rounded-xl bg-[--border-color-subtle]">
-                  <IHoLockClosed className="inline-block text-sm" />
-                  Your vote is encrypted until the proposal ends and the final
-                  score is calculated.
-                </div>
-              )}
+            {!isEditing && userVote && proposal.state != 'closed' && (
+              <div className="border px-3 py-[12px] rounded-xl bg-[--border-color-subtle]">
+                <IHoLockClosed className="inline-block text-sm" />
+                Your vote is encrypted until the proposal ends and the final
+                score is calculated.
+              </div>
+            )}
             {userVote && !validatedUserChoice && !isEditing && (
               <BaseMessage
                 level="info"

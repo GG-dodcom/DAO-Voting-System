@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import { WagmiHooks } from './components/WagmiHooks';
 import { useApp } from './hooks/useApp';
 import './utils/i18n';
 import { LoadingSpinner, TheFooter, TheNavbar } from './components';
@@ -41,8 +40,6 @@ const App: React.FC = () => {
               >
                 <TheNavbar />
               </div>
-              {/* <p>domain: {domain}</p>
-          <WagmiHooks /> */}
 
               <div id="content" className="pb-6 pt-4">
                 <AppRoutes />

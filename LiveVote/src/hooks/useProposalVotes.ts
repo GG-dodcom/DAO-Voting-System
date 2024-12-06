@@ -26,6 +26,8 @@ export function useProposalVotes(proposal: Proposal) {
         proposalId: proposal.proposalId,
       });
 
+      console.log(response);
+
       // Map response to the desired format for UserVote
       const mappedVotes: Vote[] = response.map((vote) => ({
         voter: vote.userWalletAddress,
@@ -58,7 +60,7 @@ export function useProposalVotes(proposal: Proposal) {
         userWalletAddress: voter,
       });
 
-      if (response[0].choiceId == undefined) return;
+      if (response.length < 0 && response[0].choiceId == undefined) return;
       if (response.length > 0)
         setUserVote({
           voter: response[0].userWalletAddress,
@@ -66,8 +68,6 @@ export function useProposalVotes(proposal: Proposal) {
           scores: 1,
           created: response[0].voteTimestamp,
         });
-
-      console.error('single user vote', response);
     } catch (e) {
       console.error(e);
     } finally {

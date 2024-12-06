@@ -1,20 +1,24 @@
 import React from 'react';
-import { Proposal } from '../utils/interfaces';
+import { Proposal, Result } from '../utils/interfaces';
 import { shorten } from '../utils/utils';
 import { IHoCheck } from '../assets/icons';
 import { useIntl } from '../hooks/useIntl';
 
 interface ProposalsItemResultsProps {
   proposal: Proposal;
+  result: Result;
 }
 
 //TODO: FIX ERROR
 const ProposalsItemResults: React.FC<ProposalsItemResultsProps> = ({
   proposal,
+  result,
 }) => {
   const { formatCompactNumber, formatPercentNumber } = useIntl();
   // Calculate the winning choice
-  const winningChoice = proposal.result?.scores.indexOf(Math.max(...proposal.result?.scores));
+  const winningChoice = proposal.result?.scores.indexOf(
+    Math.max(...result.scores)
+  );
 
   return (
     <div className={`${!proposal.body ? 'mt-3' : ''}`}>
@@ -29,7 +33,8 @@ const ProposalsItemResults: React.FC<ProposalsItemResultsProps> = ({
                   )}
                   {shorten(choice.name, 32)}
                   <span className="ml-1 text-skin-text">
-                    {proposal.result?.scores && formatCompactNumber(proposal.result?.scores[i])}
+                    {proposal.result?.scores &&
+                      formatCompactNumber(proposal.result?.scores[i])}
                     {proposal.symbol}
                   </span>
                 </div>
@@ -37,7 +42,8 @@ const ProposalsItemResults: React.FC<ProposalsItemResultsProps> = ({
                   {proposal.result?.scores &&
                     proposal.result?.scoresTotal &&
                     formatPercentNumber(
-                      (1 / proposal.result?.scoresTotal) * proposal.result?.scores[i]
+                      (1 / proposal.result?.scoresTotal) *
+                        proposal.result?.scores[i]
                     )}
                 </div>
                 <div
@@ -45,7 +51,8 @@ const ProposalsItemResults: React.FC<ProposalsItemResultsProps> = ({
                     width: `${
                       proposal.result?.scores &&
                       proposal.result?.scoresTotal &&
-                      (100 / proposal.result?.scoresTotal) * proposal.result?.scores[i]
+                      (100 / proposal.result?.scoresTotal) *
+                        proposal.result?.scores[i]
                     }%`,
                   }}
                   className="h-[40px] rounded-md bg-skin-border"

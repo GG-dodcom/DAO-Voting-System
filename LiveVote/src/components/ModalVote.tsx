@@ -10,7 +10,6 @@ import { voteForCandidate } from '../utils/contractService';
 import {
   BaseMessageBlock,
   LoadingSpinner,
-  // TextareaAutosize,
   TuneButton,
   TuneModal,
   TuneModalTitle,
@@ -47,53 +46,63 @@ const ModalVote: React.FC<Props> = ({
   const symbol = proposal.symbol || '';
   const { address } = useAppKitAccount();
   const { formatCompactNumber } = useIntl();
-  const { fetchQuery, postQueryWithQueryParams, queryLoading } = useRestfulAPI();
+  const { fetchQuery, postQueryWithQueryParams, queryLoading } =
+    useRestfulAPI();
   const { notify } = useFlashNotification();
   const choiceId = proposal.choices[selectedChoices].choiceId;
 
   const handleSubmit = async () => {
     const extractNumber = (str: string): number | null => {
-      const match = str.match(/\d+/); 
-      return match ? parseInt(match[0], 10) : null; 
+      const match = str.match(/\d+/);
+      return match ? parseInt(match[0], 10) : null;
     };
-  
+
     const roomNumber = extractNumber(proposal.proposalId);
     const choiceNumber = extractNumber(choiceId);
-  
+
+    console.log('wallet address', address);
     try {
       if (roomNumber !== null && choiceNumber !== null) {
         await voteForCandidate(roomNumber.toString(), choiceNumber.toString());
         console.log('Vote cast successfully');
-        notify(['green', 'Vote Successfully']);
-  
+        // notify(['green', 'Vote Successfully']);
+
         const params = {
           proposalId: proposal.proposalId,
           userWalletAddress: address,
           choiceId: choiceId,
         };
-  
-        const response = await postQueryWithQueryParams(API_PATHS.saveUserVotes, params);
-  
-        if (response?.statusCode === 'successful') {
+
+        const response = await postQueryWithQueryParams(
+          API_PATHS.saveUserVotes,
+          params
+        );
+
+        if (response?.statusCode === 200) {
           console.log('Voting result saved:', response.message);
           notify(['green', response.message]);
         } else {
-          console.error('Error saving voting result:', response?.message || 'Unknown error');
+          console.error(
+            'Error saving voting result:',
+            response?.message || 'Unknown error'
+          );
           notify(['red', response?.message || 'Failed to save voting result']);
         }
       } else {
         console.error('Invalid proposal ID, choice ID, or user wallet address');
-        notify(['red', 'Invalid proposal ID, choice ID, or user wallet address']);
+        notify([
+          'red',
+          'Invalid proposal ID, choice ID, or user wallet address',
+        ]);
       }
     } catch (error: any) {
       console.error('Error sending vote or saving result:', error);
       notify(['red', 'Failed to cast vote or save result: ' + error.message]);
     }
-  
+
     onClose();
     onReload();
   };
-
 
   const loadVotingPower = async () => {
     setHasVotingPowerFailed(false);
