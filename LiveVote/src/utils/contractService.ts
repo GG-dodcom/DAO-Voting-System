@@ -24,16 +24,6 @@ const initialize = async (): Promise<void> => {
 
 initialize();
 
-export const requestAccount = async (): Promise<string | null> => {
-  try {
-    const accounts: string[] = await window.ethereum.request({ method: "eth_requestAccounts" });
-    return accounts[0] || null; 
-  } catch (error) {
-    console.error("Error requesting account:", (error as Error).message);
-    return null;
-  }
-};
-
 export const voteForCandidate = async (roomId: string, candidateId: string): Promise<void> => {
   try {
     const tx = await contract.vote(roomId, candidateId);
