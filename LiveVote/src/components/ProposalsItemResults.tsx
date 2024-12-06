@@ -34,7 +34,7 @@ const ProposalsItemResults: React.FC<ProposalsItemResultsProps> = ({
                   {shorten(choice.name, 32)}
                   <span className="ml-1 text-skin-text">
                     {proposal.result?.scores &&
-                      formatCompactNumber(proposal.result?.scores[i])}
+                      formatCompactNumber(proposal.result?.scores[i])}{' '}
                     {proposal.symbol}
                   </span>
                 </div>

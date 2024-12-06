@@ -122,7 +122,6 @@ const SpaceProposalHeader: React.FC<Props> = ({ proposal, isAdmin }) => {
       }
     } finally {
       closeQrModal();
-      setIsProcessing(false);
     }
   };
 
@@ -161,8 +160,13 @@ const SpaceProposalHeader: React.FC<Props> = ({ proposal, isAdmin }) => {
 
   useEffect(() => {
     if (isOpenQrModal == true) return;
-    // setIsProcessing(false);
-  }, [isOpenQrModal, isProcessing]);
+    const timer = setTimeout(() => {
+      setIsProcessing(false);
+    }, 1000);
+
+    // Cleanup function to clear the timeout if the component unmounts
+    return () => clearTimeout(timer);
+  }, [isOpenQrModal]);
 
   const deleteProposal = async () => {
     // const result: any = await postQuery(API_PATHS.deleteProposal, {
