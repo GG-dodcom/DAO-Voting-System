@@ -7,8 +7,10 @@ import {
   BaseButtonIcon,
   BaseMenu,
   BaseMessageBlock,
+  LoadingList,
   LoadingSpinner,
   QRCodeScanner,
+  TuneLoadingSpinner,
   TuneModal,
   TuneModalTitle,
 } from '.';
@@ -268,7 +270,7 @@ const SpaceProposalHeader: React.FC<Props> = ({ proposal, isAdmin }) => {
             </div>
           </div>
         ) : (
-          <LoadingSpinner />
+          <LoadingList />
         )}
       </TuneModal>
     </div>
