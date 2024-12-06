@@ -63,7 +63,7 @@ const SpaceProposals: React.FC = () => {
       userWalletAddress: voter,
     });
 
-    console.error('votes', votes);
+    // console.error('votes', votes);
 
     const proposalIds = votes ?? [];
     setUserVotedProposalIds((prevIds) => [

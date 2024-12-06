@@ -26,8 +26,6 @@ export function useProposalVotes(proposal: Proposal) {
         proposalId: proposal.proposalId,
       });
 
-      console.log(response);
-
       // Map response to the desired format for UserVote
       const mappedVotes: Vote[] = response.map((vote) => ({
         voter: vote.userWalletAddress,
@@ -39,7 +37,7 @@ export function useProposalVotes(proposal: Proposal) {
       // Update UserVote state
       setVotes(mappedVotes);
 
-      console.error('mappedVotes', mappedVotes);
+      // console.error('mappedVotes', mappedVotes);
     } catch (e) {
       console.error(e);
     } finally {
