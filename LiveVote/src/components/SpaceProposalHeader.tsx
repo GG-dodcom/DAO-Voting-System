@@ -62,18 +62,6 @@ const SpaceProposalHeader: React.FC<Props> = ({ proposal, isAdmin }) => {
     setOpenQrModal(false);
   };
 
-  function postQueryWithQueryParams(
-    updateQrStatus: string,
-    arg1: {
-      proposalId: string;
-      userWalletAddress: string | undefined;
-      qrCode: string;
-    }
-  ): any {
-    throw new Error('Function not implemented.');
-  }
-
-  //TODO:
   const checkTokenRedeem = async (scanned: string) => {
     if (!scanned) return;
     setIsProcessing(true);
@@ -119,6 +107,7 @@ const SpaceProposalHeader: React.FC<Props> = ({ proposal, isAdmin }) => {
           scanned
         );
 
+        // Step 3: Update database status
         if (updateQrStatus) {
           console.log('updateQrStatus', updateQrStatus);
 

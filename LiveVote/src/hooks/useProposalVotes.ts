@@ -37,7 +37,7 @@ export function useProposalVotes(proposal: Proposal) {
       // Update UserVote state
       setVotes(mappedVotes);
 
-      console.error('mappedVotes', mappedVotes);
+      // console.error('mappedVotes', mappedVotes);
     } catch (e) {
       console.error(e);
     } finally {
@@ -58,7 +58,7 @@ export function useProposalVotes(proposal: Proposal) {
         userWalletAddress: voter,
       });
 
-      if (response[0].choiceId == undefined) return;
+      if (response.length < 0 && response[0].choiceId == undefined) return;
       if (response.length > 0)
         setUserVote({
           voter: response[0].userWalletAddress,
@@ -66,8 +66,6 @@ export function useProposalVotes(proposal: Proposal) {
           scores: 1,
           created: response[0].voteTimestamp,
         });
-
-      console.error('single user vote', response);
     } catch (e) {
       console.error(e);
     } finally {

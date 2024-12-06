@@ -45,11 +45,12 @@ const ProposalsItem: React.FC<Props> = ({ proposal, voted, to }) => {
 
             {body && <ProposalsItemBody>{body}</ProposalsItemBody>}
 
-
-            {proposal.result &&
-              proposal.result.scores_state === 'final' && (
-                <ProposalsItemResults proposal={proposal} />
-              )}
+            {proposal.result && (
+              <ProposalsItemResults
+                proposal={proposal}
+                result={proposal.result}
+              />
+            )}
           </Link>
 
           <ProposalsItemFooter proposal={proposal} />
