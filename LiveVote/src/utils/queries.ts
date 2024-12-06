@@ -3,13 +3,13 @@ const API_BASE_URL = 'http://localhost:8080/api';
 
 const API_PATHS = {
   // Blockchain
-  fetchTokenBalance: `${API_BASE_URL}/voting/getUserTokenBalance`,
+  fetchTokenBalance: `${API_BASE_URL}/voting/get-user-token-balance`,
 
-  fetchScores: `${API_BASE_URL}/voting/getRoomResults`, //?proposalId=...
+  fetchScores: `${API_BASE_URL}/voting/get-room-results`, //?proposalId=...
 
-  fetchAllScores: `${API_BASE_URL}/voting/getClosedRoomDetails`,
+  fetchAllScores: `${API_BASE_URL}/voting/get-closed-room-details`,
 
-  redeemToken: `${API_BASE_URL}/voting/distributeTokens`, //?qrcode=...
+  redeemToken: `${API_BASE_URL}/voting/distribute-tokens`, //?qrcode=...
 
   // Backend
   adminlogin: `${API_BASE_URL}/auth/login`,
