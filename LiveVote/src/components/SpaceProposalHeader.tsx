@@ -5,28 +5,20 @@ import { Proposal } from '../utils/interfaces';
 import {
   BaseAvatar,
   BaseButtonIcon,
-  BaseMenu,
   BaseMessageBlock,
-  LoadingSpinner,
+  LoadingList,
   QRCodeScanner,
   TuneModal,
   TuneModalTitle,
 } from '.';
-import {
-  IHoDocumentDuplicate,
-  IHoDotsHorizontal,
-  IHoPencil,
-  IHoTrash,
-  ISScanqr,
-} from '../assets/icons';
+import { ISScanqr } from '../assets/icons';
 import { t } from 'i18next';
 import { useRestfulAPI } from '../hooks';
 import API_PATHS from '../utils/queries';
 import { useFlashNotification } from '../context';
-import { useNavigate } from 'react-router-dom';
-import { useFormSpaceProposal } from '../hooks/useFormSpaceProposal';
+// import { useNavigate } from 'react-router-dom';
+// import { useFormSpaceProposal } from '../hooks/useFormSpaceProposal';
 import { useAppKitAccount } from '@reown/appkit/react';
-import axios from 'axios';
 
 interface Props {
   proposal: Proposal;
@@ -34,24 +26,24 @@ interface Props {
 }
 
 const SpaceProposalHeader: React.FC<Props> = ({ proposal, isAdmin }) => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const { notify } = useFlashNotification();
-  const { resetForm } = useFormSpaceProposal();
-  const { postQuery, fetchQuery, queryLoading } = useRestfulAPI();
+  // const { resetForm } = useFormSpaceProposal();
+  const { fetchQuery } = useRestfulAPI();
   const { address, isConnected } = useAppKitAccount();
 
   const [isOpenQrModal, setOpenQrModal] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
 
-  const threeDotItems = () => {
-    const items: { text: string; action: string }[] = [];
-    if (proposal.state === 'pending')
-      items.push({ text: t('edit'), action: 'edit' });
-    items.push({ text: t('duplicate'), action: 'duplicate' });
-    items.push({ text: 'Delete', action: 'delete' });
+  // const threeDotItems = () => {
+  //   const items: { text: string; action: string }[] = [];
+  //   if (proposal.state === 'pending')
+  //     items.push({ text: t('edit'), action: 'edit' });
+  //   items.push({ text: t('duplicate'), action: 'duplicate' });
+  //   items.push({ text: 'Delete', action: 'delete' });
 
-    return items;
-  };
+  //   return items;
+  // };
 
   const openQrModal = () => {
     if (isConnected) setOpenQrModal(!isOpenQrModal);
@@ -122,7 +114,6 @@ const SpaceProposalHeader: React.FC<Props> = ({ proposal, isAdmin }) => {
       }
     } finally {
       closeQrModal();
-      setIsProcessing(false);
     }
   };
 
@@ -161,33 +152,38 @@ const SpaceProposalHeader: React.FC<Props> = ({ proposal, isAdmin }) => {
 
   useEffect(() => {
     if (isOpenQrModal == true) return;
-    // setIsProcessing(false);
-  }, [isOpenQrModal, isProcessing]);
+    const timer = setTimeout(() => {
+      setIsProcessing(false);
+    }, 1000);
 
-  const deleteProposal = async () => {
-    // const result: any = await postQuery(API_PATHS.deleteProposal, {
-    //   id: proposal.proposalId,
-    // });
-    // console.log('Result', result);
-    // if (result.id) {
-    //   notify(['green', t('notify.proposalDeleted')]); // Replace with your localization function
-    //   navigate('/');
-    // }
-  };
+    // Cleanup function to clear the timeout if the component unmounts
+    return () => clearTimeout(timer);
+  }, [isOpenQrModal]);
 
-  const handleSelect = async (e: string) => {
-    if (!proposal) return;
-    if (e === 'delete') deleteProposal();
-    if (e === 'duplicate' || e === 'edit') {
-      resetForm();
-      navigate(`/spaceCreate`, {
-        state: {
-          key: proposal.proposalId,
-          editing: e === 'edit' ? 'true' : undefined,
-        },
-      });
-    }
-  };
+  // const deleteProposal = async () => {
+  //   const result: any = await postQuery(API_PATHS.deleteProposal, {
+  //     id: proposal.proposalId,
+  //   });
+  //   console.log('Result', result);
+  //   if (result.id) {
+  //     notify(['green', t('notify.proposalDeleted')]); // Replace with your localization function
+  //     navigate('/');
+  //   }
+  // };
+
+  // const handleSelect = async (e: string) => {
+  //   if (!proposal) return;
+  //   if (e === 'delete') deleteProposal();
+  //   if (e === 'duplicate' || e === 'edit') {
+  //     resetForm();
+  //     navigate(`/spaceCreate`, {
+  //       state: {
+  //         key: proposal.proposalId,
+  //         editing: e === 'edit' ? 'true' : undefined,
+  //       },
+  //     });
+  //   }
+  // };
 
   return (
     <div className="mb-4 flex">
@@ -264,7 +260,7 @@ const SpaceProposalHeader: React.FC<Props> = ({ proposal, isAdmin }) => {
             </div>
           </div>
         ) : (
-          <LoadingSpinner />
+          <LoadingList />
         )}
       </TuneModal>
     </div>
