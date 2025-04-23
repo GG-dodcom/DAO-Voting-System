@@ -1,4 +1,5 @@
 # DAO-Voting-System
+The **LiveVote** application is a decentralized voting system built on a local Ethereum blockchain, designed to facilitate secure and transparent voting processes. It leverages smart contracts and blockchain technology to ensure trustless, tamper-proof voting, primarily for use in a DAO (Decentralized Autonomous Organization) context. The system allows administrators to create and manage voting proposals, generate unique QR codes for voter authentication, and track results on-chain. General users can connect their MetaMask wallets, scan QR codes to gain voting power, and cast votes securely, with all transactions recorded on the blockchain. The application features a user-friendly interface for both admins and voters, with functionalities like proposal creation, real-time status tracking (Pending, Active, Closed), and detailed result reporting, including voter turnout and option percentages.
 
 ## UI
 
