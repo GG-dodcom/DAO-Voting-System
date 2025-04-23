@@ -8,7 +8,7 @@ const TheFlashNotification: React.FC = () => {
   const { items } = useFlashNotification();
   const nodeRef = useRef(null); // Create a ref for the CSSTransition
 
-  console.log('context:', items);
+  // console.log('context:', items);
 
   return (
     <div className="pointer-events-none fixed bottom-0 left-0 right-0 z-60 mb-4 flex w-full flex-col items-center space-y-2">

@@ -1,23 +1,51 @@
 [
   {
-    "voter": "0x1234567890abcdef1234567890abcdef12345678",
-    "choice": 1,
-    "scores": 10,
-    "reason": "Great performance and energy!",
-    "created": 1678945623
+          "voter": "0x1234567890abcdef1234567890abcdef12345678",
+          "choice": "CH_0005",
+          "scores": 10,
+          "reason": "Great performance and energy!",
+          "created": 1678945623
   },
   {
-    "voter": "0xabcdef1234567890abcdef1234567890abcdef12",
-    "choice": 2,
-    "scores": 8,
-    "reason": "Loved the choreography.",
-    "created": 1678947650
+          "voter": "0xabcdef1234567890abcdef1234567890abcdef12",
+          "choice": "CH_0006",
+          "scores": 8,
+          "reason": "Loved the choreography.",
+          "created": 1678947650
   },
   {
-    "voter": "0x7890abcdef1234567890abcdef1234567890abcd",
-    "choice": 1,
-    "scores": 9,
-    "reason": "Excellent stage presence!",
-    "created": 1678949823
+          "voter": "0x7890abcdef1234567890abcdef1234567890abcd",
+          "choice": "CH_0005",
+          "scores": 9,
+          "reason": "Excellent stage presence!",
+          "created": 1678949823
+  },
+  {
+          "voter": "0x7890abcdef1234567890abcdef1234567890abcd",
+          "choice": "CH_0005",
+          "scores": 9,
+          "reason": "Excellent stage presence!",
+          "created": 1678949823
+  },
+  {
+          "voter": "0x7890abcdef1234567890abcdef1234567890abcd",
+          "choice":"CH_0005",
+          "scores": 9,
+          "reason": "Excellent stage presence!",
+          "created": 1678949823
+  },
+  {
+          "voter": "0x7890abcdef1234567890abcdef1234567890abcd",
+          "choice": "CH_0006",
+          "scores": 9,
+          "reason": "Excellent stage presence!",
+          "created": 1678949823
+  },
+  {
+          "voter": "0x7890abcdef1234567890abcdef1234567890abcd",
+          "choice": "CH_0006",
+          "scores": 9,
+          "reason": "Excellent stage presence!",
+          "created": 1678949823
   }
 ]

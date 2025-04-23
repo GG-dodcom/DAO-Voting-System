@@ -8,12 +8,12 @@ import {
   SpaceProposalHeader,
   SpaceProposalContent,
   SpaceProposalInformation,
-  SpaceProposalResults,
   SpaceProposalVote,
   ModalVote,
   SpaceProposalVotes,
+  SpaceProposalVoteResult,
 } from '.';
-import { Proposal, Results } from '../utils/interfaces';
+import { Proposal } from '../utils/interfaces';
 import { useRestfulAPI } from '../hooks';
 import API_PATHS from '../utils/queries';
 import { useAppKitAccount } from '@reown/appkit/react';
@@ -26,13 +26,9 @@ interface Props {
 const SpaceProposalPage: React.FC<Props> = ({ proposal, onReload }) => {
   const isAdmin = localStorage.getItem('isAdmin') === 'true';
   const [modalOpen, setModalOpen] = useState(false);
-  const [selectedChoices, setSelectedChoices] = useState<any>(null);
+  const [selectedChoices, setSelectedChoices] = useState<number | null>(null);
   const [loadedResults, setLoadedResults] = useState(false);
-  const [results, setResults] = useState<Results>({
-    scores_state: '',
-    scores: [],
-    scoresTotal: 0,
-  });
+  const [currentProposal, setCurrentProposal] = useState(proposal);
 
   const { address } = useAppKitAccount();
   const { fetchQuery } = useRestfulAPI();
@@ -42,24 +38,23 @@ const SpaceProposalPage: React.FC<Props> = ({ proposal, onReload }) => {
   };
 
   const loadResults = async () => {
-    if (proposal.state == 'active') {
-      const result: any = await fetchQuery(
-        API_PATHS.fetchScores
-        //   {
-        //   proposalId: proposal.id,
-        // }
-      );
+    if (proposal.state == 'active') return;
 
-      if (proposal.result?.scores.length === 0) {
-        proposal.result.scores_state = result.scores_state;
-        proposal.result.scores = result.scores;
-        proposal.result.scoresTotal = result.scoresTotal;
-      }
+    const result: any = await fetchQuery(API_PATHS.fetchScores, {
+      roomId: proposal.proposalId,
+    });
 
-      setResults(result);
-
-      console.log('proposal.result', proposal.result);
+    if (!currentProposal.result) {
+      setCurrentProposal({
+        ...currentProposal,
+        result: {
+          scores: result.scores,
+          scoresTotal: result.scoresTotal,
+        },
+      });
     }
+
+    console.log('currentProposal.result', currentProposal.result);
     setLoadedResults(true);
   };
 
@@ -83,7 +78,7 @@ const SpaceProposalPage: React.FC<Props> = ({ proposal, onReload }) => {
   }, [address]);
 
   useEffect(() => {
-    if (proposal.state != 'active') loadResults();
+    loadResults();
   }, [proposal]);
 
   return (
@@ -118,12 +113,20 @@ const SpaceProposalPage: React.FC<Props> = ({ proposal, onReload }) => {
           <div>
             <div className="mt-[20px] lg:space-y-3 space-y-[20px] lg:mt-0 px-[20px] md:px-0">
               <SpaceProposalInformation proposal={proposal} />
-              <SpaceProposalResults
-                loaded={loadedResults}
-                proposal={proposal}
-                results={results}
-              />
-              <SpaceProposalVotes proposal={proposal} />
+
+              {currentProposal.result && (
+                <>
+                  {/* <SpaceProposalResults
+										loaded={loadedResults}
+										proposal={currentProposal}
+										results={currentProposal.result}
+									/> */}
+                  <SpaceProposalVotes
+                    proposal={currentProposal}
+                    results={currentProposal.result}
+                  />
+                </>
+              )}
             </div>
           </div>
         }
@@ -131,16 +134,25 @@ const SpaceProposalPage: React.FC<Props> = ({ proposal, onReload }) => {
 
       <div>
         <div className="px-0 md:px-4 mx-auto max-w-[1012px] mt-[20px]">
-          <SpaceProposalVote
-            modelValue={selectedChoices}
-            proposal={proposal}
-            onUpdateModelValue={(choice: any) => setSelectedChoices(choice)}
-            onClickVote={clickVote}
-          />
+          {proposal.state == 'active' ? (
+            <SpaceProposalVote
+              modelValue={selectedChoices}
+              proposal={proposal}
+              onUpdateModelValue={(choice: any) => setSelectedChoices(choice)}
+              onClickVote={clickVote}
+            />
+          ) : (
+            currentProposal.result && (
+              <SpaceProposalVoteResult
+                proposal={proposal}
+                results={currentProposal.result}
+              />
+            )
+          )}
         </div>
       </div>
 
-      {modalOpen && (
+      {modalOpen && selectedChoices && (
         <ModalVote
           open={modalOpen}
           proposal={proposal}

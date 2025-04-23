@@ -1,25 +1,25 @@
 import React from 'react';
 import {
   BaseContainer,
-  FooterLinks,
-  FooterTitle,
-  FooterLinksItem,
+  // FooterLinks,
+  // FooterTitle,
+  // FooterLinksItem,
 } from './index';
 
 const TheFooter: React.FC = () => {
-  const livevoteTextLinks = [
-    {
-      text: 'About',
-      link: '/about',
-    },
-  ];
+  // const livevoteTextLinks = [
+  //   {
+  //     text: 'About',
+  //     link: '/about',
+  //   },
+  // ];
 
-  const resourcesTextLinks = [
-    {
-      text: 'User Manual',
-      link: '/userManual',
-    },
-  ];
+  // const resourcesTextLinks = [
+  //   {
+  //     text: 'User Manual',
+  //     link: '/userManual',
+  //   },
+  // ];
 
   return (
     <div className="-mt-3 border-t">
@@ -27,7 +27,7 @@ const TheFooter: React.FC = () => {
         <BaseContainer>
           <div className="space-y-5 md:flex md:space-y-0">
             <div className="flex justify-center space-x-[70px] text-center md:w-full md:text-left lg:ml-[60px] lg:justify-start">
-              <FooterLinks>
+              {/* <FooterLinks>
                 <FooterTitle>LiveVote</FooterTitle>
                 {livevoteTextLinks.map((item) => (
                   <FooterLinksItem
@@ -49,7 +49,7 @@ const TheFooter: React.FC = () => {
                     {item.text}
                   </FooterLinksItem>
                 ))}
-              </FooterLinks>
+              </FooterLinks> */}
             </div>
           </div>
         </BaseContainer>

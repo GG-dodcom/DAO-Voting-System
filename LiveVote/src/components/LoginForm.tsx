@@ -34,6 +34,7 @@ const LoginForm: React.FC<Props> = ({ open, onClose, onSuccess }) => {
     if (response.status == 200) {
       notify(['green', response.data.message]);
       onSuccess(true);
+
       // Reroute home page
       navigate('/');
     } else {

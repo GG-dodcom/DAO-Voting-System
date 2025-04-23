@@ -9,12 +9,11 @@ import {
   BaseBlock,
   TuneButton,
 } from '../components';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { t } from 'i18next';
 import { useFormSpaceProposal } from '../hooks/useFormSpaceProposal';
 import proposal from '../schemas/proposal.json';
 import API_PATHS from '../utils/queries';
-import Tippy from '@tippyjs/react';
 import { useFlashNotification } from '../context';
 
 enum Step {
@@ -99,6 +98,7 @@ const SpaceCreate: React.FC = () => {
     if (
       currentStep === 0 &&
       form.name &&
+      form.avatar.file &&
       form.body.length <= bodyCharactersLimit &&
       !validationErrors.name &&
       !validationErrors.body
@@ -112,7 +112,15 @@ const SpaceCreate: React.FC = () => {
       dateEnd &&
       dateStart &&
       dateEnd > dateStart &&
-      !form.choices.some((choice, index) => choice.text === '' && index === 0)
+      !form.choices.some(
+        (choice, index) => choice.text === '' && index === 0
+      ) &&
+      !form.choices.find(
+        (choice: any) => choice.text.trim() !== '' && !choice.avatar?.file // Text exists but no image
+      ) &&
+      !form.choices.find(
+        (choice: any) => choice.avatar?.file && choice.text.trim() === '' // Image exists but no text
+      )
     ) {
       return true;
     }
@@ -120,7 +128,9 @@ const SpaceCreate: React.FC = () => {
     return false;
   }, [
     currentStep,
+    form,
     form.name,
+    form.avatar.file,
     form.body.length,
     form.choices,
     bodyCharactersLimit,
@@ -170,7 +180,7 @@ const SpaceCreate: React.FC = () => {
       endDate: formattedForm.end,
       type: formattedForm.type,
       numOfQR: formattedForm.numOfQR,
-      timestamp: parseInt((Date.now() / 1e3).toFixed()),
+      createDate: parseInt((Date.now() / 1e3).toFixed()),
     };
 
     // Manually set the JSON part with a Blob and specify Content-Type as 'application/json'
@@ -199,9 +209,9 @@ const SpaceCreate: React.FC = () => {
 
       if (response.ok) {
         resetForm();
-        notify(['green', t('notify.proposalCreated')]);
+        notify(['green', result.message]);
       } else {
-        alert(`Error: ${result.message}`);
+        notify(['red', result.message || 'Fail to create proposal']);
       }
     } catch (error) {
       notify(['red', error]);
@@ -209,7 +219,7 @@ const SpaceCreate: React.FC = () => {
       setLoading(false);
     }
     resetForm();
-    navigate({ pathname: '/' });
+    navigate('/');
   };
 
   const nextStep = () => {
@@ -220,10 +230,10 @@ const SpaceCreate: React.FC = () => {
     setCurrentStep((prevStep) => prevStep - 1);
   };
 
-  useEffect(() => {
-    console.log('form', form);
-    console.log('formDraft', formDraft);
-  }, [form]);
+  // useEffect(() => {
+  //   console.log('form', form);
+  //   console.log('formDraft', formDraft);
+  // }, [form]);
 
   return (
     <TheLayout
@@ -290,18 +300,16 @@ const SpaceCreate: React.FC = () => {
               {t('create.publish')}
             </TuneButton>
           ) : (
-            <Tippy content={t('plsConnctWallet')}>
-              <div>
-                <TuneButton
-                  className="block w-full"
-                  disabled={!stepIsValid}
-                  primary
-                  onClick={() => nextStep()}
-                >
-                  {t('create.continue')}
-                </TuneButton>
-              </div>
-            </Tippy>
+            <div>
+              <TuneButton
+                className="block w-full"
+                disabled={!stepIsValid}
+                primary
+                onClick={() => nextStep()}
+              >
+                {t('create.continue')}
+              </TuneButton>
+            </div>
           )}
         </BaseBlock>
       }

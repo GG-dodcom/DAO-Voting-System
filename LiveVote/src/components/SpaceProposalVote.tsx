@@ -2,7 +2,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState, useEffect, useMemo } from 'react';
 import {
-  BaseButtonIcon,
   BaseMessage,
   SpaceProposalVoteSingleChoice,
   TuneBlock,
@@ -10,17 +9,17 @@ import {
   TuneButton,
 } from '.';
 import Tippy from '@tippyjs/react';
-import { IHoLockClosed, IHoPencil } from '../assets/icons';
+import { IHoLockClosed } from '../assets/icons';
 import { t } from 'i18next';
-import { Proposal, Choice } from '../utils/interfaces';
+import { Proposal } from '../utils/interfaces';
 import { useProposalVotes } from '../hooks/useProposalVotes';
 import { useAppKitAccount } from '@reown/appkit/react';
 import SingleChoiceVoting from '../hooks/singleChoice';
 
 interface Props {
   proposal: Proposal;
-  modelValue: Choice | null;
-  onUpdateModelValue: (choice: Choice | null) => void;
+  modelValue: number | null;
+  onUpdateModelValue: (choice: number | null) => void;
   onClickVote: () => void;
 }
 
@@ -38,41 +37,30 @@ const SpaceProposalVote: React.FC<Props> = ({
 
   // Validate user choice
   const validatedUserChoice = useMemo(() => {
-    console.log('valid selected choices: ', modelValue);
-    console.log(
-      'model value valid: ',
-      SingleChoiceVoting.isValidChoice(
-        modelValue,
-        proposal.choices.map((choice) => choice.name)
-      )
-    );
-    console.log('!userVote?.choice: ', userVote, !userVote?.choice);
-    console.log(
-      'userVote isvalid: ',
-      SingleChoiceVoting.isValidChoice(
-        userVote?.choice,
-        proposal.choices.map((choice) => choice.name)
-      )
-    );
-
     // Check if there are selected choices
-    if (modelValue)
+    if (modelValue && typeof modelValue === 'number') {
       return SingleChoiceVoting.isValidChoice(
         modelValue,
         proposal.choices.map((choice) => choice.name)
       )
         ? modelValue
         : null;
+    }
 
     // Check userVote and validate it
     if (!userVote?.choice) return null;
+    const userVoteChoice =
+      proposal.choices.findIndex(
+        (choice) => choice.choiceId === userVote.choice
+      ) + 1;
+
     if (
       SingleChoiceVoting.isValidChoice(
-        userVote.choice,
+        userVoteChoice,
         proposal.choices.map((choice) => choice.name)
       )
     )
-      return userVote.choice as any;
+      return userVoteChoice as any;
 
     return null;
   }, [modelValue, userVote]);
@@ -113,8 +101,7 @@ const SpaceProposalVote: React.FC<Props> = ({
 
   return (
     <>
-      {/* {!loadingUserVote && (userVote || proposal.state === 'active') && ( */}
-      {!loadingUserVote && (
+      {!loadingUserVote && (userVote || proposal.state === 'active') && (
         <TuneBlock
           className={''}
           header={
@@ -124,40 +111,30 @@ const SpaceProposalVote: React.FC<Props> = ({
                   ? 'Change your vote'
                   : proposal.state == 'active' && userVote
                   ? 'Your vote'
-                  : proposal.state == 'active'
-                  ? 'Cast your vote'
-                  : proposal.state == 'pending'
-                  ? 'Voting Pending'
-                  : proposal.state == 'closed'
-                  ? 'Voting Closed'
-                  : 'Unknown State'
+                  : 'Cast your vote'
               }
             >
-              {!isEditing && userVote && proposal.state === 'active' && (
-                <Tippy content={'Change your vote'} delay={100}>
-                  <BaseButtonIcon
-                    className="!p-0 !pr-1"
-                    onClick={() => setIsEditing(true)}
-                  >
-                    <IHoPencil className="text-sm" />
-                  </BaseButtonIcon>
-                </Tippy>
-              )}
+              {/* {!isEditing && userVote && proposal.state === "active" && (
+								<Tippy content={"Change your vote"} delay={100}>
+									<BaseButtonIcon
+										className="!p-0 !pr-1"
+										onClick={() => setIsEditing(true)}
+									>
+										<IHoPencil className="text-sm" />
+									</BaseButtonIcon>
+								</Tippy>
+							)} */}
             </TuneBlockHeader>
           }
         >
           <div>
-            {/* TODO: get the scores from blockchain */}
-            {!isEditing &&
-              userVote &&
-              proposal.result?.scores_state != 'final' && (
-                <div className="border px-3 py-[12px] rounded-xl bg-[--border-color-subtle]">
-                  <IHoLockClosed className="inline-block text-sm" />
-                  Your vote is encrypted until the proposal ends and the final
-                  score is calculated. You can still change your vote until
-                  then.
-                </div>
-              )}
+            {!isEditing && userVote && proposal.state != 'closed' && (
+              <div className="border px-3 py-[12px] rounded-xl bg-[--border-color-subtle]">
+                <IHoLockClosed className="inline-block text-sm" />
+                Your vote is encrypted until the proposal ends and the final
+                score is calculated.
+              </div>
+            )}
             {userVote && !validatedUserChoice && !isEditing && (
               <BaseMessage
                 level="info"

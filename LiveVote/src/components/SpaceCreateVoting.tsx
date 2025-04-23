@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { t } from 'i18next';
 import {
   BaseBlock,
@@ -12,6 +12,7 @@ import {
   SpaceCreateVotingDateEnd,
   AvatarEdit,
   TuneInput,
+  TuneErrorInput,
 } from '.';
 import {
   DndContext,
@@ -67,7 +68,7 @@ const SortableChoice = ({
   return (
     <div>
       <div
-        className="flex items-start"
+        className="flex items-center"
         ref={setNodeRef}
         style={style}
         {...attributes}
@@ -134,6 +135,7 @@ const SpaceCreateVoting: React.FC<Props> = ({
   dateEnd,
   isEditing,
 }) => {
+  const [errorChoice, setErrorChoice] = useState<string>('');
   const disableChoiceEdit = useMemo(() => form.type === 'basic', [form.type]);
 
   const addChoices = (num: number) => {
@@ -193,6 +195,26 @@ const SpaceCreateVoting: React.FC<Props> = ({
   };
 
   useEffect(() => {
+    const invalidAvatar = form.choices.find(
+      (choice: any) => choice.text.trim() !== '' && !choice.avatar?.file // Text exists but no image
+    );
+
+    const invalidChoice = form.choices.find(
+      (choice: any) => choice.avatar?.file && choice.text.trim() === '' // Image exists but no text
+    );
+
+    if (invalidAvatar) {
+      setErrorChoice('An image is required for choice.');
+    } else if (invalidChoice) {
+      setErrorChoice(
+        'Please provide a name for the choice associated with the image.'
+      );
+    } else {
+      setErrorChoice('');
+    }
+  }, [form.choices, form]);
+
+  useEffect(() => {
     console.log('voting start', dateStart);
     console.log('voting end', dateEnd);
   }, [dateStart, dateEnd]);
@@ -234,6 +256,7 @@ const SpaceCreateVoting: React.FC<Props> = ({
                 </div>
               </SortableContext>
             </DndContext>
+            <TuneErrorInput error={errorChoice} />
           </div>
           {!disableChoiceEdit && (
             <div className="ml-2 flex w-[48px] items-end">
@@ -248,11 +271,11 @@ const SpaceCreateVoting: React.FC<Props> = ({
       <BaseBlock title={t('create.votingQR')}>
         <TuneInput
           type={'number'}
-          value={form.votes_num}
+          value={form.numOfQR}
           onChange={(value) => {
             setForm((prev: any) => ({
               ...prev,
-              votes_num: value,
+              numOfQR: value,
             }));
           }}
           label={t('create.votes_num')}

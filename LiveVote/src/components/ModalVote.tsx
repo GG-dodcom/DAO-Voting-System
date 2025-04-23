@@ -5,10 +5,12 @@ import { useAppKitAccount } from '@reown/appkit/react';
 import { t } from 'i18next';
 import Tippy from '@tippyjs/react';
 import { Proposal } from '../utils/interfaces';
+import { voteForCandidate } from '../utils/contractService';
+
 import {
   BaseMessageBlock,
   LoadingSpinner,
-  TextareaAutosize,
+  // TextareaAutosize,
   TuneButton,
   TuneModal,
   TuneModalTitle,
@@ -36,61 +38,84 @@ const ModalVote: React.FC<Props> = ({
   onClose,
 }) => {
   const [votingPower, setVotingPower] = useState(0);
-  const [reason, setReason] = useState<any>('');
+  // const [reason, setReason] = useState<any>("");
   const [hasVotingPowerFailed, setHasVotingPowerFailed] = useState(false);
   const [isValidationAndPowerLoading, setIsValidationAndPowerLoading] =
     useState(false);
   const [isValidationAndPowerLoaded, setIsValidationAndPowerLoaded] =
     useState(false);
   const symbol = proposal.symbol || '';
-
   const { address } = useAppKitAccount();
   const { formatCompactNumber } = useIntl();
-  const { fetchQuery, postQuery, queryLoading } = useRestfulAPI();
+  const { fetchQuery, postQueryWithQueryParams, queryLoading } =
+    useRestfulAPI();
   const { notify } = useFlashNotification();
+  const choiceId = proposal.choices[selectedChoices].choiceId;
 
   const handleSubmit = async () => {
-    console.log('call smart contract');
+    const extractNumber = (str: string): number | null => {
+      const match = str.match(/\d+/);
+      return match ? parseInt(match[0], 10) : null;
+    };
 
-    const result: any = null;
+    const roomNumber = extractNumber(proposal.proposalId);
+    const choiceNumber = extractNumber(choiceId);
 
-    console.log('Result', result);
+    try {
+      if (roomNumber !== null && choiceNumber !== null) {
+        await voteForCandidate(roomNumber.toString(), choiceNumber.toString());
+        console.log('Vote cast successfully');
+        // notify(['green', 'Vote Successfully']);
 
-    if (!result.success) {
-      notify(['red', result.result.message]);
-    } else {
-      await postQuery(API_PATHS.vote, {
-        voter: address,
-        proposalId: proposal.id,
-        choice: selectedChoices,
-        reason: reason,
-        timestamp: parseInt((Date.now() / 1e3).toFixed()),
-      });
-      console.log('save vote data');
+        const params = {
+          proposalId: proposal.proposalId,
+          userWalletAddress: address,
+          choiceId: choiceId,
+        };
+
+        const response = await postQueryWithQueryParams(
+          API_PATHS.saveUserVotes,
+          params
+        );
+
+        if (response?.statusCode === 200) {
+          console.log('Voting result saved:', response.message);
+          notify(['green', response.message]);
+        } else {
+          console.error(
+            'Error saving voting result:',
+            response?.message || 'Unknown error'
+          );
+          notify(['red', response?.message || 'Failed to save voting result']);
+        }
+      } else {
+        console.error('Invalid proposal ID, choice ID, or user wallet address');
+        notify([
+          'red',
+          'Invalid proposal ID, choice ID, or user wallet address',
+        ]);
+      }
+    } catch (error: any) {
+      console.error('Error sending vote or saving result:', error);
+      notify(['red', 'Failed to cast vote or save result: ' + error.message]);
     }
+
     onClose();
     onReload();
   };
 
   const loadVotingPower = async () => {
     setHasVotingPowerFailed(false);
-
     // send request to check token balance
-    try {
-      const powerRes: any = await fetchQuery(
-        API_PATHS.fetchTokenBalance
-        //   {
-        //   voter: address,
-        //   proposalId: proposal.id,
-        // }
-      );
-      setVotingPower(powerRes.balance);
-    } catch (e) {
-      setHasVotingPowerFailed(true);
-      console.log(e);
+    const powerRes: any = await fetchQuery(API_PATHS.fetchTokenBalance, {
+      roomId: proposal.proposalId,
+      userAddress: address,
+    });
+    if (powerRes.balance) {
+      const votingPower = Number(powerRes.balance);
+      setVotingPower(votingPower);
     }
   };
-
   const loadValidationAndPower = async () => {
     setIsValidationAndPowerLoading(true);
     try {
@@ -102,19 +127,20 @@ const ModalVote: React.FC<Props> = ({
       setIsValidationAndPowerLoaded(true);
     }
   };
-
   useEffect(() => {
     if (!open) return;
     loadValidationAndPower();
   }, [open, address]);
-
+  useEffect(() => {
+    const choiceId = proposal.choices[selectedChoices].choiceId;
+    console.log('choiceId', choiceId);
+  }, [selectedChoices]);
   return (
     <TuneModal open={open} hideClose onClose={onClose}>
       <div className="mx-3">
         <TuneModalTitle className="mt-3 mx-1">
           {t('proposal.castVote')}
         </TuneModalTitle>
-
         <div className="space-y-3 text-skin-link">
           <div className="mx-1">
             <div className="flex">
@@ -130,7 +156,6 @@ const ModalVote: React.FC<Props> = ({
                 </span>
               </Tippy>
             </div>
-
             <div className="flex">
               <span className="mr-1 flex-auto text-skin-text">
                 {t('votingPower')}
@@ -154,7 +179,6 @@ const ModalVote: React.FC<Props> = ({
               )}
             </div>
           </div>
-
           {isValidationAndPowerLoaded && !isValidationAndPowerLoading && (
             <>
               {
@@ -170,20 +194,19 @@ const ModalVote: React.FC<Props> = ({
                 ) : (
                   /* Reason field */
                   <div>
-                    <TextareaAutosize
-                      value={reason}
-                      maxLength={140}
-                      className="s-input !rounded-xl"
-                      placeholder={t('comment.placeholder')}
-                      onChange={(value) => setReason(value)}
-                    />
+                    {/* <TextareaAutosize
+											value={reason}
+											maxLength={140}
+											className="s-input !rounded-xl"
+											placeholder={t("comment.placeholder")}
+											onChange={(value) => setReason(value)}
+										/> */}
                   </div>
                 )
               }
             </>
           )}
         </div>
-
         <div className="mb-3 mt-5 flex gap-x-[12px]">
           <TuneButton type="button" className="w-full" onClick={onClose}>
             {t('cancel')}

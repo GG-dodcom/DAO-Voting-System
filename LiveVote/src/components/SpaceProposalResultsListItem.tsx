@@ -1,8 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Proposal, Results } from '../utils/interfaces';
+import { Proposal, Result } from '../utils/interfaces';
 import Tippy from '@tippyjs/react';
-import { IHoLockClosed } from '../assets/icons';
-import { t } from 'i18next';
 import { SpaceProposalResultsProgressBar } from '.';
 import { useIntl } from '../hooks/useIntl';
 import { shorten } from '../utils/utils';
@@ -10,7 +8,7 @@ import { shorten } from '../utils/utils';
 interface Props {
   choice: { i: number; choice: string };
   proposal: Proposal;
-  results: Results;
+  results: Result;
 }
 
 const SpaceProposalResultsListItem: React.FC<Props> = ({
@@ -56,27 +54,27 @@ const SpaceProposalResultsListItem: React.FC<Props> = ({
           )}
         </div>
         <div className="flex justify-end">
-          {results.scores_state !== 'final' ? (
+          {/* {proposal.state !== 'closed' ? (
             <Tippy content={t('privacy')}>
               <span>
                 <IHoLockClosed className="mx-auto" />
               </span>
             </Tippy>
-          ) : (
-            <div className="space-x-2">
-              <Tippy
-                content={`${formatNumber(results.scores[choice.i])} ${
-                  proposal.symbol
-                }`}
-              >
-                <span className="whitespace-nowrap">
-                  {formatCompactNumber(results.scores[choice.i])}{' '}
-                  {shorten(proposal.symbol || 'VOTE', 'symbol')}
-                </span>
-              </Tippy>
-              <span>{formatPercentNumber(choicePercentage)}</span>
-            </div>
-          )}
+          ) : ( */}
+          <div className="space-x-2">
+            <Tippy
+              content={`${formatNumber(results.scores[choice.i])} ${
+                proposal.symbol
+              }`}
+            >
+              <span className="whitespace-nowrap">
+                {formatCompactNumber(results.scores[choice.i])}{' '}
+                {shorten(proposal.symbol || 'VOTE', 'symbol')}
+              </span>
+            </Tippy>
+            <span>{formatPercentNumber(choicePercentage)}</span>
+          </div>
+          {/* )} */}
         </div>
       </div>
       <SpaceProposalResultsProgressBar

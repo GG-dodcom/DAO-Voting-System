@@ -1,27 +1,19 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
 import {
   BaseBlock,
-  BaseButtonIcon,
-  BaseLink,
-  BaseMessageBlock,
   BaseNoResults,
   LoadingRow,
-  QRCodeScanner,
   TheLayout,
   TuneButton,
-  TuneModal,
-  TuneModalTitle,
 } from '../components';
-import { Proposal } from '../utils/interfaces';
+import { Proposal, Result } from '../utils/interfaces';
 import ProposalsItem from '../components/ProposalsItem';
 import { useRestfulAPI } from '../hooks';
 import API_PATHS from '../utils/queries';
 import { useAppKitAccount } from '@reown/appkit/react';
 import { useNavigate } from 'react-router-dom';
-import { ISScanqr } from '../assets/icons';
-import { useFlashNotification } from '../context';
-import { t } from 'i18next';
 
 const SpaceProposals: React.FC = () => {
   const isAdmin = localStorage.getItem('isAdmin') === 'true';
@@ -29,41 +21,36 @@ const SpaceProposals: React.FC = () => {
   const [userVotedProposalIds, setUserVotedProposalIds] = useState<string[]>(
     []
   );
-  const [isOpenQrModal, setOpenQrModal] = useState(false);
-  const [isProcessing, setIsProcessing] = useState(false);
 
   const { fetchQuery, queryLoading } = useRestfulAPI();
-  const { notify } = useFlashNotification();
   const { address } = useAppKitAccount();
   const navigate = useNavigate();
 
-  const openQrModal = () => {
-    setOpenQrModal(!isOpenQrModal);
-  };
-
-  const closeQrModal = () => {
-    setOpenQrModal(false);
-  };
-
-  const checkTokenRedeem = (scanned: string) => {
-    if (!scanned) return;
-    setIsProcessing(true);
-
-    //TODO: check is scanned text able to get token or not
-    const isRedeemable = true; // Replace with actual validation logic
-
-    if (isRedeemable) {
-      notify(['green', `Successfully redeemed: ${scanned}`]);
-    } else {
-      notify(['red', `Cannot redeem: ${scanned}`]);
-    }
-    closeQrModal();
-  };
-
   const getProposals = async () => {
     try {
-      const response = await fetchQuery(API_PATHS.fetchProposals);
-      setProposals(response);
+      // Fetch proposals data
+      const proposalsResponse = await fetchQuery(API_PATHS.fetchProposals);
+
+      let resultsResponse: Result[] = [];
+
+      // Attempt to fetch results data
+      resultsResponse = await fetchQuery(API_PATHS.fetchAllScores);
+
+      // Match results with proposals based on proposalId
+      const mergedProposals = proposalsResponse.map((proposal: Proposal) => {
+        // Find the matching result by proposalId, or default to undefined
+        const matchingResult = resultsResponse.find(
+          (result: Result) => result.proposalId === proposal.proposalId
+        );
+
+        // Return the proposal with the matched result, or only the proposal if no result
+        return { ...proposal, result: matchingResult || undefined };
+      });
+
+      // Update the proposals state
+      setProposals(mergedProposals);
+
+      console.log('mergedProposals: ', mergedProposals);
     } catch (error) {
       console.error('Error fetching proposals:', error);
     }
@@ -72,12 +59,11 @@ const SpaceProposals: React.FC = () => {
   const getUserVotedProposalIds = async (voter: string) => {
     if (!voter) return;
 
-    const votes = await fetchQuery(
-      API_PATHS.fetchUserVotedProposalIds
-      //   {
-      //   address: voter,
-      // }
-    );
+    const votes = await fetchQuery(API_PATHS.fetchUserVotedProposalIds, {
+      userWalletAddress: voter,
+    });
+
+    // console.error('votes', votes);
 
     const proposalIds = votes ?? [];
     setUserVotedProposalIds((prevIds) => [
@@ -90,12 +76,19 @@ const SpaceProposals: React.FC = () => {
     navigate('/'); //window.location.reload(); // Reloads the page to reflect the sign-out
   };
 
+  const signIn = () => {
+    navigate('/admin');
+  };
+
+  const createProposal = () => {
+    navigate('/create');
+  };
+
   useEffect(() => {
     getProposals();
   }, []);
 
   useEffect(() => {
-    console.log(address);
     if (address) getUserVotedProposalIds(address);
   }, [address]);
 
@@ -103,27 +96,18 @@ const SpaceProposals: React.FC = () => {
     <TheLayout>
       <div>
         <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center">
-            <h1 className="lg:block">Proposals</h1>
-            {!isAdmin && (
-              <BaseButtonIcon onClick={openQrModal}>
-                <ISScanqr className="h-[46px] w-[46px]" />
-              </BaseButtonIcon>
-            )}
-          </div>
+          <h1 className="lg:block">Proposals</h1>
 
-          {isAdmin && (
+          {isAdmin ? (
             <div className="flex items-center gap-x-3">
-              <BaseLink
-                link={{ pathname: '/create' }}
-                hideExternalIcon
-                data-testid="create-proposal-button"
-              >
-                <TuneButton className="w-full sm:w-auto">
-                  New proposal
-                </TuneButton>
-              </BaseLink>
+              <TuneButton className="w-full sm:w-auto" onClick={createProposal}>
+                New proposal
+              </TuneButton>
               <TuneButton onClick={signOut}>Sign Out</TuneButton>
+            </div>
+          ) : (
+            <div className="flex items-center gap-x-3">
+              <TuneButton onClick={signIn}>Sign In</TuneButton>
             </div>
           )}
         </div>
@@ -145,29 +129,6 @@ const SpaceProposals: React.FC = () => {
           ))}
         </div>
       </div>
-
-      <TuneModal open={isOpenQrModal} onClose={closeQrModal}>
-        <div className="mx-3">
-          <TuneModalTitle className="mt-3 mx-1">
-            Scan Ticket to Vote
-            {/* {t('proposal.')} */}
-          </TuneModalTitle>
-
-          <div className="space-y-3 text-skin-link">
-            <BaseMessageBlock level={'info'}>
-              <span>{t('scanQrMessage')}</span>
-            </BaseMessageBlock>
-          </div>
-
-          <div className="h-[229.5px] mb-3 mt-3 flex gap-x-[12px]">
-            <QRCodeScanner
-              onScanned={(scanned: string) => {
-                if (!isProcessing) checkTokenRedeem(scanned);
-              }}
-            />
-          </div>
-        </div>
-      </TuneModal>
     </TheLayout>
   );
 };

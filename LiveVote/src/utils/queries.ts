@@ -1,75 +1,37 @@
 const API_BASE_URL = 'http://localhost:8080/api';
-//const API_BASE_URL = 'http://localhost:3000/api';
-const API_CONTRACT_URL = 'http://localhost:3000/api';
+// const API_CONTRACT_URL = 'http://localhost:8080/api/voting';
 
 const API_PATHS = {
   // Blockchain
-  fetchTokenBalance: `${API_CONTRACT_URL}/tokenBalance`,
+  fetchTokenBalance: `${API_BASE_URL}/voting/get-user-token-balance`,
 
-  // data
-  vote: `${API_BASE_URL}/vote`,
+  fetchScores: `${API_BASE_URL}/voting/get-room-results`, //?proposalId=...
 
-  //fetchScores: `${API_BASE_URL}/scores`,
-  fetchScores: `http://localhost:3000/api/scores`,
+  fetchAllScores: `${API_BASE_URL}/voting/get-closed-room-details`,
 
-  fetchTotalVoter: `${API_BASE_URL}/totalVoter`,
+  redeemToken: `${API_BASE_URL}/voting/distribute-tokens`, //?qrcode=...
+
+  // Backend
+  adminlogin: `${API_BASE_URL}/auth/login`,
 
   fetchProposals: `${API_BASE_URL}/proposals/view-all-proposals`,
-  //TODO: json look like, return array[]
-  // id
-  // title
-  // body,
-  // avatar,
-  // choices: id, name,
-  // state,
-  // voting: start, end, type,
-  // create,
-  // scores,
-  // scores_state,
-  // scores_total
 
-  fetchProposalDetails: `${API_BASE_URL}/proposals/view-proposal-details`, //api/proposalDetails/:id
-  //return only one
-  // id,
+  fetchProposalDetails: `${API_BASE_URL}/proposals/view-proposal-details`,
 
-  // title,
-  // body,
-  // avatar,
-  // choices: id, name, avatar,
+  fetchTokenQR: `${API_BASE_URL}/proposals/get-token-qr`, //?proposalId=...
 
-  fetchTokenQR: `${API_BASE_URL}/proposals/token-qr`,
+  fetchUserVotedProposalIds: `${API_BASE_URL}/proposals/get-user-voted-proposal`, //?address=...
 
-  deleteProposal: `${API_BASE_URL}/deleteProposal`,
+  validQrStatus: `${API_BASE_URL}/proposals/validate-qr-status`,
 
-  fetchUserVotedProposalIds: `${API_BASE_URL}/userVotedProposalIds`,
-  //list of id
-
-  fetchAudiences: `${API_BASE_URL}/audiences`,
-  fetchPerformance: `${API_BASE_URL}/performance`,
-  //TODO: json look like, contain a list of performances
-  // performances: [
-  //   // array of performance data
-  // ],
-
-  fetchNewestPerformance: `${API_BASE_URL}/newest_performances`,
-  //TODO: json look like
-  // performances: [
-  //   // array of performance data
-  // ],
-  // total: 100, // total number of performances in database
-
-  fetchSpecificPost: (postId: string) => `${API_BASE_URL}/posts/${postId}`,
-
-  postImangeUpload: `${API_BASE_URL}/image_upload`,
-  //TODO: return
-  // const receipt = await pin(formData, API_PATHS.postImangeUpload);
-  // const uploadedUrl = `ipfs://${receipt.cid}`;
-
-  adminlogin: `${API_BASE_URL}/auth/login`,
+  updateQrStatus: `${API_BASE_URL}/proposals/update-qr-status`,
 
   createProposal: `${API_BASE_URL}/proposals/create-proposal`,
 
-  loadUserVotes: `${API_BASE_URL}/loadUserVotes`,
-  loadUserVote: `${API_BASE_URL}/loadUserVote`,
+  loadUserVotes: `${API_BASE_URL}/proposals/get-voting-result`,
+
+  saveUserVotes: `${API_BASE_URL}/proposals/save-voting-result`,
+
+  // deleteProposal: `${API_BASE_URL}/deleteProposal`,
 };
 export default API_PATHS;
